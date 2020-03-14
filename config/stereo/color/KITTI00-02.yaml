@@ -1,0 +1,57 @@
+%YAML:1.0
+#--------------------------------------------------------------------------------------------
+# File Path
+#--------------------------------------------------------------------------------------------
+
+dataset_dir: /media/mingrui/MyPassport/SLAMdatabase/KITTI/gray/00
+save_path: map/keyframe_trajectory.txt
+
+
+
+
+#--------------------------------------------------------------------------------------------
+# Camera Parameters
+#--------------------------------------------------------------------------------------------
+#camera intrinsics
+Camera.left.fx: 718.856
+Camera.left.fy: 718.856
+Camera.left.cx: 607.1928
+Camera.left.cy: 185.2157
+
+Camera.right.fx: 718.856
+Camera.right.fy: 718.856
+Camera.right.cx: 607.1928
+Camera.right.cy: 185.2157
+
+# stereo baseline times fx
+Camera.bf: 386.1448
+
+
+
+
+
+#--------------------------------------------------------------------------------------------
+# Feature Parameters
+#--------------------------------------------------------------------------------------------
+num_features: 2000 #150
+num_features_init: 100 #50
+num_features_tracking: 100 #50
+num_features_needed_for_keyframe: 100
+
+max_num_images: 10000  # 读入的视频帧总数
+
+
+
+#--------------------------------------------------------------------------------------------
+# Viewer Parameters
+#--------------------------------------------------------------------------------------------
+Viewer.KeyFrameSize: 0.1
+Viewer.KeyFrameLineWidth: 1
+Viewer.GraphLineWidth: 1
+Viewer.PointSize:2
+Viewer.CameraSize: 0.15
+Viewer.CameraLineWidth: 2
+Viewer.ViewpointX: 0
+Viewer.ViewpointY: -10
+Viewer.ViewpointZ: -0.1
+Viewer.ViewpointF: 2000
