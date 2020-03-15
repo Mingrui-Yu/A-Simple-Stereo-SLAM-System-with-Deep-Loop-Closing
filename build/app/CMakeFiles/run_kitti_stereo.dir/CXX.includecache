@@ -61,8 +61,6 @@ myslam/common_include.h
 ../include/myslam/myslam/common_include.h
 myslam/frame.h
 ../include/myslam/myslam/frame.h
-myslam/viewer.h
-../include/myslam/myslam/viewer.h
 opencv2/features2d.hpp
 -
 
@@ -92,7 +90,7 @@ pangolin/pangolin.h
 opencv2/opencv.hpp
 -
 
-/home/mingrui/Mingrui/SLAMProject/stereo_vo/app/run_kitti_stereo.cpp
+/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/app/run_kitti_stereo.cpp
 myslam/system.h
 -
 myslam/common_include.h

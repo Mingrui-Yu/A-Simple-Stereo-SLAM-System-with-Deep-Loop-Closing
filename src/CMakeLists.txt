@@ -2,9 +2,14 @@ add_library(myslam SHARED
                                 config.cpp
                                 system.cpp
                                 frame.cpp
+                                keyframe.cpp
                                 feature.cpp
+                                mappoint.cpp
                                 frontend.cpp
                                 viewer.cpp
+                                ORBextractor.cpp
+                                camera.cpp
+                                map.cpp
                             )
 
 

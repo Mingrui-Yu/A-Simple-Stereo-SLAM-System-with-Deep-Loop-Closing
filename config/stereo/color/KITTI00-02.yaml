@@ -33,14 +33,25 @@ Camera.bf: 386.1448
 #--------------------------------------------------------------------------------------------
 # Feature Parameters
 #--------------------------------------------------------------------------------------------
-num_features: 2000 #150
+num_features: 500 #150
 num_features_init: 100 #50
 num_features_tracking: 100 #50
 num_features_needed_for_keyframe: 100
 
 max_num_images: 10000  # 读入的视频帧总数
 
-
+# ORB Extractor: Number of features per image
+# ORBextractor.nFeatures: 2000
+# ORB Extractor: Scale factor between levels in the scale pyramid 	
+ORBextractor.scaleFactor: 1.2
+# ORB Extractor: Number of levels in the scale pyramid	
+ORBextractor.nLevels: 8
+# ORB Extractor: Fast threshold
+# Image is divided in a grid. At each cell FAST are extracted imposing a minimum response.
+# Firstly we impose iniThFAST. If no corners are detected we impose a lower value minThFAST
+# You can lower these values if your images have low contrast			
+ORBextractor.iniThFAST: 20
+ORBextractor.minThFAST: 7
 
 #--------------------------------------------------------------------------------------------
 # Viewer Parameters

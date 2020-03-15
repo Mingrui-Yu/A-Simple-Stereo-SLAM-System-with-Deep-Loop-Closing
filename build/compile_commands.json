@@ -1,37 +1,62 @@
 [
 {
-  "directory": "/home/mingrui/Mingrui/SLAMProject/stereo_vo/build/src",
-  "command": "/usr/bin/g++-7  -DGFLAGS_IS_A_DLL=0 -Dmyslam_EXPORTS -isystem /usr/include/eigen3 -isystem /usr/local/include -isystem /usr/local/include/opencv -isystem /home/mingrui/Pangolin/include -isystem /home/mingrui/Pangolin/build/src/include -I/usr/include/suitesparse -I/home/mingrui/Mingrui/SLAMProject/stereo_vo/include  -std=c++11 -Wall -std=c++11 -O3 -fopenmp -pthread -fPIC   -o CMakeFiles/myslam.dir/config.cpp.o -c /home/mingrui/Mingrui/SLAMProject/stereo_vo/src/config.cpp",
-  "file": "/home/mingrui/Mingrui/SLAMProject/stereo_vo/src/config.cpp"
+  "directory": "/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build/src",
+  "command": "/usr/bin/g++-7  -DGFLAGS_IS_A_DLL=0 -Dmyslam_EXPORTS -isystem /usr/include/eigen3 -isystem /usr/local/include -isystem /usr/local/include/opencv -isystem /home/mingrui/Pangolin/include -isystem /home/mingrui/Pangolin/build/src/include -I/usr/include/suitesparse -I/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/include  -std=c++11 -Wall -std=c++11 -O3 -fopenmp -pthread -fPIC   -o CMakeFiles/myslam.dir/config.cpp.o -c /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/config.cpp",
+  "file": "/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/config.cpp"
 },
 {
-  "directory": "/home/mingrui/Mingrui/SLAMProject/stereo_vo/build/src",
-  "command": "/usr/bin/g++-7  -DGFLAGS_IS_A_DLL=0 -Dmyslam_EXPORTS -isystem /usr/include/eigen3 -isystem /usr/local/include -isystem /usr/local/include/opencv -isystem /home/mingrui/Pangolin/include -isystem /home/mingrui/Pangolin/build/src/include -I/usr/include/suitesparse -I/home/mingrui/Mingrui/SLAMProject/stereo_vo/include  -std=c++11 -Wall -std=c++11 -O3 -fopenmp -pthread -fPIC   -o CMakeFiles/myslam.dir/system.cpp.o -c /home/mingrui/Mingrui/SLAMProject/stereo_vo/src/system.cpp",
-  "file": "/home/mingrui/Mingrui/SLAMProject/stereo_vo/src/system.cpp"
+  "directory": "/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build/src",
+  "command": "/usr/bin/g++-7  -DGFLAGS_IS_A_DLL=0 -Dmyslam_EXPORTS -isystem /usr/include/eigen3 -isystem /usr/local/include -isystem /usr/local/include/opencv -isystem /home/mingrui/Pangolin/include -isystem /home/mingrui/Pangolin/build/src/include -I/usr/include/suitesparse -I/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/include  -std=c++11 -Wall -std=c++11 -O3 -fopenmp -pthread -fPIC   -o CMakeFiles/myslam.dir/system.cpp.o -c /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/system.cpp",
+  "file": "/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/system.cpp"
 },
 {
-  "directory": "/home/mingrui/Mingrui/SLAMProject/stereo_vo/build/src",
-  "command": "/usr/bin/g++-7  -DGFLAGS_IS_A_DLL=0 -Dmyslam_EXPORTS -isystem /usr/include/eigen3 -isystem /usr/local/include -isystem /usr/local/include/opencv -isystem /home/mingrui/Pangolin/include -isystem /home/mingrui/Pangolin/build/src/include -I/usr/include/suitesparse -I/home/mingrui/Mingrui/SLAMProject/stereo_vo/include  -std=c++11 -Wall -std=c++11 -O3 -fopenmp -pthread -fPIC   -o CMakeFiles/myslam.dir/frame.cpp.o -c /home/mingrui/Mingrui/SLAMProject/stereo_vo/src/frame.cpp",
-  "file": "/home/mingrui/Mingrui/SLAMProject/stereo_vo/src/frame.cpp"
+  "directory": "/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build/src",
+  "command": "/usr/bin/g++-7  -DGFLAGS_IS_A_DLL=0 -Dmyslam_EXPORTS -isystem /usr/include/eigen3 -isystem /usr/local/include -isystem /usr/local/include/opencv -isystem /home/mingrui/Pangolin/include -isystem /home/mingrui/Pangolin/build/src/include -I/usr/include/suitesparse -I/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/include  -std=c++11 -Wall -std=c++11 -O3 -fopenmp -pthread -fPIC   -o CMakeFiles/myslam.dir/frame.cpp.o -c /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/frame.cpp",
+  "file": "/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/frame.cpp"
 },
 {
-  "directory": "/home/mingrui/Mingrui/SLAMProject/stereo_vo/build/src",
-  "command": "/usr/bin/g++-7  -DGFLAGS_IS_A_DLL=0 -Dmyslam_EXPORTS -isystem /usr/include/eigen3 -isystem /usr/local/include -isystem /usr/local/include/opencv -isystem /home/mingrui/Pangolin/include -isystem /home/mingrui/Pangolin/build/src/include -I/usr/include/suitesparse -I/home/mingrui/Mingrui/SLAMProject/stereo_vo/include  -std=c++11 -Wall -std=c++11 -O3 -fopenmp -pthread -fPIC   -o CMakeFiles/myslam.dir/feature.cpp.o -c /home/mingrui/Mingrui/SLAMProject/stereo_vo/src/feature.cpp",
-  "file": "/home/mingrui/Mingrui/SLAMProject/stereo_vo/src/feature.cpp"
+  "directory": "/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build/src",
+  "command": "/usr/bin/g++-7  -DGFLAGS_IS_A_DLL=0 -Dmyslam_EXPORTS -isystem /usr/include/eigen3 -isystem /usr/local/include -isystem /usr/local/include/opencv -isystem /home/mingrui/Pangolin/include -isystem /home/mingrui/Pangolin/build/src/include -I/usr/include/suitesparse -I/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/include  -std=c++11 -Wall -std=c++11 -O3 -fopenmp -pthread -fPIC   -o CMakeFiles/myslam.dir/keyframe.cpp.o -c /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/keyframe.cpp",
+  "file": "/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/keyframe.cpp"
 },
 {
-  "directory": "/home/mingrui/Mingrui/SLAMProject/stereo_vo/build/src",
-  "command": "/usr/bin/g++-7  -DGFLAGS_IS_A_DLL=0 -Dmyslam_EXPORTS -isystem /usr/include/eigen3 -isystem /usr/local/include -isystem /usr/local/include/opencv -isystem /home/mingrui/Pangolin/include -isystem /home/mingrui/Pangolin/build/src/include -I/usr/include/suitesparse -I/home/mingrui/Mingrui/SLAMProject/stereo_vo/include  -std=c++11 -Wall -std=c++11 -O3 -fopenmp -pthread -fPIC   -o CMakeFiles/myslam.dir/frontend.cpp.o -c /home/mingrui/Mingrui/SLAMProject/stereo_vo/src/frontend.cpp",
-  "file": "/home/mingrui/Mingrui/SLAMProject/stereo_vo/src/frontend.cpp"
+  "directory": "/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build/src",
+  "command": "/usr/bin/g++-7  -DGFLAGS_IS_A_DLL=0 -Dmyslam_EXPORTS -isystem /usr/include/eigen3 -isystem /usr/local/include -isystem /usr/local/include/opencv -isystem /home/mingrui/Pangolin/include -isystem /home/mingrui/Pangolin/build/src/include -I/usr/include/suitesparse -I/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/include  -std=c++11 -Wall -std=c++11 -O3 -fopenmp -pthread -fPIC   -o CMakeFiles/myslam.dir/feature.cpp.o -c /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/feature.cpp",
+  "file": "/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/feature.cpp"
 },
 {
-  "directory": "/home/mingrui/Mingrui/SLAMProject/stereo_vo/build/src",
-  "command": "/usr/bin/g++-7  -DGFLAGS_IS_A_DLL=0 -Dmyslam_EXPORTS -isystem /usr/include/eigen3 -isystem /usr/local/include -isystem /usr/local/include/opencv -isystem /home/mingrui/Pangolin/include -isystem /home/mingrui/Pangolin/build/src/include -I/usr/include/suitesparse -I/home/mingrui/Mingrui/SLAMProject/stereo_vo/include  -std=c++11 -Wall -std=c++11 -O3 -fopenmp -pthread -fPIC   -o CMakeFiles/myslam.dir/viewer.cpp.o -c /home/mingrui/Mingrui/SLAMProject/stereo_vo/src/viewer.cpp",
-  "file": "/home/mingrui/Mingrui/SLAMProject/stereo_vo/src/viewer.cpp"
+  "directory": "/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build/src",
+  "command": "/usr/bin/g++-7  -DGFLAGS_IS_A_DLL=0 -Dmyslam_EXPORTS -isystem /usr/include/eigen3 -isystem /usr/local/include -isystem /usr/local/include/opencv -isystem /home/mingrui/Pangolin/include -isystem /home/mingrui/Pangolin/build/src/include -I/usr/include/suitesparse -I/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/include  -std=c++11 -Wall -std=c++11 -O3 -fopenmp -pthread -fPIC   -o CMakeFiles/myslam.dir/mappoint.cpp.o -c /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/mappoint.cpp",
+  "file": "/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/mappoint.cpp"
 },
 {
-  "directory": "/home/mingrui/Mingrui/SLAMProject/stereo_vo/build/app",
-  "command": "/usr/bin/g++-7  -DGFLAGS_IS_A_DLL=0 -isystem /usr/include/eigen3 -isystem /usr/local/include -isystem /usr/local/include/opencv -isystem /home/mingrui/Pangolin/include -isystem /home/mingrui/Pangolin/build/src/include -I/usr/include/suitesparse -I/home/mingrui/Mingrui/SLAMProject/stereo_vo/include  -std=c++11 -Wall -std=c++11 -O3 -fopenmp -pthread   -o CMakeFiles/run_kitti_stereo.dir/run_kitti_stereo.cpp.o -c /home/mingrui/Mingrui/SLAMProject/stereo_vo/app/run_kitti_stereo.cpp",
-  "file": "/home/mingrui/Mingrui/SLAMProject/stereo_vo/app/run_kitti_stereo.cpp"
+  "directory": "/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build/src",
+  "command": "/usr/bin/g++-7  -DGFLAGS_IS_A_DLL=0 -Dmyslam_EXPORTS -isystem /usr/include/eigen3 -isystem /usr/local/include -isystem /usr/local/include/opencv -isystem /home/mingrui/Pangolin/include -isystem /home/mingrui/Pangolin/build/src/include -I/usr/include/suitesparse -I/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/include  -std=c++11 -Wall -std=c++11 -O3 -fopenmp -pthread -fPIC   -o CMakeFiles/myslam.dir/frontend.cpp.o -c /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/frontend.cpp",
+  "file": "/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/frontend.cpp"
+},
+{
+  "directory": "/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build/src",
+  "command": "/usr/bin/g++-7  -DGFLAGS_IS_A_DLL=0 -Dmyslam_EXPORTS -isystem /usr/include/eigen3 -isystem /usr/local/include -isystem /usr/local/include/opencv -isystem /home/mingrui/Pangolin/include -isystem /home/mingrui/Pangolin/build/src/include -I/usr/include/suitesparse -I/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/include  -std=c++11 -Wall -std=c++11 -O3 -fopenmp -pthread -fPIC   -o CMakeFiles/myslam.dir/viewer.cpp.o -c /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/viewer.cpp",
+  "file": "/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/viewer.cpp"
+},
+{
+  "directory": "/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build/src",
+  "command": "/usr/bin/g++-7  -DGFLAGS_IS_A_DLL=0 -Dmyslam_EXPORTS -isystem /usr/include/eigen3 -isystem /usr/local/include -isystem /usr/local/include/opencv -isystem /home/mingrui/Pangolin/include -isystem /home/mingrui/Pangolin/build/src/include -I/usr/include/suitesparse -I/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/include  -std=c++11 -Wall -std=c++11 -O3 -fopenmp -pthread -fPIC   -o CMakeFiles/myslam.dir/ORBextractor.cpp.o -c /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/ORBextractor.cpp",
+  "file": "/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/ORBextractor.cpp"
+},
+{
+  "directory": "/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build/src",
+  "command": "/usr/bin/g++-7  -DGFLAGS_IS_A_DLL=0 -Dmyslam_EXPORTS -isystem /usr/include/eigen3 -isystem /usr/local/include -isystem /usr/local/include/opencv -isystem /home/mingrui/Pangolin/include -isystem /home/mingrui/Pangolin/build/src/include -I/usr/include/suitesparse -I/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/include  -std=c++11 -Wall -std=c++11 -O3 -fopenmp -pthread -fPIC   -o CMakeFiles/myslam.dir/camera.cpp.o -c /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/camera.cpp",
+  "file": "/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/camera.cpp"
+},
+{
+  "directory": "/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build/src",
+  "command": "/usr/bin/g++-7  -DGFLAGS_IS_A_DLL=0 -Dmyslam_EXPORTS -isystem /usr/include/eigen3 -isystem /usr/local/include -isystem /usr/local/include/opencv -isystem /home/mingrui/Pangolin/include -isystem /home/mingrui/Pangolin/build/src/include -I/usr/include/suitesparse -I/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/include  -std=c++11 -Wall -std=c++11 -O3 -fopenmp -pthread -fPIC   -o CMakeFiles/myslam.dir/map.cpp.o -c /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/map.cpp",
+  "file": "/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/map.cpp"
+},
+{
+  "directory": "/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build/app",
+  "command": "/usr/bin/g++-7  -DGFLAGS_IS_A_DLL=0 -isystem /usr/include/eigen3 -isystem /usr/local/include -isystem /usr/local/include/opencv -isystem /home/mingrui/Pangolin/include -isystem /home/mingrui/Pangolin/build/src/include -I/usr/include/suitesparse -I/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/include  -std=c++11 -Wall -std=c++11 -O3 -fopenmp -pthread   -o CMakeFiles/run_kitti_stereo.dir/run_kitti_stereo.cpp.o -c /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/app/run_kitti_stereo.cpp",
+  "file": "/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/app/run_kitti_stereo.cpp"
 }
 ]

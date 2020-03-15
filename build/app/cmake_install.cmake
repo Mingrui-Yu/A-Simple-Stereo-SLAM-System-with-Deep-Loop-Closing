@@ -1,4 +1,4 @@
-# Install script for directory: /home/mingrui/Mingrui/SLAMProject/stereo_vo/app
+# Install script for directory: /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/app
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

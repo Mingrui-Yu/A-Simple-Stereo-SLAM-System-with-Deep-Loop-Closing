@@ -14,6 +14,9 @@ namespace myslam{
  * system 对外接口
  */
 
+class Camera;
+
+
 class System{
 public:
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
@@ -26,6 +29,8 @@ public:
 
     bool RunStep(const cv::Mat &leftImg, const cv::Mat &rightImg, const double &dTimestamp);
 
+    void GetCamera();
+
 public:
     
 
@@ -36,6 +41,8 @@ private:
 
     FrontEnd::Ptr _mpFrontEnd = nullptr;
     Viewer::Ptr _mpViewer = nullptr;
+
+    std::shared_ptr<Camera> _cameraLeft, _cameraRight;
 
 };
 

@@ -52,11 +52,12 @@ int main(int argc, char **argv){
     cv::Mat imgLeft, imgRight;
     double dTimeStamp;
 
-    std::chrono::steady_clock::time_point t_start, t_end;
-    std::chrono::duration<double> time_used_total;
+    std::chrono::steady_clock::time_point t_start, t_end, t1, t2;
+    std::chrono::duration<double> time_used_total, time_used;
 
     t_start = std::chrono::steady_clock::now();
     for(int ni=0; ni < nImages; ni++){
+        t1 = std::chrono::steady_clock::now();
         if(ni % 100 == 99) std::cout << "ni = " << ni + 1 << std::endl;
         
         imgLeft = cv::imread(vstrImageLeft[ni], cv::IMREAD_GRAYSCALE);
@@ -70,6 +71,9 @@ int main(int argc, char **argv){
         }
 
         slam->RunStep(imgLeft, imgRight, dTimeStamp);
+        t2 = std::chrono::steady_clock::now();
+        time_used = std::chrono::duration_cast <std::chrono::duration<double>> (t2 - t1);
+        LOG(INFO) << "time cost for frame " << ni <<": " << time_used.count()  << "s";
     }
 
     t_end = std::chrono::steady_clock::now();

@@ -20,12 +20,11 @@ public:
 
     void SetPose(const SE3 &pose);
 
-    SE3 GetPose();
+    SE3 Pose();
 
 public:
     unsigned long mnFrameId;
-    unsigned long mnKFid;
-    static unsigned long nNextId;
+    // unsigned long mnKFid;
     double mdTimeStamp;
 
     cv::Mat mLeftImg, mRightImg;

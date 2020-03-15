@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/mingrui/Mingrui/SLAMProject/stereo_vo/app/run_kitti_stereo.cpp" "/home/mingrui/Mingrui/SLAMProject/stereo_vo/build/app/CMakeFiles/run_kitti_stereo.dir/run_kitti_stereo.cpp.o"
+  "/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/app/run_kitti_stereo.cpp" "/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build/app/CMakeFiles/run_kitti_stereo.dir/run_kitti_stereo.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
@@ -26,7 +26,7 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
-  "/home/mingrui/Mingrui/SLAMProject/stereo_vo/build/src/CMakeFiles/myslam.dir/DependInfo.cmake"
+  "/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build/src/CMakeFiles/myslam.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

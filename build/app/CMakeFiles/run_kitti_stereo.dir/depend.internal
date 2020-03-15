@@ -8,7 +8,7 @@ app/CMakeFiles/run_kitti_stereo.dir/run_kitti_stereo.cpp.o
  ../include/myslam/frontend.h
  ../include/myslam/system.h
  ../include/myslam/viewer.h
- /home/mingrui/Mingrui/SLAMProject/stereo_vo/app/run_kitti_stereo.cpp
+ /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/app/run_kitti_stereo.cpp
  /home/mingrui/Pangolin/build/src/include/pangolin/config.h
  /home/mingrui/Pangolin/include/pangolin/compat/type_traits.h
  /home/mingrui/Pangolin/include/pangolin/display/attach.h

@@ -6,6 +6,20 @@
 
 #IncludeRegexTransform: 
 
+../include/myslam/ORBextractor.h
+vector
+-
+list
+-
+opencv/cv.h
+-
+myslam/common_include.h
+../include/myslam/myslam/common_include.h
+
+../include/myslam/camera.h
+myslam/common_include.h
+../include/myslam/myslam/common_include.h
+
 ../include/myslam/common_include.h
 atomic
 -
@@ -65,10 +79,20 @@ myslam/common_include.h
 ../include/myslam/myslam/common_include.h
 myslam/frame.h
 ../include/myslam/myslam/frame.h
-myslam/viewer.h
-../include/myslam/myslam/viewer.h
 opencv2/features2d.hpp
 -
+
+../include/myslam/keyframe.h
+myslam/common_include.h
+../include/myslam/myslam/common_include.h
+
+../include/myslam/map.h
+myslam/common_include.h
+../include/myslam/myslam/common_include.h
+
+../include/myslam/mappoint.h
+myslam/common_include.h
+../include/myslam/myslam/common_include.h
 
 ../include/myslam/system.h
 myslam/common_include.h
@@ -96,41 +120,97 @@ pangolin/pangolin.h
 opencv2/opencv.hpp
 -
 
-/home/mingrui/Mingrui/SLAMProject/stereo_vo/src/config.cpp
-myslam/config.h
-/home/mingrui/Mingrui/SLAMProject/stereo_vo/src/myslam/config.h
+/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/ORBextractor.cpp
+opencv2/core/core.hpp
+-
+opencv2/highgui/highgui.hpp
+-
+opencv2/features2d/features2d.hpp
+-
+opencv2/imgproc/imgproc.hpp
+-
+vector
+-
+chrono
+-
+iostream
+-
+myslam/ORBextractor.h
+/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/myslam/ORBextractor.h
 
-/home/mingrui/Mingrui/SLAMProject/stereo_vo/src/feature.cpp
+/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/camera.cpp
+myslam/camera.h
+/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/myslam/camera.h
+
+/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/config.cpp
+myslam/config.h
+/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/myslam/config.h
+
+/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/feature.cpp
 myslam/feature.h
-/home/mingrui/Mingrui/SLAMProject/stereo_vo/src/myslam/feature.h
+/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/myslam/feature.h
 opencv2/features2d.hpp
 -
 
-/home/mingrui/Mingrui/SLAMProject/stereo_vo/src/frame.cpp
+/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/frame.cpp
 myslam/frame.h
-/home/mingrui/Mingrui/SLAMProject/stereo_vo/src/myslam/frame.h
+/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/myslam/frame.h
 
-/home/mingrui/Mingrui/SLAMProject/stereo_vo/src/frontend.cpp
+/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/frontend.cpp
 myslam/frontend.h
-/home/mingrui/Mingrui/SLAMProject/stereo_vo/src/myslam/frontend.h
+/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/myslam/frontend.h
 myslam/feature.h
-/home/mingrui/Mingrui/SLAMProject/stereo_vo/src/myslam/feature.h
-myslam/config.h
-/home/mingrui/Mingrui/SLAMProject/stereo_vo/src/myslam/config.h
-myslam/viewer.h
-/home/mingrui/Mingrui/SLAMProject/stereo_vo/src/myslam/viewer.h
-
-/home/mingrui/Mingrui/SLAMProject/stereo_vo/src/system.cpp
-myslam/system.h
-/home/mingrui/Mingrui/SLAMProject/stereo_vo/src/myslam/system.h
-
-/home/mingrui/Mingrui/SLAMProject/stereo_vo/src/viewer.cpp
-myslam/viewer.h
-/home/mingrui/Mingrui/SLAMProject/stereo_vo/src/myslam/viewer.h
+/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/myslam/feature.h
 myslam/frame.h
-/home/mingrui/Mingrui/SLAMProject/stereo_vo/src/myslam/frame.h
+/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/myslam/frame.h
+myslam/mappoint.h
+/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/myslam/mappoint.h
+myslam/config.h
+/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/myslam/config.h
+myslam/viewer.h
+/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/myslam/viewer.h
+myslam/ORBextractor.h
+/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/myslam/ORBextractor.h
+myslam/camera.h
+/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/myslam/camera.h
+
+/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/keyframe.cpp
+myslam/keyframe.h
+/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/myslam/keyframe.h
+myslam/frame.h
+/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/myslam/frame.h
 myslam/feature.h
-/home/mingrui/Mingrui/SLAMProject/stereo_vo/src/myslam/feature.h
+/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/myslam/feature.h
+myslam/mappoint.h
+/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/myslam/mappoint.h
+
+/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/map.cpp
+myslam/map.h
+/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/myslam/map.h
+myslam/keyframe.h
+/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/myslam/keyframe.h
+
+/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/mappoint.cpp
+myslam/mappoint.h
+/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/myslam/mappoint.h
+myslam/feature.h
+/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/myslam/feature.h
+
+/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/system.cpp
+myslam/system.h
+/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/myslam/system.h
+myslam/camera.h
+/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/myslam/camera.h
+myslam/config.h
+/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/myslam/config.h
+
+/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/viewer.cpp
+myslam/viewer.h
+/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/myslam/viewer.h
+myslam/frame.h
+/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/myslam/frame.h
+myslam/feature.h
+/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/myslam/feature.h
 
 /home/mingrui/Pangolin/build/src/include/pangolin/config.h
 
@@ -1862,6 +1942,18 @@ lapacke_mangling.h
 
 /usr/include/eigen3/Eigen/src/plugins/MatrixCwiseUnaryOps.h
 
+/usr/local/include/opencv/cv.h
+opencv2/core/core_c.h
+/usr/local/include/opencv/opencv2/core/core_c.h
+opencv2/imgproc/imgproc_c.h
+/usr/local/include/opencv/opencv2/imgproc/imgproc_c.h
+opencv2/photo/photo_c.h
+/usr/local/include/opencv/opencv2/photo/photo_c.h
+opencv2/video/tracking_c.h
+/usr/local/include/opencv/opencv2/video/tracking_c.h
+opencv2/objdetect/objdetect_c.h
+/usr/local/include/opencv/opencv2/objdetect/objdetect_c.h
+
 /usr/local/include/opencv/cxcore.h
 opencv2/core/core_c.h
 /usr/local/include/opencv/opencv2/core/core_c.h
@@ -2291,6 +2383,10 @@ opencv2/core.hpp
 /usr/local/include/opencv2/opencv2/core.hpp
 opencv2/flann/miniflann.hpp
 /usr/local/include/opencv2/opencv2/flann/miniflann.hpp
+
+/usr/local/include/opencv2/features2d/features2d.hpp
+opencv2/features2d.hpp
+/usr/local/include/opencv2/features2d/opencv2/features2d.hpp
 
 /usr/local/include/opencv2/flann.hpp
 opencv2/core.hpp
@@ -2728,6 +2824,10 @@ opencv2/videoio.hpp
 opencv2/highgui/highgui_c.h
 /usr/local/include/opencv2/opencv2/highgui/highgui_c.h
 
+/usr/local/include/opencv2/highgui/highgui.hpp
+opencv2/highgui.hpp
+/usr/local/include/opencv2/highgui/opencv2/highgui.hpp
+
 /usr/local/include/opencv2/highgui/highgui_c.h
 opencv2/core/core_c.h
 /usr/local/include/opencv2/highgui/opencv2/core/core_c.h
@@ -2751,6 +2851,10 @@ opencv2/core.hpp
 /usr/local/include/opencv2/opencv2/core.hpp
 opencv2/imgproc/imgproc_c.h
 /usr/local/include/opencv2/opencv2/imgproc/imgproc_c.h
+
+/usr/local/include/opencv2/imgproc/imgproc.hpp
+opencv2/imgproc.hpp
+/usr/local/include/opencv2/imgproc/opencv2/imgproc.hpp
 
 /usr/local/include/opencv2/imgproc/imgproc_c.h
 opencv2/imgproc/types_c.h

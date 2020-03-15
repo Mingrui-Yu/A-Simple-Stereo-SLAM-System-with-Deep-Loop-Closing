@@ -2,15 +2,17 @@
 
 namespace myslam{
 
-unsigned long Frame::nNextId = 0;
+// Frame::nFactoryId = 0;
 
 // ---------------------------------------------------------------------------------------------------------
 Frame::Frame(const cv::Mat &leftImg, const cv::Mat &rightImg, const double &dTimeStamp){
+    static unsigned long nFactoryId = 0;
+
     mLeftImg = leftImg;
     mRightImg = rightImg;
     mdTimeStamp = dTimeStamp;
 
-    mnFrameId = nNextId++;
+    mnFrameId = nFactoryId++;
 }
 
 // ---------------------------------------------------------------------------------------------------------
@@ -20,7 +22,7 @@ void Frame::SetPose(const SE3 &pose){
     }
 
 // ---------------------------------------------------------------------------------------------------------
-SE3 Frame::GetPose() {
+SE3 Frame::Pose() {
     std::unique_lock<std::mutex> lck(_mmutexPose);
     return _msePose;
 }

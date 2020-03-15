@@ -8,6 +8,7 @@ namespace myslam{
 
 // forward declaration
 class Frame;
+class MapPoint;
 
 class Feature{
 public:
@@ -23,6 +24,9 @@ public:
 public:
     std::weak_ptr<Frame> mpFrame;
     cv::KeyPoint mkpPosition; 
+    std::weak_ptr<MapPoint> mpMapPoint; 
+
+    bool mbIsOnLeftFrame = true; // true: on left frame; false: on right frame;
 
 
 
