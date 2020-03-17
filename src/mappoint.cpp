@@ -4,9 +4,15 @@
 namespace myslam{
 
 // -------------------------------------------------------------------
-MapPoint::MapPoint(unsigned long id, Vec3 position){
+MapPoint::MapPoint(){
     static unsigned long nFactoryId = 0;
     mnId = nFactoryId++;
+}
+
+// -------------------------------------------------------------------
+MapPoint::MapPoint(unsigned long id, Vec3 position){
+    _mPos = position;
+    mnId = id;
 }
 
 
@@ -34,7 +40,8 @@ void MapPoint::RemoveObservation(std::shared_ptr<Feature> feature){
 std::list<std::weak_ptr<Feature>> MapPoint::GetObservations() {
         std::unique_lock<std::mutex> lck(_mmutexData);
         return _mpObservations;
-    }
+}
+
 
 
 

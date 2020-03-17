@@ -6,6 +6,10 @@
 
 #IncludeRegexTransform: 
 
+../include/myslam/camera.h
+myslam/common_include.h
+../include/myslam/myslam/common_include.h
+
 ../include/myslam/common_include.h
 atomic
 -
@@ -64,6 +68,10 @@ myslam/frame.h
 opencv2/features2d.hpp
 -
 
+../include/myslam/map.h
+myslam/common_include.h
+../include/myslam/myslam/common_include.h
+
 ../include/myslam/system.h
 myslam/common_include.h
 ../include/myslam/myslam/common_include.h
@@ -75,19 +83,23 @@ myslam/frontend.h
 ../include/myslam/myslam/frontend.h
 myslam/viewer.h
 ../include/myslam/myslam/viewer.h
+myslam/map.h
+../include/myslam/myslam/map.h
+myslam/camera.h
+../include/myslam/myslam/camera.h
 
 ../include/myslam/viewer.h
 myslam/common_include.h
 ../include/myslam/myslam/common_include.h
 myslam/config.h
 ../include/myslam/myslam/config.h
-myslam/frame.h
-../include/myslam/myslam/frame.h
 thread
 -
 pangolin/pangolin.h
 -
 opencv2/opencv.hpp
+-
+pangolin/pangolin.h
 -
 
 /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/app/run_kitti_stereo.cpp

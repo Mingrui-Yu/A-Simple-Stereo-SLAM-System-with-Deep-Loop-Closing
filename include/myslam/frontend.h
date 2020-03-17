@@ -11,24 +11,49 @@ namespace myslam{
 class Viewer;
 class ORBextractor;
 class Camera;
+class Map;
 
-enum class FrontEndStatus {INITING, TRACKING_GOOD, TRACKING_BAD, LOST};
+enum class FrontendStatus {INITING, TRACKING_GOOD, TRACKING_BAD, LOST};
 
-class FrontEnd{
+class Frontend{
 
 public:
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
-    typedef std::shared_ptr<FrontEnd> Ptr;
+    typedef std::shared_ptr<Frontend> Ptr;
 
-    FrontEnd();
-
-    void SetViewer(std::shared_ptr<Viewer> viewer);
+    Frontend();
 
     // process new pair of images
     bool GrabStereoImage(const cv::Mat &leftImg, const cv::Mat &rightImg, const double &dTimeStamp);
 
+    void SetViewer(std::shared_ptr<Viewer> viewer);
+
+    // set left and right camera
+    void SetCameras(std::shared_ptr<Camera> left, std::shared_ptr<Camera> right){
+        _mpCameraLeft = left;
+        _mpCameraRight = right;
+    }
+
+    // set the map
+    void SetMap(std::shared_ptr<Map> map){
+        _mpMap = map;
+    }
+
+    FrontendStatus GetStatus() const {
+        return _mStatus;
+    }
+
+    
+
+private:
      // tracking initialization 
     bool StereoInit();
+
+    // tracking, return true if success
+    bool Track();
+
+    // return if has built the map successfully
+    bool BuildInitMap();
 
     // detect features in an image, return the num of features
     int DetectFeatures();
@@ -37,20 +62,30 @@ public:
     // return num of corresponding features found
     int FindFeaturesInRight();
 
-    // set left and right camera
-    void SetCameras(std::shared_ptr<Camera> left, std::shared_ptr<Camera> right){
-        _cameraLeft = left;
-         _cameraRight = right;
-    }
+    // get the initial value of current frame's pose using motion model
+    // correspond features between last frame and current frame  using LK flow
+    // return the number of good tracked points
+    int TrackLastFrame();
 
-public: 
+    // optimize the current frame's pose using g2o
+    int EstimateCurrentPose();
+
+    // create new keyframe (from current frame) when the number of tracked points is less than a threshold
+    // return if success
+    bool InsertKeyFrame();
+
+    // create new mappoints and add them to the map
+    int TriangulateNewPoints();
 
     
-    FrontEndStatus mStatus = FrontEndStatus::INITING;
 
 private:
+    FrontendStatus _mStatus = FrontendStatus::INITING;
+
     Frame::Ptr _mpCurrentFrame;
     Frame::Ptr _mpLastFrame;
+
+    SE3 _mseRelativeMotion;
 
     // params for tracking features
     int _numFeatures;
@@ -62,10 +97,14 @@ private:
     // cv::Ptr<cv::GFTTDetector> _gftt;
     std::shared_ptr<ORBextractor> mpORBextractor;
 
+    std::shared_ptr<Camera> _mpCameraLeft, _mpCameraRight;
+
+    std::shared_ptr<Map> _mpMap;
+
     // Other thread Pointers
     std::shared_ptr<Viewer> _mpViewer;
 
-    std::shared_ptr<Camera> _cameraLeft, _cameraRight;
+   
 };
 
 

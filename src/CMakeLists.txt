@@ -6,6 +6,7 @@ add_library(myslam SHARED
                                 feature.cpp
                                 mappoint.cpp
                                 frontend.cpp
+                                backend.cpp
                                 viewer.cpp
                                 ORBextractor.cpp
                                 camera.cpp

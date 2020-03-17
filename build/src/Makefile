@@ -163,6 +163,33 @@ ORBextractor.cpp.s:
 	cd /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build && $(MAKE) -f src/CMakeFiles/myslam.dir/build.make src/CMakeFiles/myslam.dir/ORBextractor.cpp.s
 .PHONY : ORBextractor.cpp.s
 
+backend.o: backend.cpp.o
+
+.PHONY : backend.o
+
+# target to build an object file
+backend.cpp.o:
+	cd /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build && $(MAKE) -f src/CMakeFiles/myslam.dir/build.make src/CMakeFiles/myslam.dir/backend.cpp.o
+.PHONY : backend.cpp.o
+
+backend.i: backend.cpp.i
+
+.PHONY : backend.i
+
+# target to preprocess a source file
+backend.cpp.i:
+	cd /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build && $(MAKE) -f src/CMakeFiles/myslam.dir/build.make src/CMakeFiles/myslam.dir/backend.cpp.i
+.PHONY : backend.cpp.i
+
+backend.s: backend.cpp.s
+
+.PHONY : backend.s
+
+# target to generate assembly for a file
+backend.cpp.s:
+	cd /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build && $(MAKE) -f src/CMakeFiles/myslam.dir/build.make src/CMakeFiles/myslam.dir/backend.cpp.s
+.PHONY : backend.cpp.s
+
 camera.o: camera.cpp.o
 
 .PHONY : camera.o
@@ -446,6 +473,9 @@ help:
 	@echo "... ORBextractor.o"
 	@echo "... ORBextractor.i"
 	@echo "... ORBextractor.s"
+	@echo "... backend.o"
+	@echo "... backend.i"
+	@echo "... backend.s"
 	@echo "... camera.o"
 	@echo "... camera.i"
 	@echo "... camera.s"

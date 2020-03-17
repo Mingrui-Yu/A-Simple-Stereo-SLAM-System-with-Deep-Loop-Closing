@@ -225,9 +225,33 @@ src/CMakeFiles/myslam.dir/frontend.cpp.o.provides: src/CMakeFiles/myslam.dir/fro
 src/CMakeFiles/myslam.dir/frontend.cpp.o.provides.build: src/CMakeFiles/myslam.dir/frontend.cpp.o
 
 
+src/CMakeFiles/myslam.dir/backend.cpp.o: src/CMakeFiles/myslam.dir/flags.make
+src/CMakeFiles/myslam.dir/backend.cpp.o: ../src/backend.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object src/CMakeFiles/myslam.dir/backend.cpp.o"
+	cd /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build/src && /usr/bin/g++-7  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/myslam.dir/backend.cpp.o -c /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/backend.cpp
+
+src/CMakeFiles/myslam.dir/backend.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/myslam.dir/backend.cpp.i"
+	cd /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build/src && /usr/bin/g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/backend.cpp > CMakeFiles/myslam.dir/backend.cpp.i
+
+src/CMakeFiles/myslam.dir/backend.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/myslam.dir/backend.cpp.s"
+	cd /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build/src && /usr/bin/g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/backend.cpp -o CMakeFiles/myslam.dir/backend.cpp.s
+
+src/CMakeFiles/myslam.dir/backend.cpp.o.requires:
+
+.PHONY : src/CMakeFiles/myslam.dir/backend.cpp.o.requires
+
+src/CMakeFiles/myslam.dir/backend.cpp.o.provides: src/CMakeFiles/myslam.dir/backend.cpp.o.requires
+	$(MAKE) -f src/CMakeFiles/myslam.dir/build.make src/CMakeFiles/myslam.dir/backend.cpp.o.provides.build
+.PHONY : src/CMakeFiles/myslam.dir/backend.cpp.o.provides
+
+src/CMakeFiles/myslam.dir/backend.cpp.o.provides.build: src/CMakeFiles/myslam.dir/backend.cpp.o
+
+
 src/CMakeFiles/myslam.dir/viewer.cpp.o: src/CMakeFiles/myslam.dir/flags.make
 src/CMakeFiles/myslam.dir/viewer.cpp.o: ../src/viewer.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object src/CMakeFiles/myslam.dir/viewer.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object src/CMakeFiles/myslam.dir/viewer.cpp.o"
 	cd /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build/src && /usr/bin/g++-7  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/myslam.dir/viewer.cpp.o -c /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/viewer.cpp
 
 src/CMakeFiles/myslam.dir/viewer.cpp.i: cmake_force
@@ -251,7 +275,7 @@ src/CMakeFiles/myslam.dir/viewer.cpp.o.provides.build: src/CMakeFiles/myslam.dir
 
 src/CMakeFiles/myslam.dir/ORBextractor.cpp.o: src/CMakeFiles/myslam.dir/flags.make
 src/CMakeFiles/myslam.dir/ORBextractor.cpp.o: ../src/ORBextractor.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object src/CMakeFiles/myslam.dir/ORBextractor.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object src/CMakeFiles/myslam.dir/ORBextractor.cpp.o"
 	cd /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build/src && /usr/bin/g++-7  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/myslam.dir/ORBextractor.cpp.o -c /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/ORBextractor.cpp
 
 src/CMakeFiles/myslam.dir/ORBextractor.cpp.i: cmake_force
@@ -275,7 +299,7 @@ src/CMakeFiles/myslam.dir/ORBextractor.cpp.o.provides.build: src/CMakeFiles/mysl
 
 src/CMakeFiles/myslam.dir/camera.cpp.o: src/CMakeFiles/myslam.dir/flags.make
 src/CMakeFiles/myslam.dir/camera.cpp.o: ../src/camera.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object src/CMakeFiles/myslam.dir/camera.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object src/CMakeFiles/myslam.dir/camera.cpp.o"
 	cd /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build/src && /usr/bin/g++-7  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/myslam.dir/camera.cpp.o -c /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/camera.cpp
 
 src/CMakeFiles/myslam.dir/camera.cpp.i: cmake_force
@@ -299,7 +323,7 @@ src/CMakeFiles/myslam.dir/camera.cpp.o.provides.build: src/CMakeFiles/myslam.dir
 
 src/CMakeFiles/myslam.dir/map.cpp.o: src/CMakeFiles/myslam.dir/flags.make
 src/CMakeFiles/myslam.dir/map.cpp.o: ../src/map.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object src/CMakeFiles/myslam.dir/map.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object src/CMakeFiles/myslam.dir/map.cpp.o"
 	cd /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build/src && /usr/bin/g++-7  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/myslam.dir/map.cpp.o -c /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/map.cpp
 
 src/CMakeFiles/myslam.dir/map.cpp.i: cmake_force
@@ -330,6 +354,7 @@ myslam_OBJECTS = \
 "CMakeFiles/myslam.dir/feature.cpp.o" \
 "CMakeFiles/myslam.dir/mappoint.cpp.o" \
 "CMakeFiles/myslam.dir/frontend.cpp.o" \
+"CMakeFiles/myslam.dir/backend.cpp.o" \
 "CMakeFiles/myslam.dir/viewer.cpp.o" \
 "CMakeFiles/myslam.dir/ORBextractor.cpp.o" \
 "CMakeFiles/myslam.dir/camera.cpp.o" \
@@ -345,6 +370,7 @@ myslam_EXTERNAL_OBJECTS =
 ../lib/libmyslam.so: src/CMakeFiles/myslam.dir/feature.cpp.o
 ../lib/libmyslam.so: src/CMakeFiles/myslam.dir/mappoint.cpp.o
 ../lib/libmyslam.so: src/CMakeFiles/myslam.dir/frontend.cpp.o
+../lib/libmyslam.so: src/CMakeFiles/myslam.dir/backend.cpp.o
 ../lib/libmyslam.so: src/CMakeFiles/myslam.dir/viewer.cpp.o
 ../lib/libmyslam.so: src/CMakeFiles/myslam.dir/ORBextractor.cpp.o
 ../lib/libmyslam.so: src/CMakeFiles/myslam.dir/camera.cpp.o
@@ -379,7 +405,7 @@ myslam_EXTERNAL_OBJECTS =
 ../lib/libmyslam.so: /usr/lib/x86_64-linux-gnu/libX11.so
 ../lib/libmyslam.so: /usr/lib/x86_64-linux-gnu/libXext.so
 ../lib/libmyslam.so: src/CMakeFiles/myslam.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Linking CXX shared library ../../lib/libmyslam.so"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Linking CXX shared library ../../lib/libmyslam.so"
 	cd /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build/src && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/myslam.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -394,6 +420,7 @@ src/CMakeFiles/myslam.dir/requires: src/CMakeFiles/myslam.dir/keyframe.cpp.o.req
 src/CMakeFiles/myslam.dir/requires: src/CMakeFiles/myslam.dir/feature.cpp.o.requires
 src/CMakeFiles/myslam.dir/requires: src/CMakeFiles/myslam.dir/mappoint.cpp.o.requires
 src/CMakeFiles/myslam.dir/requires: src/CMakeFiles/myslam.dir/frontend.cpp.o.requires
+src/CMakeFiles/myslam.dir/requires: src/CMakeFiles/myslam.dir/backend.cpp.o.requires
 src/CMakeFiles/myslam.dir/requires: src/CMakeFiles/myslam.dir/viewer.cpp.o.requires
 src/CMakeFiles/myslam.dir/requires: src/CMakeFiles/myslam.dir/ORBextractor.cpp.o.requires
 src/CMakeFiles/myslam.dir/requires: src/CMakeFiles/myslam.dir/camera.cpp.o.requires

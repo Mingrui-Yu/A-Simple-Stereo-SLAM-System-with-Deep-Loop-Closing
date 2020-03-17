@@ -6,15 +6,14 @@
 #include "myslam/frame.h"
 #include "myslam/frontend.h"
 #include "myslam/viewer.h"
-
+#include "myslam/map.h"
+#include "myslam/camera.h"
 
 namespace myslam{
 
 /* 
  * system 对外接口
  */
-
-class Camera;
 
 
 class System{
@@ -23,6 +22,8 @@ public:
     typedef std::shared_ptr<System> Ptr;
 
     System(const std::string &strConfigPath);
+
+    void Stop();
 
     // do initialization things before run
     bool Init();
@@ -39,10 +40,11 @@ public:
 private:
     std::string _strConfigPath;
 
-    FrontEnd::Ptr _mpFrontEnd = nullptr;
+    Frontend::Ptr _mpFrontend = nullptr;
     Viewer::Ptr _mpViewer = nullptr;
+    std::shared_ptr<Map> _mpMap = nullptr;
 
-    std::shared_ptr<Camera> _cameraLeft, _cameraRight;
+    std::shared_ptr<Camera> _mpCameraLeft, _mpCameraRight;
 
 };
 

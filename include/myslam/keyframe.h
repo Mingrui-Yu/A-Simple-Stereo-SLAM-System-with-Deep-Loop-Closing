@@ -19,9 +19,12 @@ public:
 
     KeyFrame(std::shared_ptr<Frame> frame);
 
+    static KeyFrame::Ptr CreateKF(std::shared_ptr<Frame> frame);
+
     void SetPose(const SE3 &pose);
 
     SE3 Pose();
+
 
 public:
     unsigned long mnFrameId;

@@ -6,6 +6,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/myslam.dir/feature.cpp.o"
   "CMakeFiles/myslam.dir/mappoint.cpp.o"
   "CMakeFiles/myslam.dir/frontend.cpp.o"
+  "CMakeFiles/myslam.dir/backend.cpp.o"
   "CMakeFiles/myslam.dir/viewer.cpp.o"
   "CMakeFiles/myslam.dir/ORBextractor.cpp.o"
   "CMakeFiles/myslam.dir/camera.cpp.o"

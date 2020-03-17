@@ -18,7 +18,7 @@ public:
     Camera(double fx, double fy, double cx, double cy, double baseline, const SE3 &pose):
         fx_(fx), fy_(fy), cx_(cx), cy_(cy), baseline_(baseline), pose_(pose) {}
 
-    SE3 pose() const {return pose_;}
+    SE3 Pose() const {return pose_;}
 
     Mat33 K() const {
         Mat33 K;

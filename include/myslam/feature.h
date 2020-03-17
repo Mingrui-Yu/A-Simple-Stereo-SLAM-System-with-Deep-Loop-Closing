@@ -9,6 +9,7 @@ namespace myslam{
 // forward declaration
 class Frame;
 class MapPoint;
+class KeyFrame;
 
 class Feature{
 public:
@@ -17,17 +18,22 @@ public:
 
     Feature() {}
 
-    Feature(std::shared_ptr<Frame> frame, const cv::KeyPoint &kp);
+    Feature(const cv::KeyPoint &kp);
+    // Feature(std::shared_ptr<Frame> frame, const cv::KeyPoint &kp);
 
-
+    // void SetKF(std::shared_ptr<KeyFrame> KF){
+    //     auto kf = mpKF.lock();
+    //     kf = KF;
+    // }
 
 public:
-    std::weak_ptr<Frame> mpFrame;
+    // std::weak_ptr<Frame> mpFrame;
+    std::weak_ptr<KeyFrame> mpKF;
     cv::KeyPoint mkpPosition; 
     std::weak_ptr<MapPoint> mpMapPoint; 
 
     bool mbIsOnLeftFrame = true; // true: on left frame; false: on right frame;
-
+    bool mbIsOutlier = false;  
 
 
 };

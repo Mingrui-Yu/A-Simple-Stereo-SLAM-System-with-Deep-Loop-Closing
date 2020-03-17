@@ -15,7 +15,7 @@ public:
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
     typedef std::shared_ptr<MapPoint> Ptr;
 
-    MapPoint() {}
+    MapPoint();
 
     MapPoint(unsigned long id, Vec3 position);
 
@@ -33,22 +33,24 @@ public:
     // add feature which has observed this mappoint
     void AddObservation(std::shared_ptr<Feature> feature);
 
-    // remove feature  from the observing features
-    void RemoveObservation(std::shared_ptr<Feature> feature);
-
     // return the list of the observations
     std::list<std::weak_ptr<Feature>> GetObservations();
+
+    // remove the feature from current mappoint's observation
+    void RemoveObservation(std::shared_ptr<Feature> feat);
 
 
 public:
     unsigned long mnId = 0;
-    std::list<std::weak_ptr<Feature>> _mpObservations;   // 或许可以不用 list 而是 unordered_set
+    
     int mnObservedTimes = 0;
 
 
 
 private:
     std::mutex _mmutexData;
+    
+    std::list<std::weak_ptr<Feature>> _mpObservations;   // 或许可以不用 list 而是 unordered_set
 
     Vec3 _mPos = Vec3::Zero();
 };
