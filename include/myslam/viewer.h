@@ -23,7 +23,7 @@ public:
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
     typedef std::shared_ptr<Viewer> Ptr;
     typedef std::unordered_map<unsigned long, std::shared_ptr<KeyFrame>> KeyFramesType;
-    typedef std::unordered_map<unsigned long, std::shared_ptr<MapPoint>> LandmarksType;
+    typedef std::unordered_map<unsigned long, std::shared_ptr<MapPoint>> MapPointsType;
 
     Viewer();
 
@@ -72,8 +72,8 @@ private:
     const float green[3] = {0, 1, 0};
     const float blue[3] = {0, 0, 1};
     
-    LandmarksType _mumpAllLandmarks;
-    LandmarksType _mumpActiveLandmarks;
+    MapPointsType _mumpAllMapPoints;
+    MapPointsType _mumpActiveMapPoints;
 
     KeyFramesType _mumpAllKeyFrames;
     KeyFramesType _mumpActiveKeyFrames;

@@ -20,22 +20,35 @@ bool System::Init(){
 
     // create compnents and start each one's thread
     _mpFrontend = Frontend::Ptr(new Frontend);
+    _mpBackend = Backend::Ptr(new Backend);
     _mpViewer = Viewer::Ptr(new Viewer);
     _mpMap = Map::Ptr(new Map);
+
 
     // create links between each components
     _mpFrontend->SetViewer(_mpViewer);
     _mpFrontend->SetCameras(_mpCameraLeft, _mpCameraRight);
     _mpFrontend->SetMap(_mpMap);
+    _mpFrontend->SetBackend(_mpBackend);
 
-    _mpViewer->SetMap(_mpMap);
+    if(_mpBackend){
+        _mpBackend->SetMap(_mpMap);
+        _mpBackend->SetCameras(_mpCameraLeft, _mpCameraRight);
+    }
 
+    if(_mpViewer){
+        _mpViewer->SetMap(_mpMap);
+    }
+    
 
     return true;
 }
 
 void System::Stop(){
-    _mpViewer->Close();
+    if(_mpViewer)
+        _mpViewer->Close();
+    if(_mpBackend)
+        _mpBackend->Stop();
 }
 
 

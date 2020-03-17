@@ -364,8 +364,15 @@ src/CMakeFiles/myslam.dir/ORBextractor.cpp.o
  /usr/local/include/sophus/so3.hpp
  /usr/local/include/sophus/types.hpp
 src/CMakeFiles/myslam.dir/backend.cpp.o
+ ../include/myslam/algorithm.h
  ../include/myslam/backend.h
+ ../include/myslam/camera.h
  ../include/myslam/common_include.h
+ ../include/myslam/feature.h
+ ../include/myslam/g2o_types.h
+ ../include/myslam/keyframe.h
+ ../include/myslam/map.h
+ ../include/myslam/mappoint.h
  /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/backend.cpp
  /usr/include/eigen3/Eigen/Cholesky
  /usr/include/eigen3/Eigen/Core
@@ -377,6 +384,7 @@ src/CMakeFiles/myslam.dir/backend.cpp.o
  /usr/include/eigen3/Eigen/LU
  /usr/include/eigen3/Eigen/QR
  /usr/include/eigen3/Eigen/SVD
+ /usr/include/eigen3/Eigen/StdVector
  /usr/include/eigen3/Eigen/src/Cholesky/LDLT.h
  /usr/include/eigen3/Eigen/src/Cholesky/LLT.h
  /usr/include/eigen3/Eigen/src/Cholesky/LLT_LAPACKE.h
@@ -566,6 +574,8 @@ src/CMakeFiles/myslam.dir/backend.cpp.o
  /usr/include/eigen3/Eigen/src/SVD/JacobiSVD_LAPACKE.h
  /usr/include/eigen3/Eigen/src/SVD/SVDBase.h
  /usr/include/eigen3/Eigen/src/SVD/UpperBidiagonalization.h
+ /usr/include/eigen3/Eigen/src/StlSupport/StdVector.h
+ /usr/include/eigen3/Eigen/src/StlSupport/details.h
  /usr/include/eigen3/Eigen/src/misc/Image.h
  /usr/include/eigen3/Eigen/src/misc/Kernel.h
  /usr/include/eigen3/Eigen/src/misc/RealSvd2x2.h
@@ -579,6 +589,57 @@ src/CMakeFiles/myslam.dir/backend.cpp.o
  /usr/include/eigen3/Eigen/src/plugins/CommonCwiseUnaryOps.h
  /usr/include/eigen3/Eigen/src/plugins/MatrixCwiseBinaryOps.h
  /usr/include/eigen3/Eigen/src/plugins/MatrixCwiseUnaryOps.h
+ /usr/include/suitesparse/SuiteSparse_config.h
+ /usr/include/suitesparse/cs.h
+ /usr/local/include/g2o/config.h
+ /usr/local/include/g2o/core/base_binary_edge.h
+ /usr/local/include/g2o/core/base_binary_edge.hpp
+ /usr/local/include/g2o/core/base_edge.h
+ /usr/local/include/g2o/core/base_unary_edge.h
+ /usr/local/include/g2o/core/base_unary_edge.hpp
+ /usr/local/include/g2o/core/base_vertex.h
+ /usr/local/include/g2o/core/base_vertex.hpp
+ /usr/local/include/g2o/core/batch_stats.h
+ /usr/local/include/g2o/core/block_solver.h
+ /usr/local/include/g2o/core/block_solver.hpp
+ /usr/local/include/g2o/core/creators.h
+ /usr/local/include/g2o/core/dynamic_aligned_buffer.hpp
+ /usr/local/include/g2o/core/eigen_types.h
+ /usr/local/include/g2o/core/g2o_core_api.h
+ /usr/local/include/g2o/core/hyper_graph.h
+ /usr/local/include/g2o/core/jacobian_workspace.h
+ /usr/local/include/g2o/core/linear_solver.h
+ /usr/local/include/g2o/core/marginal_covariance_cholesky.h
+ /usr/local/include/g2o/core/matrix_operations.h
+ /usr/local/include/g2o/core/matrix_structure.h
+ /usr/local/include/g2o/core/openmp_mutex.h
+ /usr/local/include/g2o/core/optimizable_graph.h
+ /usr/local/include/g2o/core/optimization_algorithm.h
+ /usr/local/include/g2o/core/optimization_algorithm_gauss_newton.h
+ /usr/local/include/g2o/core/optimization_algorithm_levenberg.h
+ /usr/local/include/g2o/core/optimization_algorithm_with_hessian.h
+ /usr/local/include/g2o/core/parameter.h
+ /usr/local/include/g2o/core/parameter_container.h
+ /usr/local/include/g2o/core/robust_kernel.h
+ /usr/local/include/g2o/core/robust_kernel_impl.h
+ /usr/local/include/g2o/core/solver.h
+ /usr/local/include/g2o/core/sparse_block_matrix.h
+ /usr/local/include/g2o/core/sparse_block_matrix.hpp
+ /usr/local/include/g2o/core/sparse_block_matrix_ccs.h
+ /usr/local/include/g2o/core/sparse_block_matrix_diagonal.h
+ /usr/local/include/g2o/core/sparse_optimizer.h
+ /usr/local/include/g2o/solvers/csparse/csparse_extension.h
+ /usr/local/include/g2o/solvers/csparse/csparse_helper.h
+ /usr/local/include/g2o/solvers/csparse/g2o_csparse_api.h
+ /usr/local/include/g2o/solvers/csparse/g2o_csparse_extension_api.h
+ /usr/local/include/g2o/solvers/csparse/linear_solver_csparse.h
+ /usr/local/include/g2o/solvers/dense/linear_solver_dense.h
+ /usr/local/include/g2o/stuff/g2o_stuff_api.h
+ /usr/local/include/g2o/stuff/macros.h
+ /usr/local/include/g2o/stuff/misc.h
+ /usr/local/include/g2o/stuff/property.h
+ /usr/local/include/g2o/stuff/string_tools.h
+ /usr/local/include/g2o/stuff/timeutil.h
  /usr/local/include/opencv/cxcore.h
  /usr/local/include/opencv2/calib3d.hpp
  /usr/local/include/opencv2/calib3d/calib3d_c.h
@@ -2156,6 +2217,7 @@ src/CMakeFiles/myslam.dir/frame.cpp.o
 src/CMakeFiles/myslam.dir/frontend.cpp.o
  ../include/myslam/ORBextractor.h
  ../include/myslam/algorithm.h
+ ../include/myslam/backend.h
  ../include/myslam/camera.h
  ../include/myslam/common_include.h
  ../include/myslam/config.h
@@ -3723,6 +3785,7 @@ src/CMakeFiles/myslam.dir/mappoint.cpp.o
  /usr/local/include/sophus/so3.hpp
  /usr/local/include/sophus/types.hpp
 src/CMakeFiles/myslam.dir/system.cpp.o
+ ../include/myslam/backend.h
  ../include/myslam/camera.h
  ../include/myslam/common_include.h
  ../include/myslam/config.h

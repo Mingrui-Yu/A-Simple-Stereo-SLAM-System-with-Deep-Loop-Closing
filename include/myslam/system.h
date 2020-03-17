@@ -5,6 +5,7 @@
 #include "myslam/config.h"
 #include "myslam/frame.h"
 #include "myslam/frontend.h"
+#include "myslam/backend.h"
 #include "myslam/viewer.h"
 #include "myslam/map.h"
 #include "myslam/camera.h"
@@ -41,9 +42,9 @@ private:
     std::string _strConfigPath;
 
     Frontend::Ptr _mpFrontend = nullptr;
+    Backend::Ptr _mpBackend = nullptr;
     Viewer::Ptr _mpViewer = nullptr;
     std::shared_ptr<Map> _mpMap = nullptr;
-
     std::shared_ptr<Camera> _mpCameraLeft, _mpCameraRight;
 
 };

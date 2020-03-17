@@ -970,7 +970,7 @@ int ORBmatcher::Fuse(KeyFrame *pKF, const vector<MapPoint *> &vpMapPoints, const
             }
             else
             {
-                pMP->AddObservation(pKF,bestIdx);
+                pMP->AddActiveObservation(pKF,bestIdx);
                 pKF->AddMapPoint(pMP,bestIdx);
             }
             nFused++;
@@ -1095,7 +1095,7 @@ int ORBmatcher::Fuse(KeyFrame *pKF, cv::Mat Scw, const vector<MapPoint *> &vpPoi
             }
             else
             {
-                pMP->AddObservation(pKF,bestIdx);
+                pMP->AddActiveObservation(pKF,bestIdx);
                 pKF->AddMapPoint(pMP,bestIdx);
             }
             nFused++;

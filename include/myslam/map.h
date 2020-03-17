@@ -16,7 +16,7 @@ public:
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
     typedef std::shared_ptr<Map> Ptr;
     typedef std::unordered_map<unsigned long, std::shared_ptr<KeyFrame>> KeyFramesType;
-    typedef std::unordered_map<unsigned long, std::shared_ptr<MapPoint>> LandmarksType;
+    typedef std::unordered_map<unsigned long, std::shared_ptr<MapPoint>> MapPointsType;
 
     Map() {};
 
@@ -24,19 +24,19 @@ public:
     void InsertKeyFrame(std::shared_ptr<KeyFrame> kf);
 
     // remove old keyframes from the active keyframes
-    void RemoveOldKeyframe();
+    void RemoveOldActiveKeyframe();
 
     // insert new mappoint to the map and the active landmarks
     void InsertMapPoint(std::shared_ptr<MapPoint> map_point);
 
     // remove landmarks which are not observed by any active kf from active landmarks
-    void CleanMap();
+    void RemoveOldActiveMapPoints();
 
-    LandmarksType GetAllMapPoints();
+    MapPointsType GetAllMapPoints();
 
     KeyFramesType GetAllKeyFrames();
 
-    LandmarksType GetActiveMapPoints();
+    MapPointsType GetActiveMapPoints();
 
     KeyFramesType GetActiveKeyFrames();
 
@@ -47,8 +47,8 @@ private:
 
     std::shared_ptr<KeyFrame> _mpCurrentKF = nullptr;
 
-    LandmarksType _mumpAllLandmarks;
-    LandmarksType _mumpActiveLandmarks;
+    MapPointsType _mumpAllMapPoints;
+    MapPointsType _mumpActiveMapPoints;
 
     KeyFramesType _mumpAllKeyFrames;
     KeyFramesType _mumpActiveKeyFrames;

@@ -116,9 +116,9 @@ void Viewer::UpdateMap(){
     std::unique_lock<std::mutex> lck(_mmutexViewerData);
     assert(_mpMap != nullptr);
     _mumpActiveKeyFrames = _mpMap->GetActiveKeyFrames();
-    _mumpActiveLandmarks = _mpMap->GetActiveMapPoints();
+    _mumpActiveMapPoints = _mpMap->GetActiveMapPoints();
     _mumpAllKeyFrames = _mpMap->GetAllKeyFrames();
-    _mumpAllLandmarks = _mpMap->GetAllMapPoints();
+    _mumpAllMapPoints = _mpMap->GetAllMapPoints();
     _mbMapUpdated = true;
 }
 
@@ -247,8 +247,8 @@ void Viewer::DrawKFsAndMPs(const bool menuShowKeyFrames, const bool menuShowPoin
     glBegin(GL_POINTS);
 
     if(menuShowPoints){
-         for (auto& landmark : _mumpAllLandmarks) {
-            auto pos = landmark.second->Pos();
+         for (auto& mp : _mumpAllMapPoints) {
+            auto pos = mp.second->Pos();
             glColor3f(red[0], red[1], red[2]);
             glVertex3d(pos[0], pos[1], pos[2]);
         }

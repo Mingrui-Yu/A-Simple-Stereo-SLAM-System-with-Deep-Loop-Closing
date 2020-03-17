@@ -35,18 +35,16 @@ KeyFrame::Ptr KeyFrame::CreateKF(Frame::Ptr frame){
     // link Feature->mpKF to the current KF
     // add the feature to Feature->MapPoint->observation
     for(auto &feat: newKF->mvpFeaturesLeft){
-        auto kf = feat->mpKF.lock();
-        if(kf){
-            kf = newKF;
-        }
+        feat->mpKF = newKF;
         auto mp = feat->mpMapPoint.lock();
         if(mp){
-            mp->AddObservation(feat);
+            mp->AddActiveObservation(feat);
         }
     }
     return newKF;
 }
 
+// -----------------------------------------------------------------------------------
 
 // ---------------------------------------------------------------------------------------------------------
 void KeyFrame::SetPose(const SE3 &pose){

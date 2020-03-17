@@ -19,23 +19,10 @@ void Map::InsertKeyFrame(std::shared_ptr<KeyFrame> kf){
         _mumpActiveKeyFrames[kf->mnKFId] = kf;
     }
 
-    // // insert the keyframe's mappoints
-    // for (auto &feat: kf->mvpFeaturesLeft){
-    //     auto map_point = feat->mpMapPoint.lock();
-    //     if(map_point){
-    //         if (_mumpAllLandmarks.find(map_point->mnId) == _mumpAllLandmarks.end()){
-    //             _mumpAllLandmarks.insert(make_pair(map_point->mnId, map_point));
-    //             _mumpActiveLandmarks.insert(make_pair(map_point->mnId, map_point));
-    //         }else {
-    //             _mumpAllLandmarks[map_point->mnId] = map_point;
-    //             _mumpActiveLandmarks[map_point->mnId] = map_point;
-    //         }
-    //     }
-    // }
-
     // remove old keyframe from the optimization window
     if(_mumpActiveKeyFrames.size() > _numActiveKeyFrames){
-        RemoveOldKeyframe();
+        RemoveOldActiveKeyframe();
+        RemoveOldActiveMapPoints();
     }
 }
 
@@ -43,19 +30,19 @@ void Map::InsertKeyFrame(std::shared_ptr<KeyFrame> kf){
 // -------------------------------------------------------------------
 
 void Map::InsertMapPoint (MapPoint::Ptr map_point) {
-    if (_mumpAllLandmarks.find(map_point->mnId) == _mumpAllLandmarks.end()){
-        _mumpAllLandmarks.insert(make_pair(map_point->mnId, map_point));
-        _mumpActiveLandmarks.insert(make_pair(map_point->mnId, map_point));
+    if (_mumpAllMapPoints.find(map_point->mnId) == _mumpAllMapPoints.end()){
+        _mumpAllMapPoints.insert(make_pair(map_point->mnId, map_point));
+        _mumpActiveMapPoints.insert(make_pair(map_point->mnId, map_point));
     }else {
-        _mumpAllLandmarks[map_point->mnId] = map_point;
-        _mumpActiveLandmarks[map_point->mnId] = map_point;
+        _mumpAllMapPoints[map_point->mnId] = map_point;
+        _mumpActiveMapPoints[map_point->mnId] = map_point;
     }
 }
 
 
 // -------------------------------------------------------------------
 
-void Map::RemoveOldKeyframe(){
+void Map::RemoveOldActiveKeyframe(){
     if(_mpCurrentKF == nullptr)  return;
 
     double maxDis = 0, minDis = 9999;
@@ -86,39 +73,39 @@ void Map::RemoveOldKeyframe(){
 
     LOG(INFO) << "remove keyframe " << frameToRemove->mnKFId << " from the active keyframes.";
 
-    // remove the kf and landmark observation
+    // remove the kf and its mappoints' observation
     _mumpActiveKeyFrames.erase(frameToRemove->mnKFId);
     for(auto &feat: frameToRemove->mvpFeaturesLeft){
         auto mp = feat->mpMapPoint.lock();
         if(mp){
-            mp->RemoveObservation(feat);
+            mp->RemoveActiveObservation(feat);
         }
     }
-    // CleanMap();
+    // RemoveOldActiveMapPoints();
 }
 
 
 
 // -------------------------------------------------------------------
 
-void Map::CleanMap(){
-    int cntLandmarkRemoved = 0;
-    for(auto iter = _mumpActiveLandmarks.begin(); iter != _mumpActiveLandmarks.end();){
+void Map::RemoveOldActiveMapPoints(){
+    int cntActiveLandmarkRemoved = 0;
+    for(auto iter = _mumpActiveMapPoints.begin(); iter != _mumpActiveMapPoints.end();){
         if(iter->second->mnObservedTimes == 0){
-            iter = _mumpActiveLandmarks.erase(iter);
-            cntLandmarkRemoved++;
+            iter = _mumpActiveMapPoints.erase(iter);
+            cntActiveLandmarkRemoved++;
         } else{
             ++iter;
         }
     }
-    LOG(INFO) << "Removed " << cntLandmarkRemoved << " active landmarks";
+    LOG(INFO) << "Removed " << cntActiveLandmarkRemoved << " active landmarks";
 }
 
 
 // ----------------------------------------------------------------------
-Map::LandmarksType Map::GetAllMapPoints(){
+Map::MapPointsType Map::GetAllMapPoints(){
     std::unique_lock<std::mutex> lck(_mmutexData);
-    return _mumpAllLandmarks;
+    return _mumpAllMapPoints;
 }
 
 
@@ -128,9 +115,9 @@ Map::KeyFramesType Map::GetAllKeyFrames(){
 }
 
 
-Map::LandmarksType Map::GetActiveMapPoints(){
+Map::MapPointsType Map::GetActiveMapPoints(){
     std::unique_lock<std::mutex> lck(_mmutexData);
-    return _mumpActiveLandmarks;
+    return _mumpActiveMapPoints;
 }
 
 

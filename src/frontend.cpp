@@ -11,6 +11,7 @@
 #include "myslam/algorithm.h"
 #include "myslam/map.h"
 #include "myslam/g2o_types.h"
+#include "myslam/backend.h"
 
 namespace myslam{
 
@@ -220,7 +221,7 @@ int Frontend::EstimateCurrentPose(){
             }
         }
     }
-    LOG(INFO) << "Outliers/Inliers in current pose estimating: " 
+    LOG(INFO) << "Outliers/Inliers in frontend current pose estimating: " 
             << cntOutliers << "/" << features.size() - cntOutliers;
 
     // set pose and outlier
@@ -374,8 +375,11 @@ bool Frontend::BuildInitMap(){
 
     _mpMap->InsertKeyFrame(newKF);
 
-    // _mpBackend->UpdateMap();
-
+    if(_mpBackend){
+        // LOG(INFO) << "backend udpate the map.";
+        _mpBackend->UpdateMap();
+    }
+    
     LOG(INFO) << "Initial map created with " << cntInitLandmarks << " map points.";
     return true;
 }
@@ -393,11 +397,14 @@ bool Frontend::InsertKeyFrame(){
 
     LOG(INFO) << "Set frame " << newKF->mnFrameId << " as keyframe " << newKF->mnKFId;
 
-    // Backend->UpdateMap();
-
     if(_mpViewer){
         _mpViewer->UpdateMap();
     }
+    if(_mpBackend){
+        LOG(INFO) << "backend udpate the map.";
+        _mpBackend->UpdateMap();
+    }
+
     return true;
 }
 
@@ -428,6 +435,7 @@ int Frontend::TriangulateNewPoints(){
             newMapPoint->SetPos(currentPoseTwc * pcamera);
             _mpCurrentFrame->mvpFeaturesLeft[i]->mpMapPoint = newMapPoint;
             _mpCurrentFrame->mvpFeaturesRight[i]->mpMapPoint = newMapPoint;
+            // add these new mappoints to the map
             _mpMap->InsertMapPoint(newMapPoint);
 
             cntTriangulatedPts++;

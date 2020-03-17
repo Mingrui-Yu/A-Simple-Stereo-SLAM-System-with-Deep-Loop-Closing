@@ -12,6 +12,7 @@ class Viewer;
 class ORBextractor;
 class Camera;
 class Map;
+class Backend;
 
 enum class FrontendStatus {INITING, TRACKING_GOOD, TRACKING_BAD, LOST};
 
@@ -39,9 +40,14 @@ public:
         _mpMap = map;
     }
 
+    void SetBackend(std::shared_ptr<Backend> backend){
+        _mpBackend = backend;
+    }
+
     FrontendStatus GetStatus() const {
         return _mStatus;
     }
+
 
     
 
@@ -100,6 +106,8 @@ private:
     std::shared_ptr<Camera> _mpCameraLeft, _mpCameraRight;
 
     std::shared_ptr<Map> _mpMap;
+
+    std::shared_ptr<Backend> _mpBackend;
 
     // Other thread Pointers
     std::shared_ptr<Viewer> _mpViewer;

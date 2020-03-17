@@ -14,3 +14,14 @@ map.cpp 中 Map::RemoveOldKeyframe() 中 frameToRemove = _mumpAllKeyFrames.at(mi
 Frontend.cpp 中 每次 triangulate 创建 new mappoints 时，能不能只创建近一些的点（左右匹配特征点x坐标差较大，或者点的depth较小），这些点 triangulate 的精度会高一些，就像 ORB-SLAM2 中对 far points 和 close points 的区分
 
 Frontend::EstimateCurrentPose() 中，是否可以考虑删除 outlilers 对应的 mappoints ？
+
+优化，以 atomic 原子操作代替 mutex?
+
+对于 tracking 过程中 判定为 outlier 的 feature，能不能直接去掉？
+
+backend 中 optimize 中 
+```
+auto rk = new g2o::RobustKernelHuber();
+rk->setDelta(chi2_th);
+```
+能否用于 frontend 中

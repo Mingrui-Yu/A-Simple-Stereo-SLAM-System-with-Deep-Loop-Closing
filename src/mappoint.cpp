@@ -17,18 +17,18 @@ MapPoint::MapPoint(unsigned long id, Vec3 position){
 
 
 // -------------------------------------------------------------------
-void MapPoint::AddObservation(std::shared_ptr<Feature> feature){
+void MapPoint::AddActiveObservation(std::shared_ptr<Feature> feature){
     std::unique_lock<std::mutex> lck(_mmutexData);
-    _mpObservations.push_back(feature);
+    _mpActiveObservations.push_back(feature);
     mnObservedTimes++;
 }
 
 // -------------------------------------------------------------------
-void MapPoint::RemoveObservation(std::shared_ptr<Feature> feature){
+void MapPoint::RemoveActiveObservation(std::shared_ptr<Feature> feature){
     std::unique_lock<std::mutex> lck(_mmutexData);
-    for(auto iter = _mpObservations.begin(); iter != _mpObservations.end(); iter++){
+    for(auto iter = _mpActiveObservations.begin(); iter != _mpActiveObservations.end(); iter++){
         if(iter->lock() == feature){
-            _mpObservations.erase(iter);
+            _mpActiveObservations.erase(iter);
             feature->mpMapPoint.reset();
             mnObservedTimes--;
             break;
@@ -37,9 +37,9 @@ void MapPoint::RemoveObservation(std::shared_ptr<Feature> feature){
 }
 
 // -------------------------------------------------------------------
-std::list<std::weak_ptr<Feature>> MapPoint::GetObservations() {
+std::list<std::weak_ptr<Feature>> MapPoint::GetActiveObservations() {
         std::unique_lock<std::mutex> lck(_mmutexData);
-        return _mpObservations;
+        return _mpActiveObservations;
 }
 
 

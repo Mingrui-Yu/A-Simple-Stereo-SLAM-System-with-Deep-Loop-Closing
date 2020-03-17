@@ -6,6 +6,12 @@
 
 #IncludeRegexTransform: 
 
+../include/myslam/backend.h
+myslam/common_include.h
+../include/myslam/myslam/common_include.h
+myslam/map.h
+../include/myslam/myslam/map.h
+
 ../include/myslam/camera.h
 myslam/common_include.h
 ../include/myslam/myslam/common_include.h
@@ -81,6 +87,8 @@ myslam/frame.h
 ../include/myslam/myslam/frame.h
 myslam/frontend.h
 ../include/myslam/myslam/frontend.h
+myslam/backend.h
+../include/myslam/myslam/backend.h
 myslam/viewer.h
 ../include/myslam/myslam/viewer.h
 myslam/map.h
