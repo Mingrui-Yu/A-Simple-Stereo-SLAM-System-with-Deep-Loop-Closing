@@ -8,10 +8,12 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/backend.cpp" "/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build/src/CMakeFiles/myslam.dir/backend.cpp.o"
   "/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/camera.cpp" "/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build/src/CMakeFiles/myslam.dir/camera.cpp.o"
   "/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/config.cpp" "/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build/src/CMakeFiles/myslam.dir/config.cpp.o"
+  "/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/deeplcd.cpp" "/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build/src/CMakeFiles/myslam.dir/deeplcd.cpp.o"
   "/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/feature.cpp" "/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build/src/CMakeFiles/myslam.dir/feature.cpp.o"
   "/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/frame.cpp" "/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build/src/CMakeFiles/myslam.dir/frame.cpp.o"
   "/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/frontend.cpp" "/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build/src/CMakeFiles/myslam.dir/frontend.cpp.o"
   "/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/keyframe.cpp" "/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build/src/CMakeFiles/myslam.dir/keyframe.cpp.o"
+  "/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/loopclosing.cpp" "/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build/src/CMakeFiles/myslam.dir/loopclosing.cpp.o"
   "/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/map.cpp" "/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build/src/CMakeFiles/myslam.dir/map.cpp.o"
   "/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/mappoint.cpp" "/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build/src/CMakeFiles/myslam.dir/mappoint.cpp.o"
   "/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/system.cpp" "/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build/src/CMakeFiles/myslam.dir/system.cpp.o"
@@ -21,6 +23,7 @@ set(CMAKE_CXX_COMPILER_ID "GNU")
 
 # Preprocessor definitions for this target.
 set(CMAKE_TARGET_DEFINITIONS_CXX
+  "CPU_ONLY=1"
   "GFLAGS_IS_A_DLL=0"
   )
 
@@ -32,6 +35,7 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "/home/mingrui/Pangolin/include"
   "/home/mingrui/Pangolin/build/src/include"
   "/usr/include/suitesparse"
+  "/home/mingrui/caffe/build/install/include"
   "../include"
   )
 

@@ -1,7 +1,18 @@
 cmake_minimum_required( VERSION 2.8 )
 project(myslam)
 
-set(CMAKE_BUILD_TYPE Release)
+# colors, because why not :)
+string(ASCII 27 Esc)
+set(RED "${Esc}[31m")
+set(GREEN "${Esc}[32m")
+set(ENDL "${Esc}[m")
+
+if(NOT CMAKE_BUILD_TYPE)
+	set(CMAKE_BUILD_TYPE Release)
+endif()
+MESSAGE("${GREEN}Build type: ${CMAKE_BUILD_TYPE}${ENDL}")
+
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}  -Wall -O3 -march=native ")
 set(CMAKE_CXX_FLAGS "-std=c++11 -Wall")
 set(CMAKE_CXX_FLAGS_RELEASE  "-std=c++11 -O3 -fopenmp -pthread")
 
@@ -12,6 +23,10 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 ############### dependencies ######################
 #Eigen
 include_directories("/usr/include/eigen3")
+
+#Boost
+find_package(Boost COMPONENTS filesystem REQUIRED)
+include_directories(${Boost_INLCLUDE_DIRS})
 
 #OpenCV
 find_package(OpenCV 3 REQUIRED)
@@ -45,7 +60,25 @@ include_directories(${GFLAGS_INCLUDE_DIRS})
 find_package(CSparse REQUIRED)
 include_directories(${CSPARSE_INCLUDE_DIR})
 
+# caffe (default path: ~/caffe)
+add_definitions( -DCPU_ONLY=1 )
+if (NOT Caffe_ROOT_DIR)
+	set(Caffe_ROOT_DIR $ENV{HOME}/caffe)
+endif()
+MESSAGE("${GREEN}Using Caffe_ROOT_DIR: ${Caffe_ROOT_DIR}${ENDL}")
+set(Caffe_LIBS ${Caffe_ROOT_DIR}/build/lib/libcaffe.so)
+set(Caffe_INCLUDE_DIRS ${Caffe_ROOT_DIR}/build/install/include)
+include_directories(${Caffe_INCLUDE_DIRS})
 
+# cuda (optional)
+find_package(CUDA QUIET)
+if (${CUDA_FOUND})
+ 	include_directories(${CUDA_INCLUDE_DIRS})
+	MESSAGE("CUDA_INCLUDE_DIRS: ${CUDA_INCLUDE_DIRS}")
+endif()
+
+
+###################    third party libs    #####################
 set(THIRD_PARTY_LIBS
         ${OpenCV_LIBS}
         ${Sophus_LIBRARIES}
@@ -56,15 +89,29 @@ set(THIRD_PARTY_LIBS
         ${GFLAGS_LIBRARIES}
         pthread
         ${CSPARSE_LIBRARY}
+        ${Caffe_LIBS}
+	${Boost_LIBRARIES}
         )
 
+if (${CUDA_FOUND})
+target_link_libraries(THIRD_PARTY_LIBS
+        ${CUDA_LIBRARIES}
+        ${CUDA_CUBLAS_LIBRARIES}
+        ${CUDA_curand_LIBRARY}
+)
+endif()
+
+
+#################### Default model download ####################
+message( "\n\n${GREEN}Downloading default model if not already downloaded\n\n${ENDL}" )
+execute_process(
+	COMMAND ./get_model.sh
+	WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+)
 
 
 
 enable_testing()
-
-
-
 ############### source and test ######################
 include_directories(${PROJECT_SOURCE_DIR}/include)
 

@@ -56,24 +56,25 @@ void Viewer::ThreadLoop(){
     bool bFollow = true;
 
     while(!pangolin::ShouldQuit() && mbViewerRunning){
-        {
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-            glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
-            std::unique_lock<std::mutex> lock(_mmutexViewerData);
-            if(_mpCurrentFrame){
-                if (menuFollowCamera && bFollow){
-                    FollowCurrentFrame(vis_camera);
-                }else if(!menuFollowCamera && bFollow){
-                    bFollow = false;
-                }else if(menuFollowCamera && !bFollow){
-                    FollowCurrentFrame(vis_camera);
-                    bFollow = true;
-                }
-                cv::Mat img = PlotFrameImage();
-                cv::imshow("frame", img); 
-                cv::waitKey(1);         
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+
+        std::unique_lock<std::mutex> lock(_mmutexViewerData);
+        if(_mpCurrentFrame){
+            if (menuFollowCamera && bFollow){
+                FollowCurrentFrame(vis_camera);
+            }else if(!menuFollowCamera && bFollow){
+                bFollow = false;
+            }else if(menuFollowCamera && !bFollow){
+                FollowCurrentFrame(vis_camera);
+                vis_camera.SetModelViewMatrix(
+                    pangolin::ModelViewLookAt(mViewpointX,mViewpointY,mViewpointZ, 0,0,0,0.0,-1.0, 0.0));
+                bFollow = true;
             }
+            // cv::Mat img = PlotFrameImage();
+            // cv::imshow("frame", img); 
+            // cv::waitKey(1);         
         }
 
         vis_display.Activate(vis_camera);

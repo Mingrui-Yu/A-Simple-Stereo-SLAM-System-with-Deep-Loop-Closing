@@ -244,6 +244,33 @@ config.cpp.s:
 	cd /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build && $(MAKE) -f src/CMakeFiles/myslam.dir/build.make src/CMakeFiles/myslam.dir/config.cpp.s
 .PHONY : config.cpp.s
 
+deeplcd.o: deeplcd.cpp.o
+
+.PHONY : deeplcd.o
+
+# target to build an object file
+deeplcd.cpp.o:
+	cd /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build && $(MAKE) -f src/CMakeFiles/myslam.dir/build.make src/CMakeFiles/myslam.dir/deeplcd.cpp.o
+.PHONY : deeplcd.cpp.o
+
+deeplcd.i: deeplcd.cpp.i
+
+.PHONY : deeplcd.i
+
+# target to preprocess a source file
+deeplcd.cpp.i:
+	cd /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build && $(MAKE) -f src/CMakeFiles/myslam.dir/build.make src/CMakeFiles/myslam.dir/deeplcd.cpp.i
+.PHONY : deeplcd.cpp.i
+
+deeplcd.s: deeplcd.cpp.s
+
+.PHONY : deeplcd.s
+
+# target to generate assembly for a file
+deeplcd.cpp.s:
+	cd /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build && $(MAKE) -f src/CMakeFiles/myslam.dir/build.make src/CMakeFiles/myslam.dir/deeplcd.cpp.s
+.PHONY : deeplcd.cpp.s
+
 feature.o: feature.cpp.o
 
 .PHONY : feature.o
@@ -351,6 +378,33 @@ keyframe.s: keyframe.cpp.s
 keyframe.cpp.s:
 	cd /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build && $(MAKE) -f src/CMakeFiles/myslam.dir/build.make src/CMakeFiles/myslam.dir/keyframe.cpp.s
 .PHONY : keyframe.cpp.s
+
+loopclosing.o: loopclosing.cpp.o
+
+.PHONY : loopclosing.o
+
+# target to build an object file
+loopclosing.cpp.o:
+	cd /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build && $(MAKE) -f src/CMakeFiles/myslam.dir/build.make src/CMakeFiles/myslam.dir/loopclosing.cpp.o
+.PHONY : loopclosing.cpp.o
+
+loopclosing.i: loopclosing.cpp.i
+
+.PHONY : loopclosing.i
+
+# target to preprocess a source file
+loopclosing.cpp.i:
+	cd /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build && $(MAKE) -f src/CMakeFiles/myslam.dir/build.make src/CMakeFiles/myslam.dir/loopclosing.cpp.i
+.PHONY : loopclosing.cpp.i
+
+loopclosing.s: loopclosing.cpp.s
+
+.PHONY : loopclosing.s
+
+# target to generate assembly for a file
+loopclosing.cpp.s:
+	cd /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build && $(MAKE) -f src/CMakeFiles/myslam.dir/build.make src/CMakeFiles/myslam.dir/loopclosing.cpp.s
+.PHONY : loopclosing.cpp.s
 
 map.o: map.cpp.o
 
@@ -482,6 +536,9 @@ help:
 	@echo "... config.o"
 	@echo "... config.i"
 	@echo "... config.s"
+	@echo "... deeplcd.o"
+	@echo "... deeplcd.i"
+	@echo "... deeplcd.s"
 	@echo "... feature.o"
 	@echo "... feature.i"
 	@echo "... feature.s"
@@ -494,6 +551,9 @@ help:
 	@echo "... keyframe.o"
 	@echo "... keyframe.i"
 	@echo "... keyframe.s"
+	@echo "... loopclosing.o"
+	@echo "... loopclosing.i"
+	@echo "... loopclosing.s"
 	@echo "... map.o"
 	@echo "... map.i"
 	@echo "... map.s"

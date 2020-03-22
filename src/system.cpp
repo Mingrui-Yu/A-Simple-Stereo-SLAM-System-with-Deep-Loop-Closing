@@ -15,12 +15,22 @@ bool System::Init(){
     if (Config::SetParameterFile(_strConfigPath) == false){
         return false;
     }
+
+    // initial the ORB extractor, for frontend and loopclosing
+    int numORBNewFeatures = Config::Get<int>("ORBextractor.nNewFeatures");
+    float fScaleFactor = Config::Get<float>("ORBextractor.scaleFactor");
+    int nLevels = Config::Get<int>("ORBextractor.nLevels");
+    int fIniThFAST = Config::Get<int>("ORBextractor.iniThFAST");
+    int fMinThFAST = Config::Get<int>("ORBextractor.minThFAST");
+    _mpORBextractor = ORBextractor::Ptr(new ORBextractor(numORBNewFeatures,fScaleFactor,nLevels,fIniThFAST,fMinThFAST));
+
     // get left and right cameras
     GetCamera();
 
     // create compnents and start each one's thread
     _mpFrontend = Frontend::Ptr(new Frontend);
     _mpBackend = Backend::Ptr(new Backend);
+    _mpLoopClosing = LoopClosing::Ptr(new LoopClosing);
     _mpViewer = Viewer::Ptr(new Viewer);
     _mpMap = Map::Ptr(new Map);
 
@@ -30,10 +40,19 @@ bool System::Init(){
     _mpFrontend->SetCameras(_mpCameraLeft, _mpCameraRight);
     _mpFrontend->SetMap(_mpMap);
     _mpFrontend->SetBackend(_mpBackend);
+    _mpFrontend->SetORBextractor(_mpORBextractor);
 
     if(_mpBackend){
         _mpBackend->SetMap(_mpMap);
+        _mpBackend->SetViewer(_mpViewer);
         _mpBackend->SetCameras(_mpCameraLeft, _mpCameraRight);
+        _mpBackend->SetLoopClosing(_mpLoopClosing);
+    }
+
+    if(_mpLoopClosing){
+        _mpLoopClosing->SetMap(_mpMap);
+        _mpLoopClosing->SetCameras(_mpCameraLeft, _mpCameraRight);
+        _mpLoopClosing->SetORBextractor(_mpORBextractor);
     }
 
     if(_mpViewer){
@@ -49,6 +68,8 @@ void System::Stop(){
         _mpViewer->Close();
     if(_mpBackend)
         _mpBackend->Stop();
+    if(_mpLoopClosing)
+        _mpLoopClosing->Stop();
 }
 
 

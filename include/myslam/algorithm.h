@@ -2,6 +2,7 @@
 #define MYSLAM_ALGORITHM_H
 
 #include "myslam/common_include.h"
+#include <algorithm> 
 
 namespace myslam{
 
@@ -35,6 +36,100 @@ inline bool triangulation(const std::vector<SE3> &poses,
 inline Vec2 toVec2(const cv::Point2f p){
     return Vec2(p.x, p.y);
 }
+
+// ----------------------------------------------------------------------------------------------
+
+inline bool Kmeans(std::vector<float> &data){
+    if(data.size() < 2) return false;
+
+    float meanLow = *(std::min_element(data.begin(), data.end()));
+    float meanHigh = *(std::max_element(data.begin(), data.end()));
+    bool bChanged = true;
+    int cntLow = 0, cntHigh = 0;
+    std::vector<float> type(data.size());
+    while(bChanged){
+        bChanged = false;
+        for(size_t i = 0, N = data.size(); i < N; i++){
+            float disToLow = std::abs(data[i] - meanLow);
+            float disToHigh = std::abs(data[i] - meanHigh);
+            if(disToLow < disToHigh){
+                if(type[i] == 1) 
+                    bChanged = true;
+                type[i] = 0;
+            }
+            else{
+                if(type[i] == 0) 
+                    bChanged = true;
+                type[i] = 1;
+            }
+        }      
+
+        meanLow = 0;
+        meanHigh = 0;  
+         cntLow = 0;
+         cntHigh = 0;
+        for(size_t i = 0, N = data.size(); i < N; i++){
+            if(type[i] == 0){
+                meanLow += data[i];
+                cntLow++;
+            }else{
+                meanHigh += data[i];
+                cntHigh++;
+            }
+        }      
+        meanLow /= cntLow;
+        meanHigh /= cntHigh;
+    }
+
+    for(size_t i = 0, N = data.size(); i < N; i++){
+        std::cout << data[i] << " ";
+    }      
+    std::cout << std::endl;
+    for(size_t i = 0, N = data.size(); i < N; i++){
+        std::cout << type[i] << " ";
+    }      
+    std::cout << std::endl;
+
+    if(cntHigh > 3){
+        return false;
+    }
+    return true;
+}
+
+
+inline std::pair<double, double> VectorMeanAndVariance(const std::vector<double> v){
+    double sum = std::accumulate(std::begin(v), std::end(v), 0.0);
+    double m =  sum / v.size();
+    double accum = 0.0;
+    std::for_each (std::begin(v), std::end(v), [&](const double d) {
+        accum += (d - m) * (d - m);
+    });
+    double stdev = sqrt(accum / (v.size()-1));
+
+    std::pair<double, double> pairMeanAndVariance;
+    pairMeanAndVariance.first = m;
+    pairMeanAndVariance.second = stdev;
+
+    return pairMeanAndVariance;
+}
+
+inline std::pair<float, float> VectorMeanAndVariance(const std::vector<float> v){
+    float sum = std::accumulate(std::begin(v), std::end(v), 0.0);
+    float m =  sum / v.size();
+    float accum = 0.0;
+    std::for_each (std::begin(v), std::end(v), [&](const float d) {
+        accum += (d - m) * (d - m);
+    });
+    float stdev = sqrt(accum / (v.size()-1));
+
+    std::pair<float, float> pairMeanAndVariance;
+    pairMeanAndVariance.first = m;
+    pairMeanAndVariance.second = stdev;
+
+    return pairMeanAndVariance;
+}
+
+
 
 } // namespace myslam
 

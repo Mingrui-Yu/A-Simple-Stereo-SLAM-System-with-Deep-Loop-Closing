@@ -11,6 +11,8 @@ add_library(myslam SHARED
                                 ORBextractor.cpp
                                 camera.cpp
                                 map.cpp
+                                deeplcd.cpp
+                                loopclosing.cpp
                             )
 
 

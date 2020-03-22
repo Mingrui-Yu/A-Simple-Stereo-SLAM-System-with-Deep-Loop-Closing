@@ -81,7 +81,6 @@ void Map::RemoveOldActiveKeyframe(){
             mp->RemoveActiveObservation(feat);
         }
     }
-    // RemoveOldActiveMapPoints();
 }
 
 
@@ -98,7 +97,7 @@ void Map::RemoveOldActiveMapPoints(){
             ++iter;
         }
     }
-    LOG(INFO) << "Removed " << cntActiveLandmarkRemoved << " active landmarks";
+    LOG(INFO) << "remove " << cntActiveLandmarkRemoved << " active landmarks";
 }
 
 

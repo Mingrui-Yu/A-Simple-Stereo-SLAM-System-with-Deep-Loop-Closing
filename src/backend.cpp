@@ -1,12 +1,15 @@
 #include "myslam/backend.h"
 
 #include "myslam/map.h"
+#include "myslam/frame.h"
 #include "myslam/keyframe.h"
 #include "myslam/mappoint.h"
 #include "myslam/feature.h"
 #include "myslam/g2o_types.h"
 #include "myslam/camera.h"
 #include "myslam/algorithm.h"
+#include "myslam/viewer.h"
+#include "myslam/loopclosing.h"
 
 namespace myslam{
 
@@ -14,6 +17,15 @@ namespace myslam{
 Backend::Backend(){
     _mbBackendIsRunning.store(true);
     _mthreadBackend = std::thread(std::bind(&Backend::BackendLoop, this));
+}
+
+// -----------------------------------------------------------------------------------
+
+void Backend::InsertKeyFrame(Frame::Ptr pFrame){
+    std::unique_lock<std::mutex> lck(_mmutexNewKF);
+    _mlNewKeyFrames.push_back(pFrame);
+    _mbNeedOptimization = true;
+    // UpdateMap();
 }
 
 // -----------------------------------------------------------------------------------
@@ -35,15 +47,46 @@ void Backend::Stop(){
 
 void Backend::BackendLoop(){
     while(_mbBackendIsRunning.load()){
-        std::unique_lock<std::mutex> lck(_mmutexData);
-        _mapUpdate.wait(lck);
-        LOG(INFO) << "start backend update the map.";
+        // std::unique_lock<std::mutex> lck(_mmutexData);
+        // _mapUpdate.wait(lck);
+
+        while(CheckNewKeyFrames()){
+            ProcessNewKeyFrame();
+        }
 
         // optimize the active KFs and mappoints
-        Map::KeyFramesType activeKFs = _mpMap->GetActiveKeyFrames();
-        Map::MapPointsType activeMPs = _mpMap->GetActiveMapPoints();
-        LOG(INFO) << "start backend optimization.";
-        OptimizeActiveMap(activeKFs, activeMPs);
+        if(!CheckNewKeyFrames() && _mbNeedOptimization){
+            LOG(INFO) << "start backend optimization.";
+            Map::KeyFramesType activeKFs = _mpMap->GetActiveKeyFrames();
+            Map::MapPointsType activeMPs = _mpMap->GetActiveMapPoints();
+            OptimizeActiveMap(activeKFs, activeMPs);
+            _mbNeedOptimization = false;  // until the next inserted KF, this will become true
+        }
+    }
+}
+
+// -----------------------------------------------------------------------------------
+
+bool Backend::CheckNewKeyFrames(){
+    std::unique_lock<std::mutex> lck(_mmutexNewKF);
+    return(!_mlNewKeyFrames.empty());
+}
+
+// -----------------------------------------------------------------------------------
+void Backend::ProcessNewKeyFrame(){
+    {
+        std::unique_lock<std::mutex> lck(_mmutexNewKF);
+        _mpCurrentFrame = _mlNewKeyFrames.front();
+        _mlNewKeyFrames.pop_front();
+    }
+    _mpCurrentKF = KeyFrame::CreateKF(_mpCurrentFrame);
+    LOG(INFO) << "Set frame " << _mpCurrentKF->mnFrameId << " as keyframe " << _mpCurrentKF->mnKFId;
+    
+    _mpMap->InsertKeyFrame(_mpCurrentKF);
+    _mpLoopClosing->InsertNewKeyFrame(_mpCurrentKF);
+
+    if(_mpViewer){
+        _mpViewer->UpdateMap();
     }
 }
 
@@ -79,6 +122,9 @@ void Backend::OptimizeActiveMap(Map::KeyFramesType &keyframes, Map::MapPointsTyp
 
     // add mappoints vertex
     // add edges
+
+    double ave_obs = 0; // test
+
     std::map<unsigned long, VertexXYZ *> vertices_mps;
     std::map<EdgeProjection *, Feature::Ptr> edgesAndFeatures;
     for(auto &mappoint: mappoints){
@@ -93,6 +139,8 @@ void Backend::OptimizeActiveMap(Map::KeyFramesType &keyframes, Map::MapPointsTyp
         vertices_mps.insert({mappointId, v});
         optimizer.addVertex(v);
 
+        // test
+        ave_obs += mp->GetActiveObservations().size();
 
         for(auto &obs: mp->GetActiveObservations()){
             auto feat = obs.lock();
@@ -117,7 +165,11 @@ void Backend::OptimizeActiveMap(Map::KeyFramesType &keyframes, Map::MapPointsTyp
         }
     }
 
-    LOG(INFO) << "do optimization.";
+    //test
+    ave_obs = ave_obs / mappoints.size(); 
+    LOG(INFO) << "the average observation number of mappoints: " << ave_obs;
+
+    // LOG(INFO) << "do optimization.";
 
     // do optimization
     int cntOutlier = 0, cntInlier = 0;

@@ -105,6 +105,9 @@ run_kitti_stereo_EXTERNAL_OBJECTS =
 ../bin/run_kitti_stereo: /usr/lib/x86_64-linux-gnu/libglog.so
 ../bin/run_kitti_stereo: /usr/lib/x86_64-linux-gnu/libgflags.so.2.2.1
 ../bin/run_kitti_stereo: /usr/lib/x86_64-linux-gnu/libcxsparse.so
+../bin/run_kitti_stereo: /home/mingrui/caffe/build/lib/libcaffe.so
+../bin/run_kitti_stereo: /usr/lib/x86_64-linux-gnu/libboost_filesystem.so
+../bin/run_kitti_stereo: /usr/lib/x86_64-linux-gnu/libboost_system.so
 ../bin/run_kitti_stereo: /usr/local/lib/libopencv_calib3d.so.3.4.9
 ../bin/run_kitti_stereo: /usr/local/lib/libopencv_features2d.so.3.4.9
 ../bin/run_kitti_stereo: /usr/local/lib/libopencv_flann.so.3.4.9

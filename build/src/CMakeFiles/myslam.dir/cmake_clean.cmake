@@ -11,6 +11,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/myslam.dir/ORBextractor.cpp.o"
   "CMakeFiles/myslam.dir/camera.cpp.o"
   "CMakeFiles/myslam.dir/map.cpp.o"
+  "CMakeFiles/myslam.dir/deeplcd.cpp.o"
+  "CMakeFiles/myslam.dir/loopclosing.cpp.o"
   "../../lib/libmyslam.pdb"
   "../../lib/libmyslam.so"
 )

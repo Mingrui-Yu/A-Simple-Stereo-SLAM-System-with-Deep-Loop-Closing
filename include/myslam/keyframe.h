@@ -2,6 +2,7 @@
 #define MYSLAM_KEYFRAME_H
 
 #include "myslam/common_include.h"
+#include "myslam/deeplcd.h"
 
 namespace myslam{
 
@@ -32,12 +33,18 @@ public:
     double mdTimeStamp;
 
     std::vector<std::shared_ptr<Feature>> mvpFeaturesLeft;
+    cv::Mat mImageLeft;
+    DeepLCD::DescrVector mpDescrVector;
+    // float mfSimilarityScoreNormFactor;
     // std::vector<std::shared_ptr<Feature>> mvpFeaturesRight;
-
+    
+    std::vector<cv::KeyPoint> mvORBKpsLeft;
+    cv::Mat mORBDescriptors;
     
 
-
 private:
+    
+
     SE3 _msePose;
 
     std::mutex _mmutexPose;  // pose 数据锁

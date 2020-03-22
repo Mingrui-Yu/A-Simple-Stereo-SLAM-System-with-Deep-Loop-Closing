@@ -25,3 +25,14 @@ auto rk = new g2o::RobustKernelHuber();
 rk->setDelta(chi2_th);
 ```
 能否用于 frontend 中
+
+仔细想想发现，backend的优化结果对 frontend 并没有起效果，，frontend 中 的tracking 并不会参考backend优化有的结果。可能的修改方法：frontend得到新的KF与上一KF的相对位姿，期间backend会对上一KF的位姿优化，新的KF可以根据上一KF的位姿加相对位姿进行矫正
+
+
+网络训练的时候 或许可以考虑 类似高博论文中 最小化帧间特征向量的距离
+
+输入网络的图片,在resize 之前先 blur 应该是有效的,这一点在训练网络的时候也可以考虑.目前blur 的 kernal size 还没有仔细设置
+
+关于 mask 是否有效，还需进一步讨论
+
+可以尝试解决 LK flow tracking 过程中 keypoints 的 octive 丢失的问题

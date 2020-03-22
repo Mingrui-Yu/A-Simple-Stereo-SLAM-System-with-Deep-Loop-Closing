@@ -33,15 +33,14 @@ Camera.bf: 386.1448
 #--------------------------------------------------------------------------------------------
 # Feature Parameters
 #--------------------------------------------------------------------------------------------
-num_features: 500 #150
-num_features_init: 100 #50
-num_features_tracking: 100 #50
-num_features_needed_for_keyframe: 100
 
-max_num_images: 10000  # 读入的视频帧总数
+numFeatures.initGood: 200
+numFeatures.trackingGood: 100
+numFeatures.trackingBad: 10
 
 # ORB Extractor: Number of features per image
-# ORBextractor.nFeatures: 2000
+ORBextractor.nInitFeatures: 400
+ORBextractor.nNewFeatures: 200
 # ORB Extractor: Scale factor between levels in the scale pyramid 	
 ORBextractor.scaleFactor: 1.2
 # ORB Extractor: Number of levels in the scale pyramid	
@@ -53,6 +52,18 @@ ORBextractor.nLevels: 8
 ORBextractor.iniThFAST: 20
 ORBextractor.minThFAST: 7
 
+
+
+#--------------------------------------------------------------------------------------------
+# Loop Closing Parameters
+#--------------------------------------------------------------------------------------------
+
+LCD.similarityScoreThreshold.high: 0.91
+LCD.similarityScoreThreshold.low: 0.90
+
+
+
+
 #--------------------------------------------------------------------------------------------
 # Viewer Parameters
 #--------------------------------------------------------------------------------------------
@@ -63,6 +74,6 @@ Viewer.PointSize:2
 Viewer.CameraSize: 0.15
 Viewer.CameraLineWidth: 2
 Viewer.ViewpointX: 0
-Viewer.ViewpointY: -10
+Viewer.ViewpointY: -500
 Viewer.ViewpointZ: -0.1
 Viewer.ViewpointF: 2000

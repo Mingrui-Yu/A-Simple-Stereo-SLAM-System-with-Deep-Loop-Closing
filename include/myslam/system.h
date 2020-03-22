@@ -9,6 +9,8 @@
 #include "myslam/viewer.h"
 #include "myslam/map.h"
 #include "myslam/camera.h"
+#include "myslam/loopclosing.h"
+#include "myslam/ORBextractor.h"
 
 namespace myslam{
 
@@ -43,9 +45,12 @@ private:
 
     Frontend::Ptr _mpFrontend = nullptr;
     Backend::Ptr _mpBackend = nullptr;
+    LoopClosing::Ptr _mpLoopClosing = nullptr;
     Viewer::Ptr _mpViewer = nullptr;
     std::shared_ptr<Map> _mpMap = nullptr;
     std::shared_ptr<Camera> _mpCameraLeft, _mpCameraRight;
+
+    std::shared_ptr<ORBextractor> _mpORBextractor;
 
 };
 

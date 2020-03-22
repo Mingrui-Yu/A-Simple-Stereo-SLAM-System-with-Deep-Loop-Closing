@@ -55,7 +55,9 @@ public:
     ORBextractor(int nfeatures, float scaleFactor, int nlevels,
                  int iniThFAST, int minThFAST);
 
-    ~ORBextractor(){}
+    void SetNumORBfeatures(int numFeatures);
+
+    // ~ORBextractor(){}
 
     // Compute the ORB features and descriptors on an image.
     // ORB are dispersed on the image using an octree.
@@ -65,6 +67,10 @@ public:
     //   cv::OutputArray descriptors);
     void DetectAndCompute( cv::InputArray image, cv::InputArray mask,
       std::vector<cv::KeyPoint>& keypoints,
+      cv::OutputArray descriptors);
+
+    void CalcDescriptors( cv::InputArray image,
+      const std::vector<cv::KeyPoint>& keypoints,
       cv::OutputArray descriptors);
 
     // only detect the keypoints, but not compute the descriptors
@@ -94,9 +100,13 @@ public:
     }
 
     std::vector<cv::Mat> mvImagePyramid;
+    std::vector<cv::Mat> mvMaskPyramid;
 
 protected:
 
+    
+
+    void ComputePyramid(cv::Mat image, cv::Mat mask);
     void ComputePyramid(cv::Mat image);
     void ComputeKeyPointsOctTree(std::vector<std::vector<cv::KeyPoint> >& allKeypoints);    
     std::vector<cv::KeyPoint> DistributeOctTree(const std::vector<cv::KeyPoint>& vToDistributeKeys, const int &minX,

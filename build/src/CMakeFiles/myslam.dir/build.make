@@ -345,6 +345,54 @@ src/CMakeFiles/myslam.dir/map.cpp.o.provides: src/CMakeFiles/myslam.dir/map.cpp.
 src/CMakeFiles/myslam.dir/map.cpp.o.provides.build: src/CMakeFiles/myslam.dir/map.cpp.o
 
 
+src/CMakeFiles/myslam.dir/deeplcd.cpp.o: src/CMakeFiles/myslam.dir/flags.make
+src/CMakeFiles/myslam.dir/deeplcd.cpp.o: ../src/deeplcd.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object src/CMakeFiles/myslam.dir/deeplcd.cpp.o"
+	cd /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build/src && /usr/bin/g++-7  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/myslam.dir/deeplcd.cpp.o -c /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/deeplcd.cpp
+
+src/CMakeFiles/myslam.dir/deeplcd.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/myslam.dir/deeplcd.cpp.i"
+	cd /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build/src && /usr/bin/g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/deeplcd.cpp > CMakeFiles/myslam.dir/deeplcd.cpp.i
+
+src/CMakeFiles/myslam.dir/deeplcd.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/myslam.dir/deeplcd.cpp.s"
+	cd /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build/src && /usr/bin/g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/deeplcd.cpp -o CMakeFiles/myslam.dir/deeplcd.cpp.s
+
+src/CMakeFiles/myslam.dir/deeplcd.cpp.o.requires:
+
+.PHONY : src/CMakeFiles/myslam.dir/deeplcd.cpp.o.requires
+
+src/CMakeFiles/myslam.dir/deeplcd.cpp.o.provides: src/CMakeFiles/myslam.dir/deeplcd.cpp.o.requires
+	$(MAKE) -f src/CMakeFiles/myslam.dir/build.make src/CMakeFiles/myslam.dir/deeplcd.cpp.o.provides.build
+.PHONY : src/CMakeFiles/myslam.dir/deeplcd.cpp.o.provides
+
+src/CMakeFiles/myslam.dir/deeplcd.cpp.o.provides.build: src/CMakeFiles/myslam.dir/deeplcd.cpp.o
+
+
+src/CMakeFiles/myslam.dir/loopclosing.cpp.o: src/CMakeFiles/myslam.dir/flags.make
+src/CMakeFiles/myslam.dir/loopclosing.cpp.o: ../src/loopclosing.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object src/CMakeFiles/myslam.dir/loopclosing.cpp.o"
+	cd /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build/src && /usr/bin/g++-7  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/myslam.dir/loopclosing.cpp.o -c /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/loopclosing.cpp
+
+src/CMakeFiles/myslam.dir/loopclosing.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/myslam.dir/loopclosing.cpp.i"
+	cd /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build/src && /usr/bin/g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/loopclosing.cpp > CMakeFiles/myslam.dir/loopclosing.cpp.i
+
+src/CMakeFiles/myslam.dir/loopclosing.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/myslam.dir/loopclosing.cpp.s"
+	cd /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build/src && /usr/bin/g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/loopclosing.cpp -o CMakeFiles/myslam.dir/loopclosing.cpp.s
+
+src/CMakeFiles/myslam.dir/loopclosing.cpp.o.requires:
+
+.PHONY : src/CMakeFiles/myslam.dir/loopclosing.cpp.o.requires
+
+src/CMakeFiles/myslam.dir/loopclosing.cpp.o.provides: src/CMakeFiles/myslam.dir/loopclosing.cpp.o.requires
+	$(MAKE) -f src/CMakeFiles/myslam.dir/build.make src/CMakeFiles/myslam.dir/loopclosing.cpp.o.provides.build
+.PHONY : src/CMakeFiles/myslam.dir/loopclosing.cpp.o.provides
+
+src/CMakeFiles/myslam.dir/loopclosing.cpp.o.provides.build: src/CMakeFiles/myslam.dir/loopclosing.cpp.o
+
+
 # Object files for target myslam
 myslam_OBJECTS = \
 "CMakeFiles/myslam.dir/config.cpp.o" \
@@ -358,7 +406,9 @@ myslam_OBJECTS = \
 "CMakeFiles/myslam.dir/viewer.cpp.o" \
 "CMakeFiles/myslam.dir/ORBextractor.cpp.o" \
 "CMakeFiles/myslam.dir/camera.cpp.o" \
-"CMakeFiles/myslam.dir/map.cpp.o"
+"CMakeFiles/myslam.dir/map.cpp.o" \
+"CMakeFiles/myslam.dir/deeplcd.cpp.o" \
+"CMakeFiles/myslam.dir/loopclosing.cpp.o"
 
 # External object files for target myslam
 myslam_EXTERNAL_OBJECTS =
@@ -375,6 +425,8 @@ myslam_EXTERNAL_OBJECTS =
 ../lib/libmyslam.so: src/CMakeFiles/myslam.dir/ORBextractor.cpp.o
 ../lib/libmyslam.so: src/CMakeFiles/myslam.dir/camera.cpp.o
 ../lib/libmyslam.so: src/CMakeFiles/myslam.dir/map.cpp.o
+../lib/libmyslam.so: src/CMakeFiles/myslam.dir/deeplcd.cpp.o
+../lib/libmyslam.so: src/CMakeFiles/myslam.dir/loopclosing.cpp.o
 ../lib/libmyslam.so: src/CMakeFiles/myslam.dir/build.make
 ../lib/libmyslam.so: /usr/local/lib/libopencv_dnn.so.3.4.9
 ../lib/libmyslam.so: /usr/local/lib/libopencv_highgui.so.3.4.9
@@ -390,6 +442,9 @@ myslam_EXTERNAL_OBJECTS =
 ../lib/libmyslam.so: /usr/lib/x86_64-linux-gnu/libglog.so
 ../lib/libmyslam.so: /usr/lib/x86_64-linux-gnu/libgflags.so.2.2.1
 ../lib/libmyslam.so: /usr/lib/x86_64-linux-gnu/libcxsparse.so
+../lib/libmyslam.so: /home/mingrui/caffe/build/lib/libcaffe.so
+../lib/libmyslam.so: /usr/lib/x86_64-linux-gnu/libboost_filesystem.so
+../lib/libmyslam.so: /usr/lib/x86_64-linux-gnu/libboost_system.so
 ../lib/libmyslam.so: /usr/local/lib/libopencv_calib3d.so.3.4.9
 ../lib/libmyslam.so: /usr/local/lib/libopencv_features2d.so.3.4.9
 ../lib/libmyslam.so: /usr/local/lib/libopencv_flann.so.3.4.9
@@ -405,7 +460,7 @@ myslam_EXTERNAL_OBJECTS =
 ../lib/libmyslam.so: /usr/lib/x86_64-linux-gnu/libX11.so
 ../lib/libmyslam.so: /usr/lib/x86_64-linux-gnu/libXext.so
 ../lib/libmyslam.so: src/CMakeFiles/myslam.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Linking CXX shared library ../../lib/libmyslam.so"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Linking CXX shared library ../../lib/libmyslam.so"
 	cd /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build/src && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/myslam.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -425,6 +480,8 @@ src/CMakeFiles/myslam.dir/requires: src/CMakeFiles/myslam.dir/viewer.cpp.o.requi
 src/CMakeFiles/myslam.dir/requires: src/CMakeFiles/myslam.dir/ORBextractor.cpp.o.requires
 src/CMakeFiles/myslam.dir/requires: src/CMakeFiles/myslam.dir/camera.cpp.o.requires
 src/CMakeFiles/myslam.dir/requires: src/CMakeFiles/myslam.dir/map.cpp.o.requires
+src/CMakeFiles/myslam.dir/requires: src/CMakeFiles/myslam.dir/deeplcd.cpp.o.requires
+src/CMakeFiles/myslam.dir/requires: src/CMakeFiles/myslam.dir/loopclosing.cpp.o.requires
 
 .PHONY : src/CMakeFiles/myslam.dir/requires
 

@@ -5,6 +5,7 @@
 #include "myslam/mappoint.h"
 
 
+
 namespace myslam{
 
 KeyFrame::KeyFrame(Frame::Ptr frame){
@@ -24,6 +25,7 @@ KeyFrame::KeyFrame(Frame::Ptr frame){
     }
 
     _msePose = frame->Pose();
+    mImageLeft = frame->mLeftImg.clone();
 
     // lack the process of setting KeyFrame->Feature->mnKF, which is done is CreateKF()
 }
@@ -34,13 +36,20 @@ KeyFrame::Ptr KeyFrame::CreateKF(Frame::Ptr frame){
 
     // link Feature->mpKF to the current KF
     // add the feature to Feature->MapPoint->observation
+    newKF->mvORBKpsLeft.reserve(newKF->mvpFeaturesLeft.size());
     for(auto &feat: newKF->mvpFeaturesLeft){
         feat->mpKF = newKF;
         auto mp = feat->mpMapPoint.lock();
         if(mp){
             mp->AddActiveObservation(feat);
         }
+        // if the feature is detected by ORB, not tracked by LK flow
+        if(1){ // feat->mbWithOctave
+            newKF->mvORBKpsLeft.push_back(feat->mkpPosition);
+        }
     }
+
+
     return newKF;
 }
 

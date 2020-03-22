@@ -27,7 +27,9 @@ public:
     // process new pair of images
     bool GrabStereoImage(const cv::Mat &leftImg, const cv::Mat &rightImg, const double &dTimeStamp);
 
-    void SetViewer(std::shared_ptr<Viewer> viewer);
+    void SetViewer(std::shared_ptr<Viewer> viewer){
+        _mpViewer = viewer;
+    }
 
     // set left and right camera
     void SetCameras(std::shared_ptr<Camera> left, std::shared_ptr<Camera> right){
@@ -42,6 +44,10 @@ public:
 
     void SetBackend(std::shared_ptr<Backend> backend){
         _mpBackend = backend;
+    }
+
+    void SetORBextractor(std::shared_ptr<ORBextractor> orb){
+        _mpORBextractor = orb;
     }
 
     FrontendStatus GetStatus() const {
@@ -94,14 +100,13 @@ private:
     SE3 _mseRelativeMotion;
 
     // params for tracking features
-    int _numFeatures;
-    int _numFeaturesInit;
     int _numFeaturesTrackingGood;
     int _numFeaturesTrackingBad;
-    int _numFeaturesNeededForNewKF;
+    int _numFeaturesInitGood;
+    int _numFeaturesTracking;
     // cv::Ptr<cv::ORB> _orb;
     // cv::Ptr<cv::GFTTDetector> _gftt;
-    std::shared_ptr<ORBextractor> mpORBextractor;
+    std::shared_ptr<ORBextractor> _mpORBextractor, _mpORBextractorInit;
 
     std::shared_ptr<Camera> _mpCameraLeft, _mpCameraRight;
 

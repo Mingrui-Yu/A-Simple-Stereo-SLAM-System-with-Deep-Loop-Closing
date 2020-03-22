@@ -75,7 +75,6 @@ int main(int argc, char **argv){
         time_used = std::chrono::duration_cast <std::chrono::duration<double>> (t2 - t1);
         
         LOG(INFO) << "time cost for frame " << ni <<": " << time_used.count()  << "s";
-        // if(ni==3) break;
     }
     t_end = std::chrono::steady_clock::now();
     time_used_total = std::chrono::duration_cast <std::chrono::duration<double>> (t_end - t_start);

@@ -35,6 +35,9 @@ public:
     bool mbIsOnLeftFrame = true; // true: on left frame; false: on right frame;
     bool mbIsOutlier = false;  
 
+    // true: the features detected by ORB; false: the features tracked by LK flow
+    bool mbWithOctave = false; 
+
 
 };
 
