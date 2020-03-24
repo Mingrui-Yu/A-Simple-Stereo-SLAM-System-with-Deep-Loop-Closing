@@ -19,11 +19,12 @@ Backend::Backend(){
     _mthreadBackend = std::thread(std::bind(&Backend::BackendLoop, this));
 }
 
+
 // -----------------------------------------------------------------------------------
 
-void Backend::InsertKeyFrame(Frame::Ptr pFrame){
+void Backend::InsertKeyFrame(KeyFrame::Ptr pKF){
     std::unique_lock<std::mutex> lck(_mmutexNewKF);
-    _mlNewKeyFrames.push_back(pFrame);
+    _mlNewKeyFrames.push_back(pKF);
     _mbNeedOptimization = true;
     // UpdateMap();
 }
@@ -56,10 +57,10 @@ void Backend::BackendLoop(){
 
         // optimize the active KFs and mappoints
         if(!CheckNewKeyFrames() && _mbNeedOptimization){
-            LOG(INFO) << "start backend optimization.";
+            // LOG(INFO) << "start backend optimization.";
             Map::KeyFramesType activeKFs = _mpMap->GetActiveKeyFrames();
             Map::MapPointsType activeMPs = _mpMap->GetActiveMapPoints();
-            OptimizeActiveMap(activeKFs, activeMPs);
+            // OptimizeActiveMap(activeKFs, activeMPs);
             _mbNeedOptimization = false;  // until the next inserted KF, this will become true
         }
     }
@@ -76,11 +77,9 @@ bool Backend::CheckNewKeyFrames(){
 void Backend::ProcessNewKeyFrame(){
     {
         std::unique_lock<std::mutex> lck(_mmutexNewKF);
-        _mpCurrentFrame = _mlNewKeyFrames.front();
+        _mpCurrentKF = _mlNewKeyFrames.front();
         _mlNewKeyFrames.pop_front();
     }
-    _mpCurrentKF = KeyFrame::CreateKF(_mpCurrentFrame);
-    LOG(INFO) << "Set frame " << _mpCurrentKF->mnFrameId << " as keyframe " << _mpCurrentKF->mnKFId;
     
     _mpMap->InsertKeyFrame(_mpCurrentKF);
     _mpLoopClosing->InsertNewKeyFrame(_mpCurrentKF);
@@ -167,7 +166,7 @@ void Backend::OptimizeActiveMap(Map::KeyFramesType &keyframes, Map::MapPointsTyp
 
     //test
     ave_obs = ave_obs / mappoints.size(); 
-    LOG(INFO) << "the average observation number of mappoints: " << ave_obs;
+    // LOG(INFO) << "the average observation number of mappoints: " << ave_obs;
 
     // LOG(INFO) << "do optimization.";
 
@@ -189,7 +188,7 @@ void Backend::OptimizeActiveMap(Map::KeyFramesType &keyframes, Map::MapPointsTyp
             }
         }
         double inlierRatio = cntInlier / double(cntInlier + cntOutlier);
-        LOG(INFO) << "inlierRatio: " << inlierRatio;
+        // LOG(INFO) << "inlierRatio: " << inlierRatio;
         if(inlierRatio > 0.5){
             break;
         }else{
@@ -200,7 +199,7 @@ void Backend::OptimizeActiveMap(Map::KeyFramesType &keyframes, Map::MapPointsTyp
     for(auto &ef: edgesAndFeatures){
         if(ef.first->chi2() > chi2_th){
             ef.second->mbIsOutlier = true;
-            ef.second->mpMapPoint.lock()->RemoveActiveObservation(ef.second);
+            ef.second->mpMapPoint.lock()->RemoveObservation(ef.second);
         }else{
             ef.second->mbIsOutlier = false;
         }

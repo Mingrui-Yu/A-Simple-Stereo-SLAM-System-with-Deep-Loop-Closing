@@ -71,7 +71,7 @@ void Map::RemoveOldActiveKeyframe(){
         frameToRemove = _mumpAllKeyFrames.at(maxKFId);
     }
 
-    LOG(INFO) << "remove keyframe " << frameToRemove->mnKFId << " from the active keyframes.";
+    // LOG(INFO) << "remove keyframe " << frameToRemove->mnKFId << " from the active keyframes.";
 
     // remove the kf and its mappoints' observation
     _mumpActiveKeyFrames.erase(frameToRemove->mnKFId);
@@ -90,14 +90,14 @@ void Map::RemoveOldActiveKeyframe(){
 void Map::RemoveOldActiveMapPoints(){
     int cntActiveLandmarkRemoved = 0;
     for(auto iter = _mumpActiveMapPoints.begin(); iter != _mumpActiveMapPoints.end();){
-        if(iter->second->mnObservedTimes == 0){
+        if(iter->second->mnActiveObservedTimes == 0){
             iter = _mumpActiveMapPoints.erase(iter);
             cntActiveLandmarkRemoved++;
         } else{
             ++iter;
         }
     }
-    LOG(INFO) << "remove " << cntActiveLandmarkRemoved << " active landmarks";
+    // LOG(INFO) << "remove " << cntActiveLandmarkRemoved << " active landmarks";
 }
 
 

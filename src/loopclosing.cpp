@@ -8,8 +8,10 @@
 #include "myslam/config.h"
 #include "myslam/algorithm.h"
 #include "myslam/ORBextractor.h"
+#include "myslam/camera.h"
 
-#include <opencv2/core.hpp>
+#include <opencv2/core/eigen.hpp>
+#include <opencv2/calib3d.hpp>
 
 
 namespace myslam{
@@ -55,7 +57,9 @@ void LoopClosing::LoopClosingRun(){
             if(_mvDatabase.size() > _mnDatabaseMinSize){
                 if(DetectLoop()){
                     if(MatchFeatures()){
-
+                        if(ComputeSE3()){
+                            LoopFusion();
+                        }
                     }
                 }
             }
@@ -72,17 +76,14 @@ void LoopClosing::ProcessNewKF(){
     std::unique_lock<std::mutex> lck(_mmutexNewKFList);
     _mpCurrentKF = _mlNewKeyFrames.front();
     _mlNewKeyFrames.pop_front();
-   
+
     // calculate the whole image's descriptor vector with deeplcd
     _mpCurrentKF->mpDescrVector = _mpDeepLCD->calcDescrOriginalImg(_mpCurrentKF->mImageLeft);
-    // calculate the orb descriptors of the keypoints
-    // using OpenCV
-    _mpORBdescriptor->compute(_mpCurrentKF->mImageLeft, 
-            _mpCurrentKF->mvORBKpsLeft, _mpCurrentKF->mORBDescriptors);
-    // or using function in "myslam/ORBextractor.h"
-    // _mpORBextractor->CalcDescriptors(_mpCurrentKF->mImageLeft, 
-    //         _mpCurrentKF->mvORBKpsLeft, _mpCurrentKF->mORBDescriptors);
-
+    
+    // calculate the orb descriptors of the keypoints using function in "myslam/ORBextractor.h"
+    _mpORBextractor->CalcDescriptors(_mpCurrentKF->mImageLeft, 
+            _mpCurrentKF->GetKeyPoints(), _mpCurrentKF->mORBDescriptors);
+    
     // _mpCurrentKF->mImageLeft.release();  // if neeeded
 }
 
@@ -113,18 +114,6 @@ bool LoopClosing::DetectLoop(){
             << _mpLoopKF->mnKFId
             << ", score: " << maxScore;
 
-        // show the current image and the loop image and their keypoints
-        // cv::Mat imgCurrent, imgLoop;
-        // cv::cvtColor(_mpCurrentKF->mImageLeft, imgCurrent, CV_GRAY2BGR);
-        // for (auto &kp:  _mpCurrentKF->mvORBKpsLeft){
-        //         cv::circle(imgCurrent, kp.pt, 2, cv::Scalar(0,250,0), 2);
-        // }
-        // cv::cvtColor(_mpLoopKF->mImageLeft, imgLoop, CV_GRAY2BGR);
-        // for (auto &kp:  _mpLoopKF->mvORBKpsLeft){
-        //         cv::circle(imgLoop, kp.pt, 2, cv::Scalar(0,250,0), 2);
-        // }
-        // ShowManyImages("Image", 2, imgCurrent, imgLoop);
-        // cv::waitKey(1);
         return true;
     }
     return false;
@@ -153,19 +142,20 @@ bool LoopClosing::MatchFeatures(){
         }
     }
 
-    if(_mvGoodFeatureMatches.size() < 20){
+    if(_mvGoodFeatureMatches.size() < 30){
         return false;
     }
+
 
     LOG(INFO) << "match number: " << matches.size() ;
     LOG(INFO) << "good match number: " << _mvGoodFeatureMatches.size();
     cv::Mat img_goodmatch;
-    cv::drawMatches(_mpCurrentKF->mImageLeft, _mpCurrentKF->mvORBKpsLeft, 
-            _mpLoopKF->mImageLeft, _mpLoopKF->mvORBKpsLeft, 
+    cv::drawMatches(_mpCurrentKF->mImageLeft, _mpCurrentKF->GetKeyPoints(), 
+            _mpLoopKF->mImageLeft, _mpLoopKF->GetKeyPoints(), 
             _mvGoodFeatureMatches, img_goodmatch);
     cv::resize(img_goodmatch, img_goodmatch, Size(), 0.5, 0.5);
-    imshow("good matches", img_goodmatch);
-    waitKey(1);
+    cv::imshow("good matches", img_goodmatch);
+    cv::waitKey(1);
     
     return true;
 }
@@ -178,6 +168,7 @@ bool LoopClosing::ComputeSE3(){
     // prepare the data for PnP solver
     std::vector<cv::Point3f> vLoopPoints3d;
     std::vector<cv::Point2f> vCurrentPoints2d;
+    std::vector<cv::Point2f> vLoopPoints2d;
 
     for(cv::DMatch &match: _mvGoodFeatureMatches){
         auto mp = _mpLoopKF->mvpFeaturesLeft[match.trainIdx]->mpMapPoint.lock();
@@ -185,12 +176,81 @@ bool LoopClosing::ComputeSE3(){
             vCurrentPoints2d.push_back(
                 _mpCurrentKF->mvpFeaturesLeft[match.queryIdx]->mkpPosition.pt);
             Vec3 pos = mp->Pos();
+            // LOG(INFO) << "mappoint pos: " << pos;
             vLoopPoints3d.push_back(cv::Point3f(pos(0), pos(1), pos(2)));
+            vLoopPoints2d.push_back(_mpLoopKF->mvpFeaturesLeft[match.trainIdx]->mkpPosition.pt);
         }
     }
 
+    LOG(INFO) << "number of valid 3d-2d pairs: " << vLoopPoints3d.size();
+
+    if(vLoopPoints3d.size() < 20) 
+        return false;
+
+    cv::Mat rvec, tvec, R, K;
+    cv::eigen2cv(_mpCameraLeft->K(), K);
+
+    Eigen::Matrix3d Reigen;
+    Eigen::Vector3d teigen;
+
+    // cv::Mat essentialMatrix, mask;
+    // essentialMatrix = cv::findEssentialMat(vLoopPoints2d, vCurrentPoints2d, K, RANSAC, 0.95, 5.991, mask);
+    // cv::recoverPose(essentialMatrix, vLoopPoints2d, vCurrentPoints2d, K, R, tvec, mask);
+
+    // cv::cv2eigen(R, Reigen);
+    // cv::cv2eigen(tvec, teigen);
+    // Sophus::SE3d relativePose(Reigen, teigen);
+    // currentPose = relativePose * _mpLoopKF->Pose();
+    // LOG(INFO) << "loop KF pose matrix: \n" << _mpLoopKF->Pose().matrix();
+    // LOG(INFO) << "current KF pose: by essential matrix: \n" << currentPose.matrix();
+
+    cv::Mat inliers;
+    bool success = cv::solvePnPRansac(vLoopPoints3d, vCurrentPoints2d, 
+            K, cv::Mat(), rvec, tvec, false, 100, 5.991, 0.95, inliers); // SOLVEPNP_EPNP
+    if(success && inliers.rows > 20){
+        cv::Rodrigues(rvec, R);
+        cv::cv2eigen(R, Reigen);
+        cv::cv2eigen(tvec, teigen);
+        _mseCorrectedCurrentPose = Sophus::SE3d(Reigen, teigen);
+        LOG(INFO) << "by pnp: \n" << _mseCorrectedCurrentPose.matrix();
+
+         // show the reprojection result
+        // std::vector<cv::Point2f> vReprojectionPoints2d;
+        // cv::projectPoints(vLoopPoints3d, rvec, tvec, K, cv::Mat(), vReprojectionPoints2d);
+        // LOG(INFO) << "current points size: " << vCurrentPoints2d.size();
+        // LOG(INFO) << "reprojection points size: " << vReprojectionPoints2d.size();
+        // LOG(INFO) << "inliers size: " << inliers.rows;
+        // cv::Mat imgOut;
+        // cv::cvtColor(_mpCurrentKF->mImageLeft, imgOut,cv::COLOR_GRAY2RGB);
+        // for(int i = 0; i < inliers.rows; i++){
+        //     int index = inliers.at<int>(i, 0);
+        //     cv::circle(imgOut, vCurrentPoints2d[index], 5, cv::Scalar(0, 0, 255), -1);
+        //     cv::line(imgOut, vCurrentPoints2d[index], vReprojectionPoints2d[index], cv::Scalar(255, 0, 0), 2);
+        // }
+        // cv::imshow("output", imgOut);
+        // cv::waitKey(1);
+
+        return true;
+    }
+
+
     return false;
 }
+
+// -------------------------------------------------------------------------------------
+
+void LoopClosing::LoopFusion(){
+
+    for(auto &feat: _mpCurrentKF->mvpFeaturesLeft){
+        auto mp = feat->mpMapPoint.lock();
+        if(mp){
+            Vec3 posCamera = _mpCurrentKF->Pose() * mp->Pos();
+            mp->SetPos(_mseCorrectedCurrentPose.inverse() * posCamera);
+        }
+    }
+    _mpCurrentKF->SetPose(_mseCorrectedCurrentPose);
+}
+
 
 
 
@@ -199,7 +259,7 @@ bool LoopClosing::ComputeSE3(){
 
 void LoopClosing::AddToDatabase(){
     // std::unique_lock<std::mutex> lck(_mmutexDatabase);
-    LOG(INFO) << "add KF " <<  _mpCurrentKF->mnKFId << " to database.";
+    // LOG(INFO) << "add KF " <<  _mpCurrentKF->mnKFId << " to database.";
     
     // add curernt KF to the Database
     _mvDatabase.insert({_mpCurrentKF->mnKFId, _mpCurrentKF});

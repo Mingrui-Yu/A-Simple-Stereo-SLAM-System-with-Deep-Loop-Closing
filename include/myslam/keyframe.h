@@ -26,6 +26,8 @@ public:
 
     SE3 Pose();
 
+    std::vector<cv::KeyPoint> GetKeyPoints();
+
 
 public:
     unsigned long mnFrameId;
@@ -38,7 +40,7 @@ public:
     // float mfSimilarityScoreNormFactor;
     // std::vector<std::shared_ptr<Feature>> mvpFeaturesRight;
     
-    std::vector<cv::KeyPoint> mvORBKpsLeft;
+    // std::vector<cv::KeyPoint> mvORBKpsLeft;
     cv::Mat mORBDescriptors;
     
 

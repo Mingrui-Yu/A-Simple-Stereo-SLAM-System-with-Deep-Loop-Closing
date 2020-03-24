@@ -32,11 +32,13 @@ public:
     std::vector<std::shared_ptr<Feature>> mvpFeaturesLeft;
     std::vector<std::shared_ptr<Feature>> mvpFeaturesRight;
 
-    
+    SE3 relativePose;
 
 
 private:
     SE3 _msePose;
+
+    
 
     std::mutex _mmutexPose;  // pose 数据锁
 

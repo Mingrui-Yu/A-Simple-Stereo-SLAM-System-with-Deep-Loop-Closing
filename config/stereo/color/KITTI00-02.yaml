@@ -58,7 +58,7 @@ ORBextractor.minThFAST: 7
 # Loop Closing Parameters
 #--------------------------------------------------------------------------------------------
 
-LCD.similarityScoreThreshold.high: 0.91
+LCD.similarityScoreThreshold.high: 0.92
 LCD.similarityScoreThreshold.low: 0.90
 
 

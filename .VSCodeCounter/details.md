@@ -1,19 +1,19 @@
 # Details
 
-Date : 2020-03-17 15:58:27
+Date : 2020-03-22 21:18:20
 
 Directory /home/mingrui/Mingrui/SLAMProject/stereo_slam_system
 
-Total : 63 files,  7334 codes, 790 comments, 2063 blanks, all 10187 lines
+Total : 72 files,  8292 codes, 956 comments, 2422 blanks, all 11670 lines
 
 [summary](results.md)
 
 ## Files
 | filename | language | code | comment | blank | total |
 | :--- | :--- | ---: | ---: | ---: | ---: |
-| [README.md](/README.md) | Markdown | 8 | 0 | 9 | 17 |
-| [app/run_kitti_stereo.cpp](/app/run_kitti_stereo.cpp) | C++ | 88 | 8 | 32 | 128 |
-| [build/CMakeCache.txt](/build/CMakeCache.txt) | CMake Cache | 402 | 0 | 111 | 513 |
+| [README.md](/README.md) | Markdown | 21 | 0 | 17 | 38 |
+| [app/run_kitti_stereo.cpp](/app/run_kitti_stereo.cpp) | C++ | 88 | 7 | 32 | 127 |
+| [build/CMakeCache.txt](/build/CMakeCache.txt) | CMake Cache | 562 | 0 | 144 | 706 |
 | [build/CMakeFiles/3.10.2/CMakeCCompiler.cmake](/build/CMakeFiles/3.10.2/CMakeCCompiler.cmake) | CMake | 57 | 0 | 17 | 74 |
 | [build/CMakeFiles/3.10.2/CMakeCXXCompiler.cmake](/build/CMakeFiles/3.10.2/CMakeCXXCompiler.cmake) | CMake | 59 | 0 | 17 | 76 |
 | [build/CMakeFiles/3.10.2/CMakeSystem.cmake](/build/CMakeFiles/3.10.2/CMakeSystem.cmake) | CMake | 10 | 0 | 6 | 16 |
@@ -22,57 +22,66 @@ Total : 63 files,  7334 codes, 790 comments, 2063 blanks, all 10187 lines
 | [build/CMakeFiles/CMakeDirectoryInformation.cmake](/build/CMakeFiles/CMakeDirectoryInformation.cmake) | CMake | 12 | 0 | 5 | 17 |
 | [build/CMakeFiles/CMakeError.log](/build/CMakeFiles/CMakeError.log) | Log | 48 | 0 | 8 | 56 |
 | [build/CMakeFiles/CMakeOutput.log](/build/CMakeFiles/CMakeOutput.log) | Log | 594 | 0 | 68 | 662 |
-| [build/CMakeFiles/Makefile.cmake](/build/CMakeFiles/Makefile.cmake) | CMake | 72 | 0 | 6 | 78 |
+| [build/CMakeFiles/Makefile.cmake](/build/CMakeFiles/Makefile.cmake) | CMake | 75 | 0 | 6 | 81 |
 | [build/CMakeFiles/feature_tests.c](/build/CMakeFiles/feature_tests.c) | C | 31 | 0 | 4 | 35 |
 | [build/CMakeFiles/feature_tests.cxx](/build/CMakeFiles/feature_tests.cxx) | C++ | 402 | 0 | 4 | 406 |
 | [build/CTestTestfile.cmake](/build/CTestTestfile.cmake) | CMake | 8 | 0 | 1 | 9 |
 | [build/Makefile](/build/Makefile) | Makefile | 78 | 46 | 51 | 175 |
 | [build/Testing/Temporary/LastTest.log](/build/Testing/Temporary/LastTest.log) | Log | 3 | 0 | 1 | 4 |
 | [build/app/CMakeFiles/CMakeDirectoryInformation.cmake](/build/app/CMakeFiles/CMakeDirectoryInformation.cmake) | CMake | 12 | 0 | 5 | 17 |
-| [build/app/CMakeFiles/run_kitti_stereo.dir/DependInfo.cmake](/build/app/CMakeFiles/run_kitti_stereo.dir/DependInfo.cmake) | CMake | 29 | 0 | 5 | 34 |
+| [build/app/CMakeFiles/run_kitti_stereo.dir/DependInfo.cmake](/build/app/CMakeFiles/run_kitti_stereo.dir/DependInfo.cmake) | CMake | 31 | 0 | 5 | 36 |
 | [build/app/CMakeFiles/run_kitti_stereo.dir/cmake_clean.cmake](/build/app/CMakeFiles/run_kitti_stereo.dir/cmake_clean.cmake) | CMake | 9 | 0 | 2 | 11 |
 | [build/app/CTestTestfile.cmake](/build/app/CTestTestfile.cmake) | CMake | 6 | 0 | 1 | 7 |
 | [build/app/Makefile](/build/app/Makefile) | Makefile | 91 | 44 | 58 | 193 |
 | [build/app/cmake_install.cmake](/build/app/cmake_install.cmake) | CMake | 33 | 0 | 7 | 40 |
 | [build/cmake_install.cmake](/build/cmake_install.cmake) | CMake | 47 | 0 | 10 | 57 |
-| [build/compile_commands.json](/build/compile_commands.json) | JSON | 62 | 0 | 0 | 62 |
+| [build/compile_commands.json](/build/compile_commands.json) | JSON | 77 | 0 | 0 | 77 |
 | [build/src/CMakeFiles/CMakeDirectoryInformation.cmake](/build/src/CMakeFiles/CMakeDirectoryInformation.cmake) | CMake | 12 | 0 | 5 | 17 |
-| [build/src/CMakeFiles/myslam.dir/DependInfo.cmake](/build/src/CMakeFiles/myslam.dir/DependInfo.cmake) | CMake | 38 | 0 | 5 | 43 |
-| [build/src/CMakeFiles/myslam.dir/cmake_clean.cmake](/build/src/CMakeFiles/myslam.dir/cmake_clean.cmake) | CMake | 19 | 0 | 2 | 21 |
+| [build/src/CMakeFiles/myslam.dir/DependInfo.cmake](/build/src/CMakeFiles/myslam.dir/DependInfo.cmake) | CMake | 43 | 0 | 5 | 48 |
+| [build/src/CMakeFiles/myslam.dir/cmake_clean.cmake](/build/src/CMakeFiles/myslam.dir/cmake_clean.cmake) | CMake | 22 | 0 | 2 | 24 |
 | [build/src/CTestTestfile.cmake](/build/src/CTestTestfile.cmake) | CMake | 6 | 0 | 1 | 7 |
-| [build/src/Makefile](/build/src/Makefile) | Makefile | 271 | 74 | 148 | 493 |
+| [build/src/Makefile](/build/src/Makefile) | Makefile | 325 | 83 | 175 | 583 |
 | [build/src/cmake_install.cmake](/build/src/cmake_install.cmake) | CMake | 33 | 0 | 7 | 40 |
 | [cmake_modules/FindCSparse.cmake](/cmake_modules/FindCSparse.cmake) | CMake | 25 | 0 | 3 | 28 |
 | [cmake_modules/FindG2O.cmake](/cmake_modules/FindG2O.cmake) | CMake | 98 | 0 | 16 | 114 |
 | [cmake_modules/FindGlog.cmake](/cmake_modules/FindGlog.cmake) | CMake | 192 | 0 | 18 | 210 |
-| [config/stereo/color/KITTI00-02.yaml](/config/stereo/color/KITTI00-02.yaml) | YAML | 31 | 22 | 16 | 69 |
-| [include/myslam/ORBextractor.h](/include/myslam/ORBextractor.h) | C++ | 69 | 26 | 33 | 128 |
+| [config/stereo/color/KITTI00-02.yaml](/config/stereo/color/KITTI00-02.yaml) | YAML | 33 | 24 | 23 | 80 |
+| [get_model.sh](/get_model.sh) | Shell Script | 16 | 4 | 9 | 29 |
+| [include/myslam/ORBextractor.h](/include/myslam/ORBextractor.h) | C++ | 74 | 27 | 37 | 138 |
 | [include/myslam/ORBmatcher.h](/include/myslam/ORBmatcher.h) | C++ | 40 | 38 | 30 | 108 |
-| [include/myslam/algorithm.h](/include/myslam/algorithm.h) | C++ | 26 | 8 | 10 | 44 |
+| [include/myslam/algorithm.h](/include/myslam/algorithm.h) | C++ | 105 | 9 | 25 | 139 |
+| [include/myslam/backend.h](/include/myslam/backend.h) | C++ | 54 | 3 | 37 | 94 |
 | [include/myslam/camera.h](/include/myslam/camera.h) | C++ | 31 | 0 | 16 | 47 |
 | [include/myslam/common_include.h](/include/myslam/common_include.h) | C++ | 94 | 10 | 17 | 121 |
 | [include/myslam/config.h](/include/myslam/config.h) | C++ | 19 | 2 | 12 | 33 |
-| [include/myslam/feature.h](/include/myslam/feature.h) | C++ | 22 | 7 | 16 | 45 |
+| [include/myslam/deeplcd.h](/include/myslam/deeplcd.h) | C++ | 30 | 5 | 21 | 56 |
+| [include/myslam/feature.h](/include/myslam/feature.h) | C++ | 23 | 8 | 17 | 48 |
 | [include/myslam/frame.h](/include/myslam/frame.h) | C++ | 25 | 2 | 24 | 51 |
-| [include/myslam/Frontend.h](/include/myslam/Frontend.h) | C++ | 53 | 20 | 40 | 113 |
+| [include/myslam/frontend.h](/include/myslam/frontend.h) | C++ | 64 | 20 | 44 | 128 |
 | [include/myslam/g2o_types.h](/include/myslam/g2o_types.h) | C++ | 117 | 7 | 29 | 153 |
-| [include/myslam/keyframe.h](/include/myslam/keyframe.h) | C++ | 26 | 2 | 23 | 51 |
+| [include/myslam/keyframe.h](/include/myslam/keyframe.h) | C++ | 31 | 3 | 24 | 58 |
+| [include/myslam/loopclosing.h](/include/myslam/loopclosing.h) | C++ | 57 | 3 | 56 | 116 |
 | [include/myslam/map.h](/include/myslam/map.h) | C++ | 33 | 5 | 26 | 64 |
-| [include/myslam/mappoint.h](/include/myslam/mappoint.h) | C++ | 33 | 4 | 33 | 70 |
-| [include/myslam/system.h](/include/myslam/system.h) | C++ | 29 | 4 | 23 | 56 |
+| [include/myslam/mappoint.h](/include/myslam/mappoint.h) | C++ | 34 | 4 | 34 | 72 |
+| [include/myslam/system.h](/include/myslam/system.h) | C++ | 35 | 4 | 21 | 60 |
+| [include/myslam/tools.h](/include/myslam/tools.h) | C++ | 77 | 73 | 24 | 174 |
 | [include/myslam/viewer.h](/include/myslam/viewer.h) | C++ | 50 | 3 | 40 | 93 |
 | [run.sh](/run.sh) | Shell Script | 1 | 0 | 1 | 2 |
-| [src/ORBextractor.cpp](/src/ORBextractor.cpp) | C++ | 929 | 142 | 182 | 1,253 |
+| [src/ORBextractor.cpp](/src/ORBextractor.cpp) | C++ | 853 | 92 | 142 | 1,087 |
 | [src/ORBmatcher.cpp](/src/ORBmatcher.cpp) | C++ | 1,197 | 104 | 371 | 1,672 |
+| [src/backend.cpp](/src/backend.cpp) | C++ | 162 | 23 | 44 | 229 |
 | [src/camera.cpp](/src/camera.cpp) | C++ | 25 | 0 | 10 | 35 |
 | [src/config.cpp](/src/config.cpp) | C++ | 21 | 0 | 5 | 26 |
+| [src/deeplcd.cpp](/src/deeplcd.cpp) | C++ | 64 | 6 | 33 | 103 |
 | [src/feature.cpp](/src/feature.cpp) | C++ | 7 | 4 | 13 | 24 |
 | [src/frame.cpp](/src/frame.cpp) | C++ | 18 | 4 | 9 | 31 |
-| [src/Frontend.cpp](/src/Frontend.cpp) | C++ | 309 | 45 | 90 | 444 |
-| [src/keyframe.cpp](/src/keyframe.cpp) | C++ | 42 | 7 | 30 | 79 |
-| [src/map.cpp](/src/map.cpp) | C++ | 88 | 24 | 33 | 145 |
+| [src/frontend.cpp](/src/frontend.cpp) | C++ | 305 | 93 | 89 | 487 |
+| [src/keyframe.cpp](/src/keyframe.cpp) | C++ | 44 | 9 | 33 | 86 |
+| [src/loopclosing.cpp](/src/loopclosing.cpp) | C++ | 140 | 39 | 61 | 240 |
+| [src/map.cpp](/src/map.cpp) | C++ | 89 | 10 | 32 | 131 |
 | [src/mappoint.cpp](/src/mappoint.cpp) | C++ | 32 | 5 | 12 | 49 |
-| [src/system.cpp](/src/system.cpp) | C++ | 46 | 8 | 27 | 81 |
-| [src/viewer.cpp](/src/viewer.cpp) | C++ | 190 | 11 | 63 | 264 |
+| [src/someBackup.cpp](/src/someBackup.cpp) | C++ | 46 | 6 | 8 | 60 |
+| [src/system.cpp](/src/system.cpp) | C++ | 73 | 9 | 32 | 114 |
+| [src/viewer.cpp](/src/viewer.cpp) | C++ | 187 | 14 | 64 | 265 |
 
 [summary](results.md)

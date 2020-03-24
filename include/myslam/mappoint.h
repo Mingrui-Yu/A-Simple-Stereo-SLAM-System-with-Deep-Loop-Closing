@@ -39,11 +39,13 @@ public:
     // remove the feature from current mappoint's active observation
     void RemoveActiveObservation(std::shared_ptr<Feature> feat);
 
+    void RemoveObservation(std::shared_ptr<Feature> feat);
+
 
 public:
     unsigned long mnId = 0;
     
-    int mnObservedTimes = 0;
+    int mnActiveObservedTimes = 0;
 
     bool mbIsOutlier = false;
 

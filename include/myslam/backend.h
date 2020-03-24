@@ -44,7 +44,7 @@ public:
         _mpMap = map;
     }
 
-    void InsertKeyFrame(std::shared_ptr<Frame> pFrame);
+    void InsertKeyFrame(std::shared_ptr<KeyFrame> pKF);
 
 private:
     bool CheckNewKeyFrames();
@@ -74,7 +74,7 @@ private:
     std::shared_ptr<Viewer> _mpViewer = nullptr;
     std::shared_ptr<LoopClosing> _mpLoopClosing = nullptr;
 
-    std::list<std::shared_ptr<Frame>> _mlNewKeyFrames;
+    std::list<std::shared_ptr<KeyFrame>> _mlNewKeyFrames;
 
     std::shared_ptr<KeyFrame> _mpCurrentKF;
     std::shared_ptr<Frame> _mpCurrentFrame;

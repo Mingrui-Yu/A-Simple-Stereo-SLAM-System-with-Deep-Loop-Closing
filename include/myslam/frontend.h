@@ -13,6 +13,7 @@ class ORBextractor;
 class Camera;
 class Map;
 class Backend;
+class KeyFrame;
 
 enum class FrontendStatus {INITING, TRACKING_GOOD, TRACKING_BAD, LOST};
 
@@ -96,8 +97,11 @@ private:
 
     Frame::Ptr _mpCurrentFrame;
     Frame::Ptr _mpLastFrame;
+    std::shared_ptr<KeyFrame> _mpReferenceKF;
+
 
     SE3 _mseRelativeMotion;
+    SE3 _mseRelativeMotionToReferenceKF;
 
     // params for tracking features
     int _numFeaturesTrackingGood;

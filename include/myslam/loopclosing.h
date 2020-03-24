@@ -53,6 +53,8 @@ private:
 
     bool ComputeSE3();
 
+    void LoopFusion();
+
 
     
 private:
@@ -73,6 +75,7 @@ private:
     std::shared_ptr<KeyFrame> _mpCurrentKF = nullptr;
     std::shared_ptr<KeyFrame> _mpLoopKF = nullptr;
     std::vector<cv::DMatch> _mvGoodFeatureMatches;
+    Sophus::SE3d _mseCorrectedCurrentPose;
     // DeepLCD::DescrVector _mCurrentDescrVector;
     std::list<std::shared_ptr<KeyFrame>> _mlNewKeyFrames;
 

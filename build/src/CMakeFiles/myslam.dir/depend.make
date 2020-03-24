@@ -3507,6 +3507,7 @@ src/CMakeFiles/myslam.dir/keyframe.cpp.o: /usr/local/include/sophus/types.hpp
 
 src/CMakeFiles/myslam.dir/loopclosing.cpp.o: ../include/myslam/ORBextractor.h
 src/CMakeFiles/myslam.dir/loopclosing.cpp.o: ../include/myslam/algorithm.h
+src/CMakeFiles/myslam.dir/loopclosing.cpp.o: ../include/myslam/camera.h
 src/CMakeFiles/myslam.dir/loopclosing.cpp.o: ../include/myslam/common_include.h
 src/CMakeFiles/myslam.dir/loopclosing.cpp.o: ../include/myslam/config.h
 src/CMakeFiles/myslam.dir/loopclosing.cpp.o: ../include/myslam/deeplcd.h
@@ -3772,6 +3773,7 @@ src/CMakeFiles/myslam.dir/loopclosing.cpp.o: /usr/local/include/opencv2/core/cv_
 src/CMakeFiles/myslam.dir/loopclosing.cpp.o: /usr/local/include/opencv2/core/cvdef.h
 src/CMakeFiles/myslam.dir/loopclosing.cpp.o: /usr/local/include/opencv2/core/cvstd.hpp
 src/CMakeFiles/myslam.dir/loopclosing.cpp.o: /usr/local/include/opencv2/core/cvstd.inl.hpp
+src/CMakeFiles/myslam.dir/loopclosing.cpp.o: /usr/local/include/opencv2/core/eigen.hpp
 src/CMakeFiles/myslam.dir/loopclosing.cpp.o: /usr/local/include/opencv2/core/fast_math.hpp
 src/CMakeFiles/myslam.dir/loopclosing.cpp.o: /usr/local/include/opencv2/core/hal/interface.h
 src/CMakeFiles/myslam.dir/loopclosing.cpp.o: /usr/local/include/opencv2/core/hal/msa_macros.h

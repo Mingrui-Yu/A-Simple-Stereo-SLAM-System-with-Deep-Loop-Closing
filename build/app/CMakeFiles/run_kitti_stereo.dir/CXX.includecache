@@ -61,7 +61,11 @@ sophus/se3.hpp
 -
 sophus/so3.hpp
 -
+opencv2/core.hpp
+-
 opencv2/core/core.hpp
+-
+opencv2/opencv.hpp
 -
 gflags/gflags.h
 -

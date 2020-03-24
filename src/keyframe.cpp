@@ -36,16 +36,12 @@ KeyFrame::Ptr KeyFrame::CreateKF(Frame::Ptr frame){
 
     // link Feature->mpKF to the current KF
     // add the feature to Feature->MapPoint->observation
-    newKF->mvORBKpsLeft.reserve(newKF->mvpFeaturesLeft.size());
-    for(auto &feat: newKF->mvpFeaturesLeft){
+    for(size_t i = 0, N =  newKF->mvpFeaturesLeft.size(); i < N; i++){
+        auto feat = newKF->mvpFeaturesLeft[i];
         feat->mpKF = newKF;
         auto mp = feat->mpMapPoint.lock();
         if(mp){
             mp->AddActiveObservation(feat);
-        }
-        // if the feature is detected by ORB, not tracked by LK flow
-        if(1){ // feat->mbWithOctave
-            newKF->mvORBKpsLeft.push_back(feat->mkpPosition);
         }
     }
 
@@ -54,6 +50,14 @@ KeyFrame::Ptr KeyFrame::CreateKF(Frame::Ptr frame){
 }
 
 // -----------------------------------------------------------------------------------
+
+std::vector<cv::KeyPoint> KeyFrame::GetKeyPoints(){
+    std::vector<cv::KeyPoint> vKeyPoints(mvpFeaturesLeft.size());
+    for(size_t i = 0, N = mvpFeaturesLeft.size(); i < N; i++){
+        vKeyPoints[i] = mvpFeaturesLeft[i]->mkpPosition;
+    }
+    return vKeyPoints;
+}
 
 // ---------------------------------------------------------------------------------------------------------
 void KeyFrame::SetPose(const SE3 &pose){

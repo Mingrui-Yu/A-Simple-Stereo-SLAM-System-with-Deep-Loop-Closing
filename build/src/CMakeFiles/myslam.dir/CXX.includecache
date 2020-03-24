@@ -67,7 +67,11 @@ sophus/se3.hpp
 -
 sophus/so3.hpp
 -
+opencv2/core.hpp
+-
 opencv2/core/core.hpp
+-
+opencv2/opencv.hpp
 -
 gflags/gflags.h
 -
@@ -323,7 +327,11 @@ myslam/algorithm.h
 /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/myslam/algorithm.h
 myslam/ORBextractor.h
 /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/myslam/ORBextractor.h
-opencv2/core.hpp
+myslam/camera.h
+/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/myslam/camera.h
+opencv2/core/eigen.hpp
+-
+opencv2/calib3d.hpp
 -
 
 /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/map.cpp
@@ -3165,6 +3173,10 @@ complex
 -
 ostream
 -
+
+/usr/local/include/opencv2/core/eigen.hpp
+opencv2/core.hpp
+/usr/local/include/opencv2/core/opencv2/core.hpp
 
 /usr/local/include/opencv2/core/fast_math.hpp
 opencv2/core/cvdef.h
