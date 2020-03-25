@@ -21,11 +21,24 @@ void Frame::SetPose(const SE3 &pose){
         _msePose = pose;
     }
 
+
+// ---------------------------------------------------------------------------------------------------------
+void Frame::SetRelativePose(const SE3 &relativePose){
+        std::unique_lock<std::mutex> lck(_mmutexRelativePose);
+        _mseRelativePose = relativePose;
+    }
+
 // ---------------------------------------------------------------------------------------------------------
 SE3 Frame::Pose() {
     std::unique_lock<std::mutex> lck(_mmutexPose);
     return _msePose;
 }
 
+
+// ---------------------------------------------------------------------------------------------------------
+SE3 Frame::RelativePose() {
+    std::unique_lock<std::mutex> lck(_mmutexRelativePose);
+    return _mseRelativePose;
+}
 
 }  // namespace myslam

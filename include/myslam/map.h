@@ -41,9 +41,17 @@ public:
     KeyFramesType GetActiveKeyFrames();
 
 
+public:
+
+    // avoid the conflict among different threads' operations on 
+    // keyframe's poses and mappoints' positions.
+    std::mutex mmutexMapUpdate;
+
+
 private:
 
     std::mutex _mmutexData;
+    
 
     std::shared_ptr<KeyFrame> _mpCurrentKF = nullptr;
 

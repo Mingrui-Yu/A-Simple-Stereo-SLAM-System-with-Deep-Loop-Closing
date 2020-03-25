@@ -329,6 +329,8 @@ myslam/ORBextractor.h
 /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/myslam/ORBextractor.h
 myslam/camera.h
 /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/myslam/camera.h
+myslam/backend.h
+/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/myslam/backend.h
 opencv2/core/eigen.hpp
 -
 opencv2/calib3d.hpp

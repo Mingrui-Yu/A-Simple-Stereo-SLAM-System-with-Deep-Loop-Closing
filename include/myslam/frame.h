@@ -20,7 +20,12 @@ public:
 
     void SetPose(const SE3 &pose);
 
+    // the relative pose to the reference KF
+    void SetRelativePose(const SE3 &relativePose);
+
     SE3 Pose();
+
+    SE3 RelativePose();
 
 public:
     unsigned long mnFrameId;
@@ -32,15 +37,18 @@ public:
     std::vector<std::shared_ptr<Feature>> mvpFeaturesLeft;
     std::vector<std::shared_ptr<Feature>> mvpFeaturesRight;
 
-    SE3 relativePose;
+    
 
 
 private:
     SE3 _msePose;
 
+    SE3 _mseRelativePose;
+
     
 
     std::mutex _mmutexPose;  // pose 数据锁
+    std::mutex _mmutexRelativePose;  // pose 数据锁
 
 
 };

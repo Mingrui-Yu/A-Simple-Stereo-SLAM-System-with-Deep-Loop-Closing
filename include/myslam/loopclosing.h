@@ -10,6 +10,7 @@ class KeyFrame;
 class Map;
 class Camera;
 class ORBextractor;
+class Backend;
 
 
 class LoopClosing{
@@ -34,6 +35,10 @@ public:
 
     void SetORBextractor(std::shared_ptr<ORBextractor> orb){
         _mpORBextractor = orb;
+    }
+
+    void SetBackend(std::shared_ptr<Backend> backend){
+        _mpBackend = backend;
     }
 
     void InsertNewKeyFrame(std::shared_ptr<KeyFrame> pNewKF);
@@ -69,6 +74,7 @@ private:
     std::shared_ptr<ORBextractor> _mpORBextractor;
     cv::Ptr<cv::DescriptorExtractor> _mpORBdescriptor;
      cv::Ptr<cv::DescriptorMatcher> _mpMatcher;
+     std::weak_ptr<Backend> _mpBackend;
 
     std::shared_ptr<KeyFrame> _mpLastClosedKF = nullptr;
     std::shared_ptr<KeyFrame> _mpLastKF = nullptr;

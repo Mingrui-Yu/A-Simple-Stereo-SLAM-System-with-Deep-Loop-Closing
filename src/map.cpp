@@ -19,6 +19,14 @@ void Map::InsertKeyFrame(std::shared_ptr<KeyFrame> kf){
         _mumpActiveKeyFrames[kf->mnKFId] = kf;
     }
 
+    // add the new KF to its observed mappoints' active observations
+    for(auto &feat: kf->mvpFeaturesLeft){
+        auto mp = feat->mpMapPoint.lock();
+        if(mp){
+             mp->AddActiveObservation(feat);
+        }
+    }
+
     // remove old keyframe from the optimization window
     if(_mumpActiveKeyFrames.size() > _numActiveKeyFrames){
         RemoveOldActiveKeyframe();

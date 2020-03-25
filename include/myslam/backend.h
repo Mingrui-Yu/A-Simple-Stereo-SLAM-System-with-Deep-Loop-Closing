@@ -46,6 +46,12 @@ public:
 
     void InsertKeyFrame(std::shared_ptr<KeyFrame> pKF);
 
+    void RequestPause();
+
+    bool IfHasPaused();
+
+    void Resume();
+
 private:
     bool CheckNewKeyFrames();
 
@@ -60,9 +66,12 @@ private:
 
     std::thread _mthreadBackend;
     std::atomic<bool>  _mbBackendIsRunning;
+    std::atomic<bool>  _mbRequestPause;
+    std::atomic<bool>  _mbFinishedOneLoop;
     std::condition_variable _mapUpdate;
     std::mutex _mmutexData;
     std::mutex _mmutexNewKF;
+    std::mutex _mmutexStop;
 
     std::shared_ptr<Camera> _mpCameraLeft, _mpCameraRight;
 

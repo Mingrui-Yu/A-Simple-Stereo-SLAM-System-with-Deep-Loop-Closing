@@ -70,15 +70,23 @@ int main(int argc, char **argv){
             return 1;
         }
 
-        slam->RunStep(imgLeft, imgRight, dTimeStamp);
+        bool trackSuccess = slam->RunStep(imgLeft, imgRight, dTimeStamp);
+        
         t2 = std::chrono::steady_clock::now();
         time_used = std::chrono::duration_cast <std::chrono::duration<double>> (t2 - t1);
+
+        if(!trackSuccess) {
+            std::cout << "System failed, now quited." << std::endl;
+            break;
+        }
         
         // LOG(INFO) << "time cost for frame " << ni <<": " << time_used.count()  << "s";
     }
     t_end = std::chrono::steady_clock::now();
     time_used_total = std::chrono::duration_cast <std::chrono::duration<double>> (t_end - t_start);
     
+    cv::waitKey(0);
+
     slam->Stop();
     
     std::cout << std::endl << "-------" << std::endl;

@@ -53,6 +53,7 @@ bool System::Init(){
         _mpLoopClosing->SetMap(_mpMap);
         _mpLoopClosing->SetCameras(_mpCameraLeft, _mpCameraRight);
         _mpLoopClosing->SetORBextractor(_mpORBextractor);
+        _mpLoopClosing->SetBackend(_mpBackend);
     }
 
     if(_mpViewer){

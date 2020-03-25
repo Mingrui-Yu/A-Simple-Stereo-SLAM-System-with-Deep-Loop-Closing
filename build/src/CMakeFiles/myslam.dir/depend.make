@@ -3507,6 +3507,7 @@ src/CMakeFiles/myslam.dir/keyframe.cpp.o: /usr/local/include/sophus/types.hpp
 
 src/CMakeFiles/myslam.dir/loopclosing.cpp.o: ../include/myslam/ORBextractor.h
 src/CMakeFiles/myslam.dir/loopclosing.cpp.o: ../include/myslam/algorithm.h
+src/CMakeFiles/myslam.dir/loopclosing.cpp.o: ../include/myslam/backend.h
 src/CMakeFiles/myslam.dir/loopclosing.cpp.o: ../include/myslam/camera.h
 src/CMakeFiles/myslam.dir/loopclosing.cpp.o: ../include/myslam/common_include.h
 src/CMakeFiles/myslam.dir/loopclosing.cpp.o: ../include/myslam/config.h

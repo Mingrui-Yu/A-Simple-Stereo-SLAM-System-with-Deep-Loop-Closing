@@ -14,6 +14,7 @@ KeyFrame::KeyFrame(Frame::Ptr frame){
     mnKFId = nFactoryId++;
     mnFrameId = frame->mnFrameId;
     mdTimeStamp = frame->mdTimeStamp;
+    mImageLeft = frame->mLeftImg.clone();
 
     mvpFeaturesLeft = frame->mvpFeaturesLeft;
     // mvpFeaturesRight = frame->mvpFeaturesRight;
@@ -23,10 +24,7 @@ KeyFrame::KeyFrame(Frame::Ptr frame){
             mvpFeaturesLeft[i]->mpMapPoint = mp;
         }
     }
-
-    _msePose = frame->Pose();
-    mImageLeft = frame->mLeftImg.clone();
-
+    
     // lack the process of setting KeyFrame->Feature->mnKF, which is done is CreateKF()
 }
 
@@ -39,10 +37,10 @@ KeyFrame::Ptr KeyFrame::CreateKF(Frame::Ptr frame){
     for(size_t i = 0, N =  newKF->mvpFeaturesLeft.size(); i < N; i++){
         auto feat = newKF->mvpFeaturesLeft[i];
         feat->mpKF = newKF;
-        auto mp = feat->mpMapPoint.lock();
-        if(mp){
-            mp->AddActiveObservation(feat);
-        }
+        // auto mp = feat->mpMapPoint.lock();
+        // if(mp){
+        //     mp->AddActiveObservation(feat);
+        // }
     }
 
 

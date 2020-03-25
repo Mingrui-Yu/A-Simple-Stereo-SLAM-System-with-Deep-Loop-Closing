@@ -16,6 +16,7 @@ namespace myslam{
 // -----------------------------------------------------------------------------------
 Backend::Backend(){
     _mbBackendIsRunning.store(true);
+    _mbRequestPause.store(false);
     _mthreadBackend = std::thread(std::bind(&Backend::BackendLoop, this));
 }
 
@@ -38,6 +39,24 @@ void Backend::UpdateMap(){
 
 // -----------------------------------------------------------------------------------
 
+void Backend::RequestPause(){
+    _mbRequestPause.store(true); 
+}
+
+// -----------------------------------------------------------------------------------
+
+bool Backend::IfHasPaused(){
+    return (_mbRequestPause.load()) && (_mbFinishedOneLoop.load());
+}
+
+// -----------------------------------------------------------------------------------
+
+void Backend::Resume(){
+    _mbRequestPause.store(false); 
+}
+
+// -----------------------------------------------------------------------------------
+
 void Backend::Stop(){
     _mbBackendIsRunning.store(false);
     _mapUpdate.notify_one();
@@ -48,8 +67,10 @@ void Backend::Stop(){
 
 void Backend::BackendLoop(){
     while(_mbBackendIsRunning.load()){
+        if (_mbRequestPause.load()) continue;
         // std::unique_lock<std::mutex> lck(_mmutexData);
         // _mapUpdate.wait(lck);
+        _mbFinishedOneLoop.store(false);
 
         while(CheckNewKeyFrames()){
             ProcessNewKeyFrame();
@@ -57,12 +78,13 @@ void Backend::BackendLoop(){
 
         // optimize the active KFs and mappoints
         if(!CheckNewKeyFrames() && _mbNeedOptimization){
-            // LOG(INFO) << "start backend optimization.";
+            LOG(INFO) << "start backend optimization.";
             Map::KeyFramesType activeKFs = _mpMap->GetActiveKeyFrames();
             Map::MapPointsType activeMPs = _mpMap->GetActiveMapPoints();
-            // OptimizeActiveMap(activeKFs, activeMPs);
+            OptimizeActiveMap(activeKFs, activeMPs);
             _mbNeedOptimization = false;  // until the next inserted KF, this will become true
         }
+        _mbFinishedOneLoop.store(true);
     }
 }
 
@@ -82,6 +104,7 @@ void Backend::ProcessNewKeyFrame(){
     }
     
     _mpMap->InsertKeyFrame(_mpCurrentKF);
+    // for(auto &feat: )
     _mpLoopClosing->InsertNewKeyFrame(_mpCurrentKF);
 
     if(_mpViewer){
