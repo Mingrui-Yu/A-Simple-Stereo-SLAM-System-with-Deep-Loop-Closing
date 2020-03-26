@@ -66,10 +66,10 @@ void Backend::Stop(){
 // -----------------------------------------------------------------------------------
 
 void Backend::BackendLoop(){
+
     while(_mbBackendIsRunning.load()){
+
         if (_mbRequestPause.load()) continue;
-        // std::unique_lock<std::mutex> lck(_mmutexData);
-        // _mapUpdate.wait(lck);
         _mbFinishedOneLoop.store(false);
 
         while(CheckNewKeyFrames()){
@@ -78,14 +78,14 @@ void Backend::BackendLoop(){
 
         // optimize the active KFs and mappoints
         if(!CheckNewKeyFrames() && _mbNeedOptimization){
-            LOG(INFO) << "start backend optimization.";
-            Map::KeyFramesType activeKFs = _mpMap->GetActiveKeyFrames();
-            Map::MapPointsType activeMPs = _mpMap->GetActiveMapPoints();
-            OptimizeActiveMap(activeKFs, activeMPs);
+            OptimizeActiveMap();
             _mbNeedOptimization = false;  // until the next inserted KF, this will become true
         }
         _mbFinishedOneLoop.store(true);
+
+        usleep(1000);
     }
+
 }
 
 // -----------------------------------------------------------------------------------
@@ -104,7 +104,6 @@ void Backend::ProcessNewKeyFrame(){
     }
     
     _mpMap->InsertKeyFrame(_mpCurrentKF);
-    // for(auto &feat: )
     _mpLoopClosing->InsertNewKeyFrame(_mpCurrentKF);
 
     if(_mpViewer){
@@ -114,7 +113,7 @@ void Backend::ProcessNewKeyFrame(){
 
 // -----------------------------------------------------------------------------------
 
-void Backend::OptimizeActiveMap(Map::KeyFramesType &keyframes, Map::MapPointsType &mappoints){
+void Backend::OptimizeActiveMap(){
     // setup g2o
     typedef g2o::BlockSolver_6_3 BlockSolverType;
     typedef g2o::LinearSolverCSparse<BlockSolverType::PoseMatrixType> LinearSolverType;
@@ -122,6 +121,9 @@ void Backend::OptimizeActiveMap(Map::KeyFramesType &keyframes, Map::MapPointsTyp
         g2o::make_unique<LinearSolverType>()));
     g2o::SparseOptimizer optimizer;
     optimizer.setAlgorithm(solver);
+
+    Map::KeyFramesType keyframes = _mpMap->GetActiveKeyFrames();
+    Map::MapPointsType mappoints = _mpMap->GetActiveMapPoints();
 
     // add keyframe vertex
     std::map<unsigned long, VertexPose *> vertices_kfs;
@@ -135,6 +137,7 @@ void Backend::OptimizeActiveMap(Map::KeyFramesType &keyframes, Map::MapPointsTyp
 
         maxKFId = std::max(maxKFId, kf->mnKFId);
         vertices_kfs.insert({kf->mnKFId, vertex_pose});
+
     }
 
     Mat33 camK = _mpCameraLeft->K();
@@ -144,9 +147,6 @@ void Backend::OptimizeActiveMap(Map::KeyFramesType &keyframes, Map::MapPointsTyp
 
     // add mappoints vertex
     // add edges
-
-    double ave_obs = 0; // test
-
     std::map<unsigned long, VertexXYZ *> vertices_mps;
     std::map<EdgeProjection *, Feature::Ptr> edgesAndFeatures;
     for(auto &mappoint: mappoints){
@@ -161,14 +161,14 @@ void Backend::OptimizeActiveMap(Map::KeyFramesType &keyframes, Map::MapPointsTyp
         vertices_mps.insert({mappointId, v});
         optimizer.addVertex(v);
 
-        // test
-        ave_obs += mp->GetActiveObservations().size();
 
         for(auto &obs: mp->GetActiveObservations()){
             auto feat = obs.lock();
             auto kf = feat->mpKF.lock();
+
             assert(feat->mbIsOnLeftFrame == true);
             assert(keyframes.find(kf->mnKFId) != keyframes.end());
+
             if(feat->mbIsOutlier)
                 continue;
             EdgeProjection *edge = new EdgeProjection(camK, camExt);
@@ -186,12 +186,6 @@ void Backend::OptimizeActiveMap(Map::KeyFramesType &keyframes, Map::MapPointsTyp
             index++;
         }
     }
-
-    //test
-    ave_obs = ave_obs / mappoints.size(); 
-    // LOG(INFO) << "the average observation number of mappoints: " << ave_obs;
-
-    // LOG(INFO) << "do optimization.";
 
     // do optimization
     int cntOutlier = 0, cntInlier = 0;
@@ -219,10 +213,13 @@ void Backend::OptimizeActiveMap(Map::KeyFramesType &keyframes, Map::MapPointsTyp
             iteration++;
         }
     }
+
     for(auto &ef: edgesAndFeatures){
         if(ef.first->chi2() > chi2_th){
             ef.second->mbIsOutlier = true;
+            ef.second->mpMapPoint.lock()->RemoveActiveObservation(ef.second);
             ef.second->mpMapPoint.lock()->RemoveObservation(ef.second);
+            ef.second->mpMapPoint.reset();
         }else{
             ef.second->mbIsOutlier = false;
         }

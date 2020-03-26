@@ -32,6 +32,8 @@ public:
     // remove landmarks which are not observed by any active kf from active landmarks
     void RemoveOldActiveMapPoints();
 
+    void RemoveMapPoint(std::shared_ptr<MapPoint> mappoint);
+
     MapPointsType GetAllMapPoints();
 
     KeyFramesType GetAllKeyFrames();

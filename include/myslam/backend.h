@@ -59,7 +59,7 @@ private:
 
     void BackendLoop();
 
-    void OptimizeActiveMap(Map::KeyFramesType &kfs, Map::MapPointsType &mps);
+    void OptimizeActiveMap();
 
 private:
     bool _mbNeedOptimization = false;

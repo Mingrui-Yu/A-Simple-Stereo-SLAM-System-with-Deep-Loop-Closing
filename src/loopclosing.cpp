@@ -48,6 +48,7 @@ void LoopClosing::Stop(){
 
 // -------------------------------------------------------------------------------------
 void LoopClosing::LoopClosingRun(){
+
     while(_mbLoopClosingIsRunning.load()){
         if(CheckNewKeyFrames()){
             
@@ -55,21 +56,25 @@ void LoopClosing::LoopClosingRun(){
             ProcessNewKF();
                 
             // try to find the loop KF for the current KF
+            bool bConfirmedLoopKF = false;
             if(_mvDatabase.size() > _mnDatabaseMinSize){
                 if(DetectLoop()){
                     if(MatchFeatures()){
-                        if(ComputeSE3()){
+                        bConfirmedLoopKF = ComputeSE3();
+                        if(bConfirmedLoopKF){
                             LoopFusion();
                         }
                     }
                 }
             }
 
-            if(1){
+            if(! bConfirmedLoopKF){
                 AddToDatabase();
             }
         }
+        usleep(1000);
     }
+
 }
 
 // -------------------------------------------------------------------------------------
@@ -90,13 +95,17 @@ void LoopClosing::ProcessNewKF(){
 
 // -------------------------------------------------------------------------------------
 bool LoopClosing::DetectLoop(){
-    // std::unique_lock<std::mutex> lck(_mmutexDatabase);
+
     std::vector<float> vScores;
     float maxScore = 0;
     int cntSuspected = 0;
     unsigned long bestId = 0;
+
     for(auto &db:  _mvDatabase){
+
+        // avoid comparing with recent KFs
         if(_mpCurrentKF->mnKFId - db.first < 20) break;
+
         float similarityScore = _mpDeepLCD->score(_mpCurrentKF->mpDescrVector, db.second->mpDescrVector);
         if(similarityScore > maxScore){
             maxScore = similarityScore;
@@ -107,17 +116,20 @@ bool LoopClosing::DetectLoop(){
         }
     }
 
-    if(maxScore > _similarityThres1 && cntSuspected <= 3){
-        _mpLoopKF = _mvDatabase.at(bestId);
-
-        LOG(INFO) << "find potential Candidate KF: current KF " 
-            << _mpCurrentKF->mnFrameId << ", candiate KF " << _mpLoopKF->mnFrameId << ", "
-            << _mpLoopKF->mnKFId
-            << ", score: " << maxScore;
-
-        return true;
+    // require high similarity score
+    // however, if there are too many high similarity scores, it means that current KF is not specific, then skip it
+    if(maxScore < _similarityThres1 || cntSuspected > 3){
+        return false;
     }
-    return false;
+
+    _mpLoopKF = _mvDatabase.at(bestId);
+
+    LOG(INFO) << "find potential Candidate KF: current KF " 
+        << _mpCurrentKF->mnFrameId << ", candiate KF " << _mpLoopKF->mnFrameId << ", "
+        << _mpLoopKF->mnKFId
+        << ", score: " << maxScore;
+
+    return true;
 }
 
 
@@ -147,7 +159,6 @@ bool LoopClosing::MatchFeatures(){
         return false;
     }
 
-
     LOG(INFO) << "match number: " << matches.size() ;
     LOG(INFO) << "good match number: " << _mvGoodFeatureMatches.size();
     
@@ -170,7 +181,6 @@ bool LoopClosing::ComputeSE3(){
             vCurrentPoints2d.push_back(
                 _mpCurrentKF->mvpFeaturesLeft[match.queryIdx]->mkpPosition.pt);
             Vec3 pos = mp->Pos();
-            // LOG(INFO) << "mappoint pos: " << pos;
             vLoopPoints3d.push_back(cv::Point3f(pos(0), pos(1), pos(2)));
             vLoopPoints2d.push_back(_mpLoopKF->mvpFeaturesLeft[match.trainIdx]->mkpPosition.pt);
         }
@@ -186,120 +196,149 @@ bool LoopClosing::ComputeSE3(){
 
     Eigen::Matrix3d Reigen;
     Eigen::Vector3d teigen;
+    _mmatMatchInliers.release();
 
-    cv::Mat inliers;
     bool success = cv::solvePnPRansac(vLoopPoints3d, vCurrentPoints2d, 
-            K, cv::Mat(), rvec, tvec, false, 200, 5.991, 0.99, inliers); // SOLVEPNP_EPNP
-    LOG(INFO) << "inliers size: " <<  inliers.rows;
-    if(success && inliers.rows > 20){
-        cv::Rodrigues(rvec, R);
-        cv::cv2eigen(R, Reigen);
-        cv::cv2eigen(tvec, teigen);
-        _mseCorrectedCurrentPose = Sophus::SE3d(Reigen, teigen);
-        LOG(INFO) << "loop KF pose matrix: \n" << _mpLoopKF->Pose().matrix();
-        LOG(INFO) << "by pnp: \n" << _mseCorrectedCurrentPose.matrix();
+            K, cv::Mat(), rvec, tvec, false, 200, 5.991, 0.99, _mmatMatchInliers);
+    LOG(INFO) << "inliers size: " <<  _mmatMatchInliers.rows;
 
-        // // show the match result
-        // cv::Mat img_goodmatch;
-        // cv::drawMatches(_mpCurrentKF->mImageLeft, _mpCurrentKF->GetKeyPoints(), 
-        //         _mpLoopKF->mImageLeft, _mpLoopKF->GetKeyPoints(), 
-        //         _mvGoodFeatureMatches, img_goodmatch);
-        // cv::resize(img_goodmatch, img_goodmatch, Size(), 0.5, 0.5);
-        // cv::imshow("good matches", img_goodmatch);
-        // cv::waitKey(1);
-
-        //  show the reprojection result
-        std::vector<cv::Point2f> vReprojectionPoints2d;
-        cv::projectPoints(vLoopPoints3d, rvec, tvec, K, cv::Mat(), vReprojectionPoints2d);
-
-        cv::Mat imgOut;
-        float disAverage = 0.0;
-        cv::cvtColor(_mpCurrentKF->mImageLeft, imgOut,cv::COLOR_GRAY2RGB);
-        for(int i = 0; i < inliers.rows; i++){
-            int index = inliers.at<int>(i, 0);
-            cv::circle(imgOut, vCurrentPoints2d[index], 5, cv::Scalar(0, 0, 255), -1);
-            cv::line(imgOut, vCurrentPoints2d[index], vReprojectionPoints2d[index], cv::Scalar(255, 0, 0), 2);
-        
-            float xx = vCurrentPoints2d[index].x - vReprojectionPoints2d[index].x;
-            float yy = vCurrentPoints2d[index].y - vReprojectionPoints2d[index].y;
-            float dis = std::sqrt((xx * xx) + (yy * yy));
-            disAverage += dis;
-        }
-        disAverage /=  inliers.rows;
-        if(disAverage > 5.991) {
-            return false;
-        }
-
-
-        cv::imshow("output", imgOut);
-        cv::waitKey(1);
-
-        return true;
+    if( !success ||  _mmatMatchInliers.rows < 10){
+        return false;
     }
 
+    cv::Rodrigues(rvec, R);
+    cv::cv2eigen(R, Reigen);
+    cv::cv2eigen(tvec, teigen);
+    _mseCorrectedCurrentPose = Sophus::SE3d(Reigen, teigen);
 
-    return false;
+    // LOG(INFO) << "loop KF pose matrix: \n" << _mpLoopKF->Pose().matrix();
+    // LOG(INFO) << "by pnp: \n" << _mseCorrectedCurrentPose.matrix();
+
+    // // show the match result
+    // cv::Mat img_goodmatch;
+    // cv::drawMatches(_mpCurrentKF->mImageLeft, _mpCurrentKF->GetKeyPoints(), 
+    //         _mpLoopKF->mImageLeft, _mpLoopKF->GetKeyPoints(), 
+    //         _mvGoodFeatureMatches, img_goodmatch);
+    // cv::resize(img_goodmatch, img_goodmatch, Size(), 0.5, 0.5);
+    // cv::imshow("good matches", img_goodmatch);
+    // cv::waitKey(1);
+
+    // verify the reprojection error, as the inliers in solvePnPRansac() is not so reliable
+    std::vector<cv::Point2f> vReprojectionPoints2d;
+    cv::projectPoints(vLoopPoints3d, rvec, tvec, K, cv::Mat(), vReprojectionPoints2d);
+
+    float disAverage = 0.0;
+
+    //  show the reprojection result
+    cv::Mat imgOut;
+    cv::cvtColor(_mpCurrentKF->mImageLeft, imgOut,cv::COLOR_GRAY2RGB);
+    for(int i = 0; i < _mmatMatchInliers.rows; i++){
+        // verify the reprojection error
+        int index = _mmatMatchInliers.at<int>(i, 0);
+        float xx = vCurrentPoints2d[index].x - vReprojectionPoints2d[index].x;
+        float yy = vCurrentPoints2d[index].y - vReprojectionPoints2d[index].y;
+        float dis = std::sqrt((xx * xx) + (yy * yy));
+        disAverage += dis;
+
+        cv::circle(imgOut, vCurrentPoints2d[index], 5, cv::Scalar(0, 0, 255), -1);
+        cv::line(imgOut, vCurrentPoints2d[index], vReprojectionPoints2d[index], cv::Scalar(255, 0, 0), 2);
+    }
+
+    disAverage /=  _mmatMatchInliers.rows;
+    if(disAverage > 5.991) {
+        return false;
+    }
+
+    cv::imshow("output", imgOut);
+    cv::waitKey(1);
+
+    return true;
 }
 
 // -------------------------------------------------------------------------------------
 
 void LoopClosing::LoopFusion(){
 
-    // request the backend to pause
+    // request the backend to pause, avoiding conflict
     auto pBackend = _mpBackend.lock();
-    LOG(INFO) << "1";
     pBackend->RequestPause();
-    LOG(INFO) << "2";
     while(! pBackend->IfHasPaused()){
         usleep(1000);
     }
-    LOG(INFO) << "3";
 
+    // avoid the conflict between frontend tracking and loopclosing correction
     std::unique_lock<std::mutex> lck(_mpMap->mmutexMapUpdate);
 
     // correct the KFs and mappoints in the active map
-    auto activeKFs = _mpMap->GetActiveKeyFrames();
-    for(auto &kf: activeKFs){
-        unsigned long kfId = kf.first;
+
+    std::unordered_map<unsigned long, SE3> correctedActivePoses;
+    correctedActivePoses.insert({_mpCurrentKF->mnKFId, _mseCorrectedCurrentPose});
+
+    // calculate the relative pose between current KF and KFs in active map
+    // and insert to the correctedActivePoses map
+    for(auto &keyframe: _mpMap->GetActiveKeyFrames()){
+        unsigned long kfId = keyframe.first;
         if(kfId == _mpCurrentKF->mnKFId){
             continue;
         }
-        // calculate the relative pose between current KF and KFs in active map
-        KeyFrame::Ptr activeKF = kf.second;
-        SE3 Tac = activeKF->Pose() * (_mpCurrentKF->Pose().inverse());
+        SE3 Tac = keyframe.second->Pose() * (_mpCurrentKF->Pose().inverse());
         SE3 Ta_corrected = Tac * _mseCorrectedCurrentPose;
-
-        // correct active KF's pose and its mappoints' positions
-        for(auto &feat: activeKF->mvpFeaturesLeft){
-            auto mp = feat->mpMapPoint.lock();
-            if(mp){
-                Vec3 posCamera = activeKF->Pose() * mp->Pos();
-                mp->SetPos(Ta_corrected.inverse() * posCamera);
-            }
-        }
-        activeKF->SetPose(Ta_corrected);
+        correctedActivePoses.insert({kfId, Ta_corrected});
     }
 
-    // correct current KF's pose and its mappoints' positions
-    for(auto &feat: _mpCurrentKF->mvpFeaturesLeft){
-        auto mp = feat->mpMapPoint.lock();
-        if(mp){
-            Vec3 posCamera = _mpCurrentKF->Pose() * mp->Pos();
-            mp->SetPos(_mseCorrectedCurrentPose.inverse() * posCamera);
+    // correct the active mappoints' positions
+    for(auto &mappoint: _mpMap->GetActiveMapPoints()){
+        MapPoint::Ptr mp = mappoint.second;
+
+        assert(! mp->GetActiveObservations().empty());
+
+        auto feat = mp->GetActiveObservations().front().lock();
+        auto observingKF = feat->mpKF.lock();
+
+        assert(correctedActivePoses.find(observingKF->mnKFId) != 
+                correctedActivePoses.end());
+
+        Vec3 posCamera = observingKF->Pose() * mp->Pos();
+        SE3 Ta_corrected = correctedActivePoses.at(observingKF->mnKFId);
+        mp->SetPos(Ta_corrected.inverse() * posCamera);
+    }
+
+    // correct the active KFs' poses
+    for(auto &keyframe: _mpMap->GetActiveKeyFrames()){
+        keyframe.second->SetPose(correctedActivePoses.at(keyframe.first));
+    }
+
+     // replace the current KF's mappoints with loop KF's matched mappoints
+    for(int i = 0; i < _mmatMatchInliers.rows; i++){
+        int index = _mmatMatchInliers.at<int>(i, 0);
+        cv::DMatch match = _mvGoodFeatureMatches[index];
+        auto loop_mp = _mpLoopKF->mvpFeaturesLeft[match.trainIdx]->mpMapPoint.lock();
+        
+        if(loop_mp){
+            auto current_mp = _mpCurrentKF->mvpFeaturesLeft[match.queryIdx]->mpMapPoint.lock();
+            if(current_mp){
+                for(auto &obs: current_mp->GetObservations()){
+                    auto obs_feat = obs.lock();
+                    loop_mp->AddObservation(obs_feat);
+                    obs_feat->mpMapPoint = loop_mp;
+                }
+                for(auto &obs: current_mp->GetActiveObservations()){
+                    loop_mp->AddActiveObservation(obs.lock());
+                }
+                _mpMap->RemoveMapPoint(current_mp);
+            }else{
+                _mpCurrentKF->mvpFeaturesLeft[match.queryIdx]->mpMapPoint = loop_mp;
+            }            
         }
     }
-    _mpCurrentKF->SetPose(_mseCorrectedCurrentPose);
 
     _mpLastClosedKF = _mpCurrentKF;
 
     // resume the backend
-    LOG(INFO) << "4";
     pBackend->Resume();
-    LOG(INFO) << "5";
 
-    LOG(INFO) << "corrected the map: correct KF " << _mpCurrentKF->mnKFId;
+    LOG(INFO) << "corrected the map: correct current KF " << _mpCurrentKF->mnKFId << " and other active KFs";
 }
-
 
 
 
@@ -307,7 +346,6 @@ void LoopClosing::LoopFusion(){
 // -------------------------------------------------------------------------------------
 
 void LoopClosing::AddToDatabase(){
-    // std::unique_lock<std::mutex> lck(_mmutexDatabase);
     // LOG(INFO) << "add KF " <<  _mpCurrentKF->mnKFId << " to database.";
     
     // add curernt KF to the Database

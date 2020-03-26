@@ -33,8 +33,12 @@ public:
     // add feature in active KF which has observed this mappoint
     void AddActiveObservation(std::shared_ptr<Feature> feature);
 
+    void AddObservation(std::shared_ptr<Feature> feature);
+
     // return the list of the observations by active KF
     std::list<std::weak_ptr<Feature>> GetActiveObservations();
+
+    std::list<std::weak_ptr<Feature>> GetObservations();
 
     // remove the feature from current mappoint's active observation
     void RemoveActiveObservation(std::shared_ptr<Feature> feat);
@@ -47,6 +51,8 @@ public:
     
     int mnActiveObservedTimes = 0;
 
+    int mnObservedTimes = 0;
+
     bool mbIsOutlier = false;
 
 
@@ -55,6 +61,7 @@ private:
     std::mutex _mmutexData;
     
     std::list<std::weak_ptr<Feature>> _mpActiveObservations;   // 或许可以不用 list 而是 unordered_set
+    std::list<std::weak_ptr<Feature>> _mpObservations;
 
     Vec3 _mPos = Vec3::Zero();
 };

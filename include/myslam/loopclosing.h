@@ -61,6 +61,8 @@ private:
     void LoopFusion();
 
 
+
+
     
 private:
     std::thread _mthreadLoopClosing;
@@ -82,6 +84,8 @@ private:
     std::shared_ptr<KeyFrame> _mpLoopKF = nullptr;
     std::vector<cv::DMatch> _mvGoodFeatureMatches;
     Sophus::SE3d _mseCorrectedCurrentPose;
+    cv::Mat _mmatMatchInliers;
+
     // DeepLCD::DescrVector _mCurrentDescrVector;
     std::list<std::shared_ptr<KeyFrame>> _mlNewKeyFrames;
 
