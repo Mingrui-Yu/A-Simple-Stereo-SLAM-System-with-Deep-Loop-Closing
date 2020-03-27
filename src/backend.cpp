@@ -102,6 +102,10 @@ void Backend::ProcessNewKeyFrame(){
         _mpCurrentKF = _mlNewKeyFrames.front();
         _mlNewKeyFrames.pop_front();
     }
+
+    if(_mpLastKF){
+        _mpCurrentKF->mpLastKF = _mpLastKF;
+    }
     
     _mpMap->InsertKeyFrame(_mpCurrentKF);
     _mpLoopClosing->InsertNewKeyFrame(_mpCurrentKF);
@@ -109,6 +113,8 @@ void Backend::ProcessNewKeyFrame(){
     if(_mpViewer){
         _mpViewer->UpdateMap();
     }
+
+    _mpLastKF = _mpCurrentKF;
 }
 
 // -----------------------------------------------------------------------------------
@@ -224,7 +230,7 @@ void Backend::OptimizeActiveMap(){
             ef.second->mbIsOutlier = false;
         }
     }
-    LOG(INFO) << "Outlier/Inlier in backend optimization: " << cntOutlier << "/" << cntInlier;
+    // LOG(INFO) << "Outlier/Inlier in backend optimization: " << cntOutlier << "/" << cntInlier;
 
     // Set pose and landmark position
     for (auto &v: vertices_kfs) {

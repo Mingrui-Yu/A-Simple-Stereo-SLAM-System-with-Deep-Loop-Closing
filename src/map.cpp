@@ -116,16 +116,9 @@ void Map::RemoveMapPoint(std::shared_ptr<MapPoint> mappoint){
 
     // delete from all mappoints
     _mumpAllMapPoints.erase(mpId);
-    // auto iter = _mumpAllMapPoints.find(mpId);
-    // if(iter != _mumpAllMapPoints.end()){
-    //      _mumpAllMapPoints.erase(iter);
-    // }
+
     // delete from active mappoints
     _mumpActiveMapPoints.erase(mpId);
-    // auto iter2 = _mumpActiveMapPoints.find(mpId);
-    // if(iter2 != _mumpActiveMapPoints.end()){
-    //      _mumpActiveMapPoints.erase(iter2);
-    // }
 }
 
 

@@ -60,6 +60,8 @@ private:
 
     void LoopFusion();
 
+    void PoseGraphOptimization();
+
 
 
 

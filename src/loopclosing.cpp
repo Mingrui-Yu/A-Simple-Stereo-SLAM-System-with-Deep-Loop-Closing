@@ -10,6 +10,7 @@
 #include "myslam/ORBextractor.h"
 #include "myslam/camera.h"
 #include "myslam/backend.h"
+#include "myslam/g2o_types.h"
 
 #include <opencv2/core/eigen.hpp>
 #include <opencv2/calib3d.hpp>
@@ -252,6 +253,10 @@ bool LoopClosing::ComputeSE3(){
     cv::imshow("output", imgOut);
     cv::waitKey(1);
 
+    // now has passed all verification, regard it as the true loop keyframe
+    _mpCurrentKF->mpLoopKF = _mpLoopKF;
+    _mpLastClosedKF = _mpCurrentKF;
+
     return true;
 }
 
@@ -265,9 +270,6 @@ void LoopClosing::LoopFusion(){
     while(! pBackend->IfHasPaused()){
         usleep(1000);
     }
-
-    // avoid the conflict between frontend tracking and loopclosing correction
-    std::unique_lock<std::mutex> lck(_mpMap->mmutexMapUpdate);
 
     // correct the KFs and mappoints in the active map
 
@@ -286,53 +288,57 @@ void LoopClosing::LoopFusion(){
         correctedActivePoses.insert({kfId, Ta_corrected});
     }
 
-    // correct the active mappoints' positions
-    for(auto &mappoint: _mpMap->GetActiveMapPoints()){
-        MapPoint::Ptr mp = mappoint.second;
+    { // mutex
+        // avoid the conflict between frontend tracking and loopclosing correction
+        std::unique_lock<std::mutex> lck(_mpMap->mmutexMapUpdate);
+        // correct the active mappoints' positions
+        for(auto &mappoint: _mpMap->GetActiveMapPoints()){
+            MapPoint::Ptr mp = mappoint.second;
 
-        assert(! mp->GetActiveObservations().empty());
+            assert(! mp->GetActiveObservations().empty());
 
-        auto feat = mp->GetActiveObservations().front().lock();
-        auto observingKF = feat->mpKF.lock();
+            auto feat = mp->GetActiveObservations().front().lock();
+            auto observingKF = feat->mpKF.lock();
 
-        assert(correctedActivePoses.find(observingKF->mnKFId) != 
-                correctedActivePoses.end());
+            assert(correctedActivePoses.find(observingKF->mnKFId) != 
+                    correctedActivePoses.end());
 
-        Vec3 posCamera = observingKF->Pose() * mp->Pos();
-        SE3 Ta_corrected = correctedActivePoses.at(observingKF->mnKFId);
-        mp->SetPos(Ta_corrected.inverse() * posCamera);
-    }
-
-    // correct the active KFs' poses
-    for(auto &keyframe: _mpMap->GetActiveKeyFrames()){
-        keyframe.second->SetPose(correctedActivePoses.at(keyframe.first));
-    }
-
-     // replace the current KF's mappoints with loop KF's matched mappoints
-    for(int i = 0; i < _mmatMatchInliers.rows; i++){
-        int index = _mmatMatchInliers.at<int>(i, 0);
-        cv::DMatch match = _mvGoodFeatureMatches[index];
-        auto loop_mp = _mpLoopKF->mvpFeaturesLeft[match.trainIdx]->mpMapPoint.lock();
-        
-        if(loop_mp){
-            auto current_mp = _mpCurrentKF->mvpFeaturesLeft[match.queryIdx]->mpMapPoint.lock();
-            if(current_mp){
-                for(auto &obs: current_mp->GetObservations()){
-                    auto obs_feat = obs.lock();
-                    loop_mp->AddObservation(obs_feat);
-                    obs_feat->mpMapPoint = loop_mp;
-                }
-                for(auto &obs: current_mp->GetActiveObservations()){
-                    loop_mp->AddActiveObservation(obs.lock());
-                }
-                _mpMap->RemoveMapPoint(current_mp);
-            }else{
-                _mpCurrentKF->mvpFeaturesLeft[match.queryIdx]->mpMapPoint = loop_mp;
-            }            
+            Vec3 posCamera = observingKF->Pose() * mp->Pos();
+            SE3 Ta_corrected = correctedActivePoses.at(observingKF->mnKFId);
+            mp->SetPos(Ta_corrected.inverse() * posCamera);
         }
-    }
 
-    _mpLastClosedKF = _mpCurrentKF;
+        // correct the active KFs' poses
+        for(auto &keyframe: _mpMap->GetActiveKeyFrames()){
+            keyframe.second->SetPose(correctedActivePoses.at(keyframe.first));
+        }
+
+        // replace the current KF's mappoints with loop KF's matched mappoints
+        for(int i = 0; i < _mmatMatchInliers.rows; i++){
+            int index = _mmatMatchInliers.at<int>(i, 0);
+            cv::DMatch match = _mvGoodFeatureMatches[index];
+            auto loop_mp = _mpLoopKF->mvpFeaturesLeft[match.trainIdx]->mpMapPoint.lock();
+            
+            if(loop_mp){
+                auto current_mp = _mpCurrentKF->mvpFeaturesLeft[match.queryIdx]->mpMapPoint.lock();
+                if(current_mp){
+                    for(auto &obs: current_mp->GetObservations()){
+                        auto obs_feat = obs.lock();
+                        loop_mp->AddObservation(obs_feat);
+                        obs_feat->mpMapPoint = loop_mp;
+                    }
+                    for(auto &obs: current_mp->GetActiveObservations()){
+                        loop_mp->AddActiveObservation(obs.lock());
+                    }
+                    _mpMap->RemoveMapPoint(current_mp);
+                }else{
+                    _mpCurrentKF->mvpFeaturesLeft[match.queryIdx]->mpMapPoint = loop_mp;
+                }            
+            }
+        }
+    } // mutex
+   
+    PoseGraphOptimization();
 
     // resume the backend
     pBackend->Resume();
@@ -340,7 +346,118 @@ void LoopClosing::LoopFusion(){
     LOG(INFO) << "corrected the map: correct current KF " << _mpCurrentKF->mnKFId << " and other active KFs";
 }
 
+// -------------------------------------------------------------------------------------------
 
+void LoopClosing::PoseGraphOptimization(){
+    typedef g2o::BlockSolver<g2o::BlockSolverTraits<6, 6>> BlockSolverType;
+    typedef g2o::LinearSolverEigen<BlockSolverType::PoseMatrixType> LinearSolverType;
+    auto solver = new g2o::OptimizationAlgorithmLevenberg(
+            g2o::make_unique<BlockSolverType>(g2o::make_unique<LinearSolverType>()));
+    g2o::SparseOptimizer optimizer; 
+    optimizer.setAlgorithm(solver); 
+
+    Map::KeyFramesType keyframes = _mpMap->GetAllKeyFrames();
+
+    std::map<unsigned long, VertexPose *> vertices_kf; 
+    for(auto &keyframe: keyframes){
+        unsigned long kfId = keyframe.first;
+        auto kf = keyframe.second;
+        VertexPose *vertex_pose = new VertexPose();
+        vertex_pose->setId(kf->mnKFId);
+        vertex_pose->setEstimate(kf->Pose());
+        vertex_pose->setMarginalized(false);
+
+        auto mapActiveKFs = _mpMap->GetActiveKeyFrames();
+        // active KFs, loop KF, initial KF are fixed
+        if(mapActiveKFs.find(kfId) != mapActiveKFs.end()
+                || (kfId == _mpLoopKF->mnKFId) || kfId == 0){
+            vertex_pose->setFixed(true);
+        }
+
+        optimizer.addVertex(vertex_pose);
+        vertices_kf.insert({kf->mnKFId, vertex_pose});
+    }
+
+    int index = 0;
+    std::map<int, EdgePoseGraph *> vEdges;
+    for(auto &keyframe: keyframes){
+        unsigned long kfId = keyframe.first;
+        if(vertices_kf.find(kfId) == vertices_kf.end()) continue;
+        auto kf = keyframe.second;
+
+        auto lastKF = kf->mpLastKF.lock();
+        if(lastKF){
+            EdgePoseGraph *edge = new EdgePoseGraph();
+            edge->setId(index);
+            edge->setVertex(0, vertices_kf.at(kfId));
+            edge->setVertex(1, vertices_kf.at(lastKF->mnKFId));
+            edge->setMeasurement(kf->Pose() * lastKF->Pose().inverse());
+            edge->setInformation(Mat66::Identity());
+
+            optimizer.addEdge(edge);
+            vEdges.insert({index, edge});
+            // LOG(INFO) << "id: " << index << "vertices id: " << kf->mnKFId << " "
+            //     << lastKF << ""
+            
+            index++;
+        }
+        auto loopKF = kf->mpLoopKF.lock();
+        if(loopKF){
+            EdgePoseGraph *edge = new EdgePoseGraph();
+            edge->setId(index);
+            edge->setVertex(0, vertices_kf.at(kfId));
+            edge->setVertex(1, vertices_kf.at(loopKF->mnKFId));
+            edge->setMeasurement(kf->Pose() * loopKF->Pose().inverse());
+            edge->setInformation(Mat66::Identity());
+
+            optimizer.addEdge(edge);
+            vEdges.insert({index, edge});
+
+            index++;
+        }
+    }
+
+    optimizer.initializeOptimization();
+    optimizer.optimize(20);
+
+    for(auto &edge: vEdges){
+        LOG(INFO) << "edge id: " << edge.first->chi2();
+        LOG(INFO) << "edge error: " << edge.second->chi2();
+    }
+
+    { // mutex
+        // avoid the conflict between frontend tracking and loopclosing correction
+        std::unique_lock<std::mutex> lck(_mpMap->mmutexMapUpdate);
+        
+        // set the mappoints' positions according to its first observing KF's optimized pose
+        for(auto &mappoint: _mpMap->GetAllMapPoints()){
+            MapPoint::Ptr mp = mappoint.second;
+
+            assert(! mp->GetObservations().empty());
+
+            auto feat = mp->GetObservations().front().lock();
+            auto observingKF = feat->mpKF.lock();
+
+            Vec3 posCamera = observingKF->Pose() * mp->Pos();
+            SE3 T_optimized = vertices_kf.at(observingKF->mnKFId)->estimate();
+            mp->SetPos(T_optimized.inverse() * posCamera);
+        }
+
+        // SE3 pose;
+        // pose =_mpMap->GetAllKeyFrames().at(_mpCurrentKF->mnKFId - 10)->Pose();
+        // LOG(INFO) << "pose before optimization: " << pose.matrix();
+
+        // set the KFs' optimized poses
+        for (auto &v: vertices_kf) {
+            keyframes.at(v.first)->SetPose(v.second->estimate());
+        }
+
+        // pose =_mpMap->GetAllKeyFrames().at(_mpCurrentKF->mnKFId - 10)->Pose();
+        // LOG(INFO) << "pose after optimization: " << pose.matrix();
+
+    } // mutex
+
+}
 
 
 // -------------------------------------------------------------------------------------

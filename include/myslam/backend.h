@@ -85,6 +85,7 @@ private:
 
     std::list<std::shared_ptr<KeyFrame>> _mlNewKeyFrames;
 
+    std::shared_ptr<KeyFrame> _mpLastKF = nullptr;
     std::shared_ptr<KeyFrame> _mpCurrentKF;
     std::shared_ptr<Frame> _mpCurrentFrame;
     

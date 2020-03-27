@@ -15,10 +15,13 @@
 #include <g2o/core/sparse_optimizer.h>
 #include <g2o/solvers/csparse/linear_solver_csparse.h>
 #include <g2o/solvers/dense/linear_solver_dense.h>
+#include <g2o/solvers/eigen/linear_solver_eigen.h>
+#include <g2o/types/slam3d/types_slam3d.h>
 
 namespace myslam {
-/// vertex and edges used in g2o ba
-/// 位姿顶点
+
+// ---------------------------------------------------------------------------------------------
+
 class VertexPose : public g2o::BaseVertex<6, SE3> {
    public:
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
@@ -55,7 +58,8 @@ class VertexXYZ : public g2o::BaseVertex<3, Vec3> {
     virtual bool write(std::ostream &out) const override { return true; }
 };
 
-/// 仅估计位姿的一元边
+// ---------------------------------------------------------------------------------------------
+
 class EdgeProjectionPoseOnly : public g2o::BaseUnaryEdge<2, Vec2, VertexPose> {
    public:
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
@@ -97,13 +101,13 @@ class EdgeProjectionPoseOnly : public g2o::BaseUnaryEdge<2, Vec2, VertexPose> {
     Mat33 _K;
 };
 
-/// 带有地图和位姿的二元边
+// ---------------------------------------------------------------------------------------------
+
 class EdgeProjection
     : public g2o::BaseBinaryEdge<2, Vec2, VertexPose, VertexXYZ> {
    public:
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
 
-    /// 构造时传入相机内外参
     EdgeProjection(const Mat33 &K, const SE3 &cam_ext) : _K(K) {
         _cam_ext = cam_ext;
     }
@@ -144,9 +148,47 @@ class EdgeProjection
     virtual bool write(std::ostream &out) const override { return true; }
 
    private:
-    Mat33 _K;
-    SE3 _cam_ext;
+        Mat33 _K;
+        SE3 _cam_ext;
 };
+
+// ---------------------------------------------------------------------------------------------
+
+class EdgePoseGraph: public g2o::BaseBinaryEdge<6, SE3, VertexPose, VertexPose>{
+public:
+    EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+
+    virtual void computeError() override{
+        const VertexPose *vertex0 = static_cast<VertexPose *>(_vertices[0]);
+        const VertexPose *vertex1 = static_cast<VertexPose *>(_vertices[1]);
+        SE3 v0 = vertex0->estimate();
+        SE3 v1 = vertex1->estimate();
+        _error = (_measurement.inverse() * v0 * v1.inverse()).log();
+    }
+
+    // virtual void linearizeOplus() override {
+    //     // const VertexPose *vertex0 = static_cast<VertexPose *>(_vertices[0]);
+    //     const VertexPose *vertex1 = static_cast<VertexPose *>(_vertices[1]);
+    //     // SE3 v0 = vertex0->estimate();
+    //     SE3 v1 = vertex1->estimate();
+
+    //     Mat66 J;
+    //     SE3 Error = SE3::exp(_error);
+    //     J.block(0, 0, 3, 3) = Sophus::SO3d::hat(Error.so3().log());
+    //     J.block(0, 3, 3, 3) = Sophus::SO3d::hat(Error.translation());
+    //     J.block(3, 0, 3, 3) = Mat33::Zero(3, 3);
+    //     J.block(3, 3, 3, 3) = Sophus::SO3d::hat(Error.so3().log());
+    //     J = J * 0.5 + Mat66::Identity();
+
+    //     _jacobianOplusXi = -J * v1.inverse().Adj();
+    //     _jacobianOplusXj = J * v1.inverse().Adj();
+    // }
+
+    virtual bool read(std::istream &in) override { return true; }
+
+    virtual bool write(std::ostream &out) const override { return true; }
+};
+
 
 }  // namespace myslam
 

@@ -64,6 +64,8 @@ bool Frontend::GrabStereoImage (const cv::Mat &leftImg, const cv::Mat &rightImg,
         _mpViewer->AddCurrentFrame(_mpCurrentFrame);
     }
 
+    // cv::waitKey(10);
+
     _mpLastFrame = _mpCurrentFrame;
     return true;
 }
@@ -89,7 +91,7 @@ bool Frontend::Track(){
     } else{
         // lost
         _mStatus = FrontendStatus::LOST;
-        LOG(INFO) << "current frame: tracking LOST!";
+        // LOG(INFO) << "current frame: tracking LOST!";
     }
 
     _mseRelativeMotion = _mpCurrentFrame->RelativePose() * _mpLastFrame->RelativePose().inverse();
@@ -146,7 +148,7 @@ int Frontend::TrackLastFrame(){
         }
     }
 
-    LOG(INFO) << "Find " << numGoodPts << " keypoints in the last frame.";
+    // LOG(INFO) << "Find " << numGoodPts << " keypoints in the last frame.";
     return numGoodPts;
 }
 
@@ -223,7 +225,7 @@ int Frontend::EstimateCurrentPose(){
             }
         }
     }
-    LOG(INFO) << "Outliers/Inliers in frontend current pose estimating: "  << cntOutliers << "/" << features.size() - cntOutliers;
+    // LOG(INFO) << "Outliers/Inliers in frontend current pose estimating: "  << cntOutliers << "/" << features.size() - cntOutliers;
 
     // set pose and outlier
     _mpCurrentFrame->SetPose(vertex_pose->estimate());
@@ -292,7 +294,7 @@ int Frontend::DetectFeatures(){
         _mpCurrentFrame->mvpFeaturesLeft.push_back(newFeature);
         cntDetected++;
     }
-    LOG(INFO) << "Detect " << cntDetected << " new features";
+    // LOG(INFO) << "Detect " << cntDetected << " new features";
 
 
     // std::vector<cv::KeyPoint> preKeyPoints;
@@ -389,7 +391,7 @@ int Frontend::FindFeaturesInRight(){
         }
     }
 
-    LOG(INFO) << "Find " << numGoodPoints << " corresponding features in the right image.";
+    // LOG(INFO) << "Find " << numGoodPoints << " corresponding features in the right image.";
     return numGoodPoints;
 }
 
@@ -436,7 +438,7 @@ bool Frontend::BuildInitMap(){
         _mpCurrentFrame->SetRelativePose(Sophus::SE3d::exp(se3_zero));
     }
     
-    LOG(INFO) << "Initial map created with " << cntInitLandmarks << " map points.";
+    // LOG(INFO) << "Initial map created with " << cntInitLandmarks << " map points.";
     return true;
 }
 
@@ -451,7 +453,7 @@ bool Frontend::InsertKeyFrame(){
     if(_mpBackend){
         KeyFrame::Ptr newKF = KeyFrame::CreateKF(_mpCurrentFrame);
         newKF->SetPose(_mpCurrentFrame->RelativePose() * _mpReferenceKF->Pose());
-        LOG(INFO) << "Set frame " << newKF->mnFrameId << " as keyframe " << newKF->mnKFId;
+        // LOG(INFO) << "Set frame " << newKF->mnFrameId << " as keyframe " << newKF->mnKFId;
         
         _mpBackend->InsertKeyFrame(newKF);
         _mpReferenceKF = newKF;
@@ -501,7 +503,7 @@ int Frontend::TriangulateNewPoints(){
             cntTriangulatedPts++;
         }
     }
-    LOG(INFO) << " trangluate " << cntTriangulatedPts << " new mappoints, and now totally tracking " << cntTriangulatedPts + cntPreviousMapPoints << " mappoints."  ;
+    // LOG(INFO) << " trangluate " << cntTriangulatedPts << " new mappoints, and now totally tracking " << cntTriangulatedPts + cntPreviousMapPoints << " mappoints."  ;
     return cntTriangulatedPts;
 }
 

@@ -24,7 +24,7 @@ public:
 
     void SetPose(const SE3 &pose);
 
-    SE3 Pose();
+    SE3 Pose(); // Tcw
 
     std::vector<cv::KeyPoint> GetKeyPoints();
 
@@ -33,6 +33,9 @@ public:
     unsigned long mnFrameId;
     unsigned long mnKFId;
     double mdTimeStamp;
+
+    std::weak_ptr<KeyFrame> mpLastKF;
+    std::weak_ptr<KeyFrame> mpLoopKF;
 
     std::vector<std::shared_ptr<Feature>> mvpFeaturesLeft;
     cv::Mat mImageLeft;

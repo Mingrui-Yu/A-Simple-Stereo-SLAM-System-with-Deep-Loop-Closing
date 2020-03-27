@@ -36,3 +36,5 @@ rk->setDelta(chi2_th);
 关于 mask 是否有效，还需进一步讨论
 
 可以尝试解决 LK flow tracking 过程中 keypoints 的 octive 丢失的问题
+
+optimization 中 能否用 unordered_map 代替 map

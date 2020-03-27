@@ -472,10 +472,17 @@ src/CMakeFiles/myslam.dir/backend.cpp.o
  /usr/include/eigen3/Eigen/Eigenvalues
  /usr/include/eigen3/Eigen/Geometry
  /usr/include/eigen3/Eigen/Householder
+ /usr/include/eigen3/Eigen/IterativeLinearSolvers
  /usr/include/eigen3/Eigen/Jacobi
  /usr/include/eigen3/Eigen/LU
+ /usr/include/eigen3/Eigen/OrderingMethods
  /usr/include/eigen3/Eigen/QR
  /usr/include/eigen3/Eigen/SVD
+ /usr/include/eigen3/Eigen/Sparse
+ /usr/include/eigen3/Eigen/SparseCholesky
+ /usr/include/eigen3/Eigen/SparseCore
+ /usr/include/eigen3/Eigen/SparseLU
+ /usr/include/eigen3/Eigen/SparseQR
  /usr/include/eigen3/Eigen/StdVector
  /usr/include/eigen3/Eigen/src/Cholesky/LDLT.h
  /usr/include/eigen3/Eigen/src/Cholesky/LLT.h
@@ -608,6 +615,7 @@ src/CMakeFiles/myslam.dir/backend.cpp.o
  /usr/include/eigen3/Eigen/src/Core/util/Macros.h
  /usr/include/eigen3/Eigen/src/Core/util/Memory.h
  /usr/include/eigen3/Eigen/src/Core/util/Meta.h
+ /usr/include/eigen3/Eigen/src/Core/util/NonMPL2.h
  /usr/include/eigen3/Eigen/src/Core/util/ReenableStupidWarnings.h
  /usr/include/eigen3/Eigen/src/Core/util/StaticAssert.h
  /usr/include/eigen3/Eigen/src/Core/util/XprHelper.h
@@ -648,6 +656,14 @@ src/CMakeFiles/myslam.dir/backend.cpp.o
  /usr/include/eigen3/Eigen/src/Householder/BlockHouseholder.h
  /usr/include/eigen3/Eigen/src/Householder/Householder.h
  /usr/include/eigen3/Eigen/src/Householder/HouseholderSequence.h
+ /usr/include/eigen3/Eigen/src/IterativeLinearSolvers/BasicPreconditioners.h
+ /usr/include/eigen3/Eigen/src/IterativeLinearSolvers/BiCGSTAB.h
+ /usr/include/eigen3/Eigen/src/IterativeLinearSolvers/ConjugateGradient.h
+ /usr/include/eigen3/Eigen/src/IterativeLinearSolvers/IncompleteCholesky.h
+ /usr/include/eigen3/Eigen/src/IterativeLinearSolvers/IncompleteLUT.h
+ /usr/include/eigen3/Eigen/src/IterativeLinearSolvers/IterativeSolverBase.h
+ /usr/include/eigen3/Eigen/src/IterativeLinearSolvers/LeastSquareConjugateGradient.h
+ /usr/include/eigen3/Eigen/src/IterativeLinearSolvers/SolveWithGuess.h
  /usr/include/eigen3/Eigen/src/Jacobi/Jacobi.h
  /usr/include/eigen3/Eigen/src/LU/Determinant.h
  /usr/include/eigen3/Eigen/src/LU/FullPivLU.h
@@ -655,6 +671,9 @@ src/CMakeFiles/myslam.dir/backend.cpp.o
  /usr/include/eigen3/Eigen/src/LU/PartialPivLU.h
  /usr/include/eigen3/Eigen/src/LU/PartialPivLU_LAPACKE.h
  /usr/include/eigen3/Eigen/src/LU/arch/Inverse_SSE.h
+ /usr/include/eigen3/Eigen/src/OrderingMethods/Amd.h
+ /usr/include/eigen3/Eigen/src/OrderingMethods/Eigen_Colamd.h
+ /usr/include/eigen3/Eigen/src/OrderingMethods/Ordering.h
  /usr/include/eigen3/Eigen/src/QR/ColPivHouseholderQR.h
  /usr/include/eigen3/Eigen/src/QR/ColPivHouseholderQR_LAPACKE.h
  /usr/include/eigen3/Eigen/src/QR/CompleteOrthogonalDecomposition.h
@@ -666,6 +685,56 @@ src/CMakeFiles/myslam.dir/backend.cpp.o
  /usr/include/eigen3/Eigen/src/SVD/JacobiSVD_LAPACKE.h
  /usr/include/eigen3/Eigen/src/SVD/SVDBase.h
  /usr/include/eigen3/Eigen/src/SVD/UpperBidiagonalization.h
+ /usr/include/eigen3/Eigen/src/SparseCholesky/SimplicialCholesky.h
+ /usr/include/eigen3/Eigen/src/SparseCholesky/SimplicialCholesky_impl.h
+ /usr/include/eigen3/Eigen/src/SparseCore/AmbiVector.h
+ /usr/include/eigen3/Eigen/src/SparseCore/CompressedStorage.h
+ /usr/include/eigen3/Eigen/src/SparseCore/ConservativeSparseSparseProduct.h
+ /usr/include/eigen3/Eigen/src/SparseCore/MappedSparseMatrix.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseAssign.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseBlock.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseColEtree.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseCompressedBase.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseCwiseBinaryOp.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseCwiseUnaryOp.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseDenseProduct.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseDiagonalProduct.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseDot.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseFuzzy.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseMap.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseMatrix.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseMatrixBase.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparsePermutation.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseProduct.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseRedux.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseRef.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseSelfAdjointView.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseSolverBase.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseSparseProductWithPruning.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseTranspose.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseTriangularView.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseUtil.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseVector.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseView.h
+ /usr/include/eigen3/Eigen/src/SparseCore/TriangularSolver.h
+ /usr/include/eigen3/Eigen/src/SparseLU/SparseLU.h
+ /usr/include/eigen3/Eigen/src/SparseLU/SparseLUImpl.h
+ /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_Memory.h
+ /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_Structs.h
+ /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_SupernodalMatrix.h
+ /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_Utils.h
+ /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_column_bmod.h
+ /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_column_dfs.h
+ /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_copy_to_ucol.h
+ /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_gemm_kernel.h
+ /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_heap_relax_snode.h
+ /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_kernel_bmod.h
+ /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_panel_bmod.h
+ /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_panel_dfs.h
+ /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_pivotL.h
+ /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_pruneL.h
+ /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_relax_snode.h
+ /usr/include/eigen3/Eigen/src/SparseQR/SparseQR.h
  /usr/include/eigen3/Eigen/src/StlSupport/StdVector.h
  /usr/include/eigen3/Eigen/src/StlSupport/details.h
  /usr/include/eigen3/Eigen/src/misc/Image.h
@@ -687,6 +756,8 @@ src/CMakeFiles/myslam.dir/backend.cpp.o
  /usr/local/include/g2o/core/base_binary_edge.h
  /usr/local/include/g2o/core/base_binary_edge.hpp
  /usr/local/include/g2o/core/base_edge.h
+ /usr/local/include/g2o/core/base_multi_edge.h
+ /usr/local/include/g2o/core/base_multi_edge.hpp
  /usr/local/include/g2o/core/base_unary_edge.h
  /usr/local/include/g2o/core/base_unary_edge.hpp
  /usr/local/include/g2o/core/base_vertex.h
@@ -694,11 +765,13 @@ src/CMakeFiles/myslam.dir/backend.cpp.o
  /usr/local/include/g2o/core/batch_stats.h
  /usr/local/include/g2o/core/block_solver.h
  /usr/local/include/g2o/core/block_solver.hpp
+ /usr/local/include/g2o/core/cache.h
  /usr/local/include/g2o/core/creators.h
  /usr/local/include/g2o/core/dynamic_aligned_buffer.hpp
  /usr/local/include/g2o/core/eigen_types.h
  /usr/local/include/g2o/core/g2o_core_api.h
  /usr/local/include/g2o/core/hyper_graph.h
+ /usr/local/include/g2o/core/hyper_graph_action.h
  /usr/local/include/g2o/core/jacobian_workspace.h
  /usr/local/include/g2o/core/linear_solver.h
  /usr/local/include/g2o/core/marginal_covariance_cholesky.h
@@ -726,12 +799,34 @@ src/CMakeFiles/myslam.dir/backend.cpp.o
  /usr/local/include/g2o/solvers/csparse/g2o_csparse_extension_api.h
  /usr/local/include/g2o/solvers/csparse/linear_solver_csparse.h
  /usr/local/include/g2o/solvers/dense/linear_solver_dense.h
+ /usr/local/include/g2o/solvers/eigen/linear_solver_eigen.h
  /usr/local/include/g2o/stuff/g2o_stuff_api.h
  /usr/local/include/g2o/stuff/macros.h
  /usr/local/include/g2o/stuff/misc.h
  /usr/local/include/g2o/stuff/property.h
  /usr/local/include/g2o/stuff/string_tools.h
  /usr/local/include/g2o/stuff/timeutil.h
+ /usr/local/include/g2o/types/slam3d/edge_pointxyz.h
+ /usr/local/include/g2o/types/slam3d/edge_se3.h
+ /usr/local/include/g2o/types/slam3d/edge_se3_lotsofxyz.h
+ /usr/local/include/g2o/types/slam3d/edge_se3_offset.h
+ /usr/local/include/g2o/types/slam3d/edge_se3_pointxyz.h
+ /usr/local/include/g2o/types/slam3d/edge_se3_pointxyz_depth.h
+ /usr/local/include/g2o/types/slam3d/edge_se3_pointxyz_disparity.h
+ /usr/local/include/g2o/types/slam3d/edge_se3_prior.h
+ /usr/local/include/g2o/types/slam3d/edge_se3_xyzprior.h
+ /usr/local/include/g2o/types/slam3d/edge_xyz_prior.h
+ /usr/local/include/g2o/types/slam3d/g2o_types_slam3d_api.h
+ /usr/local/include/g2o/types/slam3d/isometry3d_mappings.h
+ /usr/local/include/g2o/types/slam3d/parameter_camera.h
+ /usr/local/include/g2o/types/slam3d/parameter_se3_offset.h
+ /usr/local/include/g2o/types/slam3d/parameter_stereo_camera.h
+ /usr/local/include/g2o/types/slam3d/se3_ops.h
+ /usr/local/include/g2o/types/slam3d/se3_ops.hpp
+ /usr/local/include/g2o/types/slam3d/se3quat.h
+ /usr/local/include/g2o/types/slam3d/types_slam3d.h
+ /usr/local/include/g2o/types/slam3d/vertex_pointxyz.h
+ /usr/local/include/g2o/types/slam3d/vertex_se3.h
  /usr/local/include/opencv/cxcore.h
  /usr/local/include/opencv2/calib3d.hpp
  /usr/local/include/opencv2/calib3d/calib3d_c.h
@@ -2717,10 +2812,17 @@ src/CMakeFiles/myslam.dir/frontend.cpp.o
  /usr/include/eigen3/Eigen/Eigenvalues
  /usr/include/eigen3/Eigen/Geometry
  /usr/include/eigen3/Eigen/Householder
+ /usr/include/eigen3/Eigen/IterativeLinearSolvers
  /usr/include/eigen3/Eigen/Jacobi
  /usr/include/eigen3/Eigen/LU
+ /usr/include/eigen3/Eigen/OrderingMethods
  /usr/include/eigen3/Eigen/QR
  /usr/include/eigen3/Eigen/SVD
+ /usr/include/eigen3/Eigen/Sparse
+ /usr/include/eigen3/Eigen/SparseCholesky
+ /usr/include/eigen3/Eigen/SparseCore
+ /usr/include/eigen3/Eigen/SparseLU
+ /usr/include/eigen3/Eigen/SparseQR
  /usr/include/eigen3/Eigen/StdVector
  /usr/include/eigen3/Eigen/src/Cholesky/LDLT.h
  /usr/include/eigen3/Eigen/src/Cholesky/LLT.h
@@ -2853,6 +2955,7 @@ src/CMakeFiles/myslam.dir/frontend.cpp.o
  /usr/include/eigen3/Eigen/src/Core/util/Macros.h
  /usr/include/eigen3/Eigen/src/Core/util/Memory.h
  /usr/include/eigen3/Eigen/src/Core/util/Meta.h
+ /usr/include/eigen3/Eigen/src/Core/util/NonMPL2.h
  /usr/include/eigen3/Eigen/src/Core/util/ReenableStupidWarnings.h
  /usr/include/eigen3/Eigen/src/Core/util/StaticAssert.h
  /usr/include/eigen3/Eigen/src/Core/util/XprHelper.h
@@ -2893,6 +2996,14 @@ src/CMakeFiles/myslam.dir/frontend.cpp.o
  /usr/include/eigen3/Eigen/src/Householder/BlockHouseholder.h
  /usr/include/eigen3/Eigen/src/Householder/Householder.h
  /usr/include/eigen3/Eigen/src/Householder/HouseholderSequence.h
+ /usr/include/eigen3/Eigen/src/IterativeLinearSolvers/BasicPreconditioners.h
+ /usr/include/eigen3/Eigen/src/IterativeLinearSolvers/BiCGSTAB.h
+ /usr/include/eigen3/Eigen/src/IterativeLinearSolvers/ConjugateGradient.h
+ /usr/include/eigen3/Eigen/src/IterativeLinearSolvers/IncompleteCholesky.h
+ /usr/include/eigen3/Eigen/src/IterativeLinearSolvers/IncompleteLUT.h
+ /usr/include/eigen3/Eigen/src/IterativeLinearSolvers/IterativeSolverBase.h
+ /usr/include/eigen3/Eigen/src/IterativeLinearSolvers/LeastSquareConjugateGradient.h
+ /usr/include/eigen3/Eigen/src/IterativeLinearSolvers/SolveWithGuess.h
  /usr/include/eigen3/Eigen/src/Jacobi/Jacobi.h
  /usr/include/eigen3/Eigen/src/LU/Determinant.h
  /usr/include/eigen3/Eigen/src/LU/FullPivLU.h
@@ -2900,6 +3011,9 @@ src/CMakeFiles/myslam.dir/frontend.cpp.o
  /usr/include/eigen3/Eigen/src/LU/PartialPivLU.h
  /usr/include/eigen3/Eigen/src/LU/PartialPivLU_LAPACKE.h
  /usr/include/eigen3/Eigen/src/LU/arch/Inverse_SSE.h
+ /usr/include/eigen3/Eigen/src/OrderingMethods/Amd.h
+ /usr/include/eigen3/Eigen/src/OrderingMethods/Eigen_Colamd.h
+ /usr/include/eigen3/Eigen/src/OrderingMethods/Ordering.h
  /usr/include/eigen3/Eigen/src/QR/ColPivHouseholderQR.h
  /usr/include/eigen3/Eigen/src/QR/ColPivHouseholderQR_LAPACKE.h
  /usr/include/eigen3/Eigen/src/QR/CompleteOrthogonalDecomposition.h
@@ -2911,6 +3025,56 @@ src/CMakeFiles/myslam.dir/frontend.cpp.o
  /usr/include/eigen3/Eigen/src/SVD/JacobiSVD_LAPACKE.h
  /usr/include/eigen3/Eigen/src/SVD/SVDBase.h
  /usr/include/eigen3/Eigen/src/SVD/UpperBidiagonalization.h
+ /usr/include/eigen3/Eigen/src/SparseCholesky/SimplicialCholesky.h
+ /usr/include/eigen3/Eigen/src/SparseCholesky/SimplicialCholesky_impl.h
+ /usr/include/eigen3/Eigen/src/SparseCore/AmbiVector.h
+ /usr/include/eigen3/Eigen/src/SparseCore/CompressedStorage.h
+ /usr/include/eigen3/Eigen/src/SparseCore/ConservativeSparseSparseProduct.h
+ /usr/include/eigen3/Eigen/src/SparseCore/MappedSparseMatrix.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseAssign.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseBlock.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseColEtree.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseCompressedBase.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseCwiseBinaryOp.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseCwiseUnaryOp.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseDenseProduct.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseDiagonalProduct.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseDot.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseFuzzy.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseMap.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseMatrix.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseMatrixBase.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparsePermutation.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseProduct.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseRedux.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseRef.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseSelfAdjointView.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseSolverBase.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseSparseProductWithPruning.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseTranspose.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseTriangularView.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseUtil.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseVector.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseView.h
+ /usr/include/eigen3/Eigen/src/SparseCore/TriangularSolver.h
+ /usr/include/eigen3/Eigen/src/SparseLU/SparseLU.h
+ /usr/include/eigen3/Eigen/src/SparseLU/SparseLUImpl.h
+ /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_Memory.h
+ /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_Structs.h
+ /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_SupernodalMatrix.h
+ /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_Utils.h
+ /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_column_bmod.h
+ /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_column_dfs.h
+ /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_copy_to_ucol.h
+ /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_gemm_kernel.h
+ /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_heap_relax_snode.h
+ /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_kernel_bmod.h
+ /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_panel_bmod.h
+ /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_panel_dfs.h
+ /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_pivotL.h
+ /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_pruneL.h
+ /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_relax_snode.h
+ /usr/include/eigen3/Eigen/src/SparseQR/SparseQR.h
  /usr/include/eigen3/Eigen/src/StlSupport/StdVector.h
  /usr/include/eigen3/Eigen/src/StlSupport/details.h
  /usr/include/eigen3/Eigen/src/misc/Image.h
@@ -2932,6 +3096,8 @@ src/CMakeFiles/myslam.dir/frontend.cpp.o
  /usr/local/include/g2o/core/base_binary_edge.h
  /usr/local/include/g2o/core/base_binary_edge.hpp
  /usr/local/include/g2o/core/base_edge.h
+ /usr/local/include/g2o/core/base_multi_edge.h
+ /usr/local/include/g2o/core/base_multi_edge.hpp
  /usr/local/include/g2o/core/base_unary_edge.h
  /usr/local/include/g2o/core/base_unary_edge.hpp
  /usr/local/include/g2o/core/base_vertex.h
@@ -2939,11 +3105,13 @@ src/CMakeFiles/myslam.dir/frontend.cpp.o
  /usr/local/include/g2o/core/batch_stats.h
  /usr/local/include/g2o/core/block_solver.h
  /usr/local/include/g2o/core/block_solver.hpp
+ /usr/local/include/g2o/core/cache.h
  /usr/local/include/g2o/core/creators.h
  /usr/local/include/g2o/core/dynamic_aligned_buffer.hpp
  /usr/local/include/g2o/core/eigen_types.h
  /usr/local/include/g2o/core/g2o_core_api.h
  /usr/local/include/g2o/core/hyper_graph.h
+ /usr/local/include/g2o/core/hyper_graph_action.h
  /usr/local/include/g2o/core/jacobian_workspace.h
  /usr/local/include/g2o/core/linear_solver.h
  /usr/local/include/g2o/core/marginal_covariance_cholesky.h
@@ -2971,12 +3139,34 @@ src/CMakeFiles/myslam.dir/frontend.cpp.o
  /usr/local/include/g2o/solvers/csparse/g2o_csparse_extension_api.h
  /usr/local/include/g2o/solvers/csparse/linear_solver_csparse.h
  /usr/local/include/g2o/solvers/dense/linear_solver_dense.h
+ /usr/local/include/g2o/solvers/eigen/linear_solver_eigen.h
  /usr/local/include/g2o/stuff/g2o_stuff_api.h
  /usr/local/include/g2o/stuff/macros.h
  /usr/local/include/g2o/stuff/misc.h
  /usr/local/include/g2o/stuff/property.h
  /usr/local/include/g2o/stuff/string_tools.h
  /usr/local/include/g2o/stuff/timeutil.h
+ /usr/local/include/g2o/types/slam3d/edge_pointxyz.h
+ /usr/local/include/g2o/types/slam3d/edge_se3.h
+ /usr/local/include/g2o/types/slam3d/edge_se3_lotsofxyz.h
+ /usr/local/include/g2o/types/slam3d/edge_se3_offset.h
+ /usr/local/include/g2o/types/slam3d/edge_se3_pointxyz.h
+ /usr/local/include/g2o/types/slam3d/edge_se3_pointxyz_depth.h
+ /usr/local/include/g2o/types/slam3d/edge_se3_pointxyz_disparity.h
+ /usr/local/include/g2o/types/slam3d/edge_se3_prior.h
+ /usr/local/include/g2o/types/slam3d/edge_se3_xyzprior.h
+ /usr/local/include/g2o/types/slam3d/edge_xyz_prior.h
+ /usr/local/include/g2o/types/slam3d/g2o_types_slam3d_api.h
+ /usr/local/include/g2o/types/slam3d/isometry3d_mappings.h
+ /usr/local/include/g2o/types/slam3d/parameter_camera.h
+ /usr/local/include/g2o/types/slam3d/parameter_se3_offset.h
+ /usr/local/include/g2o/types/slam3d/parameter_stereo_camera.h
+ /usr/local/include/g2o/types/slam3d/se3_ops.h
+ /usr/local/include/g2o/types/slam3d/se3_ops.hpp
+ /usr/local/include/g2o/types/slam3d/se3quat.h
+ /usr/local/include/g2o/types/slam3d/types_slam3d.h
+ /usr/local/include/g2o/types/slam3d/vertex_pointxyz.h
+ /usr/local/include/g2o/types/slam3d/vertex_se3.h
  /usr/local/include/opencv/cv.h
  /usr/local/include/opencv/cxcore.h
  /usr/local/include/opencv2/calib3d.hpp
@@ -3514,6 +3704,7 @@ src/CMakeFiles/myslam.dir/loopclosing.cpp.o
  ../include/myslam/config.h
  ../include/myslam/deeplcd.h
  ../include/myslam/feature.h
+ ../include/myslam/g2o_types.h
  ../include/myslam/keyframe.h
  ../include/myslam/loopclosing.h
  ../include/myslam/map.h
@@ -3549,10 +3740,18 @@ src/CMakeFiles/myslam.dir/loopclosing.cpp.o
  /usr/include/eigen3/Eigen/Eigenvalues
  /usr/include/eigen3/Eigen/Geometry
  /usr/include/eigen3/Eigen/Householder
+ /usr/include/eigen3/Eigen/IterativeLinearSolvers
  /usr/include/eigen3/Eigen/Jacobi
  /usr/include/eigen3/Eigen/LU
+ /usr/include/eigen3/Eigen/OrderingMethods
  /usr/include/eigen3/Eigen/QR
  /usr/include/eigen3/Eigen/SVD
+ /usr/include/eigen3/Eigen/Sparse
+ /usr/include/eigen3/Eigen/SparseCholesky
+ /usr/include/eigen3/Eigen/SparseCore
+ /usr/include/eigen3/Eigen/SparseLU
+ /usr/include/eigen3/Eigen/SparseQR
+ /usr/include/eigen3/Eigen/StdVector
  /usr/include/eigen3/Eigen/src/Cholesky/LDLT.h
  /usr/include/eigen3/Eigen/src/Cholesky/LLT.h
  /usr/include/eigen3/Eigen/src/Cholesky/LLT_LAPACKE.h
@@ -3684,6 +3883,7 @@ src/CMakeFiles/myslam.dir/loopclosing.cpp.o
  /usr/include/eigen3/Eigen/src/Core/util/Macros.h
  /usr/include/eigen3/Eigen/src/Core/util/Memory.h
  /usr/include/eigen3/Eigen/src/Core/util/Meta.h
+ /usr/include/eigen3/Eigen/src/Core/util/NonMPL2.h
  /usr/include/eigen3/Eigen/src/Core/util/ReenableStupidWarnings.h
  /usr/include/eigen3/Eigen/src/Core/util/StaticAssert.h
  /usr/include/eigen3/Eigen/src/Core/util/XprHelper.h
@@ -3724,6 +3924,14 @@ src/CMakeFiles/myslam.dir/loopclosing.cpp.o
  /usr/include/eigen3/Eigen/src/Householder/BlockHouseholder.h
  /usr/include/eigen3/Eigen/src/Householder/Householder.h
  /usr/include/eigen3/Eigen/src/Householder/HouseholderSequence.h
+ /usr/include/eigen3/Eigen/src/IterativeLinearSolvers/BasicPreconditioners.h
+ /usr/include/eigen3/Eigen/src/IterativeLinearSolvers/BiCGSTAB.h
+ /usr/include/eigen3/Eigen/src/IterativeLinearSolvers/ConjugateGradient.h
+ /usr/include/eigen3/Eigen/src/IterativeLinearSolvers/IncompleteCholesky.h
+ /usr/include/eigen3/Eigen/src/IterativeLinearSolvers/IncompleteLUT.h
+ /usr/include/eigen3/Eigen/src/IterativeLinearSolvers/IterativeSolverBase.h
+ /usr/include/eigen3/Eigen/src/IterativeLinearSolvers/LeastSquareConjugateGradient.h
+ /usr/include/eigen3/Eigen/src/IterativeLinearSolvers/SolveWithGuess.h
  /usr/include/eigen3/Eigen/src/Jacobi/Jacobi.h
  /usr/include/eigen3/Eigen/src/LU/Determinant.h
  /usr/include/eigen3/Eigen/src/LU/FullPivLU.h
@@ -3731,6 +3939,9 @@ src/CMakeFiles/myslam.dir/loopclosing.cpp.o
  /usr/include/eigen3/Eigen/src/LU/PartialPivLU.h
  /usr/include/eigen3/Eigen/src/LU/PartialPivLU_LAPACKE.h
  /usr/include/eigen3/Eigen/src/LU/arch/Inverse_SSE.h
+ /usr/include/eigen3/Eigen/src/OrderingMethods/Amd.h
+ /usr/include/eigen3/Eigen/src/OrderingMethods/Eigen_Colamd.h
+ /usr/include/eigen3/Eigen/src/OrderingMethods/Ordering.h
  /usr/include/eigen3/Eigen/src/QR/ColPivHouseholderQR.h
  /usr/include/eigen3/Eigen/src/QR/ColPivHouseholderQR_LAPACKE.h
  /usr/include/eigen3/Eigen/src/QR/CompleteOrthogonalDecomposition.h
@@ -3742,6 +3953,58 @@ src/CMakeFiles/myslam.dir/loopclosing.cpp.o
  /usr/include/eigen3/Eigen/src/SVD/JacobiSVD_LAPACKE.h
  /usr/include/eigen3/Eigen/src/SVD/SVDBase.h
  /usr/include/eigen3/Eigen/src/SVD/UpperBidiagonalization.h
+ /usr/include/eigen3/Eigen/src/SparseCholesky/SimplicialCholesky.h
+ /usr/include/eigen3/Eigen/src/SparseCholesky/SimplicialCholesky_impl.h
+ /usr/include/eigen3/Eigen/src/SparseCore/AmbiVector.h
+ /usr/include/eigen3/Eigen/src/SparseCore/CompressedStorage.h
+ /usr/include/eigen3/Eigen/src/SparseCore/ConservativeSparseSparseProduct.h
+ /usr/include/eigen3/Eigen/src/SparseCore/MappedSparseMatrix.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseAssign.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseBlock.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseColEtree.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseCompressedBase.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseCwiseBinaryOp.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseCwiseUnaryOp.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseDenseProduct.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseDiagonalProduct.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseDot.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseFuzzy.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseMap.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseMatrix.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseMatrixBase.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparsePermutation.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseProduct.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseRedux.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseRef.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseSelfAdjointView.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseSolverBase.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseSparseProductWithPruning.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseTranspose.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseTriangularView.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseUtil.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseVector.h
+ /usr/include/eigen3/Eigen/src/SparseCore/SparseView.h
+ /usr/include/eigen3/Eigen/src/SparseCore/TriangularSolver.h
+ /usr/include/eigen3/Eigen/src/SparseLU/SparseLU.h
+ /usr/include/eigen3/Eigen/src/SparseLU/SparseLUImpl.h
+ /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_Memory.h
+ /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_Structs.h
+ /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_SupernodalMatrix.h
+ /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_Utils.h
+ /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_column_bmod.h
+ /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_column_dfs.h
+ /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_copy_to_ucol.h
+ /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_gemm_kernel.h
+ /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_heap_relax_snode.h
+ /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_kernel_bmod.h
+ /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_panel_bmod.h
+ /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_panel_dfs.h
+ /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_pivotL.h
+ /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_pruneL.h
+ /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_relax_snode.h
+ /usr/include/eigen3/Eigen/src/SparseQR/SparseQR.h
+ /usr/include/eigen3/Eigen/src/StlSupport/StdVector.h
+ /usr/include/eigen3/Eigen/src/StlSupport/details.h
  /usr/include/eigen3/Eigen/src/misc/Image.h
  /usr/include/eigen3/Eigen/src/misc/Kernel.h
  /usr/include/eigen3/Eigen/src/misc/RealSvd2x2.h
@@ -3755,6 +4018,83 @@ src/CMakeFiles/myslam.dir/loopclosing.cpp.o
  /usr/include/eigen3/Eigen/src/plugins/CommonCwiseUnaryOps.h
  /usr/include/eigen3/Eigen/src/plugins/MatrixCwiseBinaryOps.h
  /usr/include/eigen3/Eigen/src/plugins/MatrixCwiseUnaryOps.h
+ /usr/include/suitesparse/SuiteSparse_config.h
+ /usr/include/suitesparse/cs.h
+ /usr/local/include/g2o/config.h
+ /usr/local/include/g2o/core/base_binary_edge.h
+ /usr/local/include/g2o/core/base_binary_edge.hpp
+ /usr/local/include/g2o/core/base_edge.h
+ /usr/local/include/g2o/core/base_multi_edge.h
+ /usr/local/include/g2o/core/base_multi_edge.hpp
+ /usr/local/include/g2o/core/base_unary_edge.h
+ /usr/local/include/g2o/core/base_unary_edge.hpp
+ /usr/local/include/g2o/core/base_vertex.h
+ /usr/local/include/g2o/core/base_vertex.hpp
+ /usr/local/include/g2o/core/batch_stats.h
+ /usr/local/include/g2o/core/block_solver.h
+ /usr/local/include/g2o/core/block_solver.hpp
+ /usr/local/include/g2o/core/cache.h
+ /usr/local/include/g2o/core/creators.h
+ /usr/local/include/g2o/core/dynamic_aligned_buffer.hpp
+ /usr/local/include/g2o/core/eigen_types.h
+ /usr/local/include/g2o/core/g2o_core_api.h
+ /usr/local/include/g2o/core/hyper_graph.h
+ /usr/local/include/g2o/core/hyper_graph_action.h
+ /usr/local/include/g2o/core/jacobian_workspace.h
+ /usr/local/include/g2o/core/linear_solver.h
+ /usr/local/include/g2o/core/marginal_covariance_cholesky.h
+ /usr/local/include/g2o/core/matrix_operations.h
+ /usr/local/include/g2o/core/matrix_structure.h
+ /usr/local/include/g2o/core/openmp_mutex.h
+ /usr/local/include/g2o/core/optimizable_graph.h
+ /usr/local/include/g2o/core/optimization_algorithm.h
+ /usr/local/include/g2o/core/optimization_algorithm_gauss_newton.h
+ /usr/local/include/g2o/core/optimization_algorithm_levenberg.h
+ /usr/local/include/g2o/core/optimization_algorithm_with_hessian.h
+ /usr/local/include/g2o/core/parameter.h
+ /usr/local/include/g2o/core/parameter_container.h
+ /usr/local/include/g2o/core/robust_kernel.h
+ /usr/local/include/g2o/core/robust_kernel_impl.h
+ /usr/local/include/g2o/core/solver.h
+ /usr/local/include/g2o/core/sparse_block_matrix.h
+ /usr/local/include/g2o/core/sparse_block_matrix.hpp
+ /usr/local/include/g2o/core/sparse_block_matrix_ccs.h
+ /usr/local/include/g2o/core/sparse_block_matrix_diagonal.h
+ /usr/local/include/g2o/core/sparse_optimizer.h
+ /usr/local/include/g2o/solvers/csparse/csparse_extension.h
+ /usr/local/include/g2o/solvers/csparse/csparse_helper.h
+ /usr/local/include/g2o/solvers/csparse/g2o_csparse_api.h
+ /usr/local/include/g2o/solvers/csparse/g2o_csparse_extension_api.h
+ /usr/local/include/g2o/solvers/csparse/linear_solver_csparse.h
+ /usr/local/include/g2o/solvers/dense/linear_solver_dense.h
+ /usr/local/include/g2o/solvers/eigen/linear_solver_eigen.h
+ /usr/local/include/g2o/stuff/g2o_stuff_api.h
+ /usr/local/include/g2o/stuff/macros.h
+ /usr/local/include/g2o/stuff/misc.h
+ /usr/local/include/g2o/stuff/property.h
+ /usr/local/include/g2o/stuff/string_tools.h
+ /usr/local/include/g2o/stuff/timeutil.h
+ /usr/local/include/g2o/types/slam3d/edge_pointxyz.h
+ /usr/local/include/g2o/types/slam3d/edge_se3.h
+ /usr/local/include/g2o/types/slam3d/edge_se3_lotsofxyz.h
+ /usr/local/include/g2o/types/slam3d/edge_se3_offset.h
+ /usr/local/include/g2o/types/slam3d/edge_se3_pointxyz.h
+ /usr/local/include/g2o/types/slam3d/edge_se3_pointxyz_depth.h
+ /usr/local/include/g2o/types/slam3d/edge_se3_pointxyz_disparity.h
+ /usr/local/include/g2o/types/slam3d/edge_se3_prior.h
+ /usr/local/include/g2o/types/slam3d/edge_se3_xyzprior.h
+ /usr/local/include/g2o/types/slam3d/edge_xyz_prior.h
+ /usr/local/include/g2o/types/slam3d/g2o_types_slam3d_api.h
+ /usr/local/include/g2o/types/slam3d/isometry3d_mappings.h
+ /usr/local/include/g2o/types/slam3d/parameter_camera.h
+ /usr/local/include/g2o/types/slam3d/parameter_se3_offset.h
+ /usr/local/include/g2o/types/slam3d/parameter_stereo_camera.h
+ /usr/local/include/g2o/types/slam3d/se3_ops.h
+ /usr/local/include/g2o/types/slam3d/se3_ops.hpp
+ /usr/local/include/g2o/types/slam3d/se3quat.h
+ /usr/local/include/g2o/types/slam3d/types_slam3d.h
+ /usr/local/include/g2o/types/slam3d/vertex_pointxyz.h
+ /usr/local/include/g2o/types/slam3d/vertex_se3.h
  /usr/local/include/opencv/cv.h
  /usr/local/include/opencv/cxcore.h
  /usr/local/include/opencv2/calib3d.hpp
