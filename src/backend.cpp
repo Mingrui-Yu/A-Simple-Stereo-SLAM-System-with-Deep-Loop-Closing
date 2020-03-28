@@ -102,10 +102,6 @@ void Backend::ProcessNewKeyFrame(){
         _mpCurrentKF = _mlNewKeyFrames.front();
         _mlNewKeyFrames.pop_front();
     }
-
-    if(_mpLastKF){
-        _mpCurrentKF->mpLastKF = _mpLastKF;
-    }
     
     _mpMap->InsertKeyFrame(_mpCurrentKF);
     _mpLoopClosing->InsertNewKeyFrame(_mpCurrentKF);
@@ -114,7 +110,7 @@ void Backend::ProcessNewKeyFrame(){
         _mpViewer->UpdateMap();
     }
 
-    _mpLastKF = _mpCurrentKF;
+    // _mpLastKF = _mpCurrentKF;
 }
 
 // -----------------------------------------------------------------------------------
@@ -157,8 +153,10 @@ void Backend::OptimizeActiveMap(){
     std::map<EdgeProjection *, Feature::Ptr> edgesAndFeatures;
     for(auto &mappoint: mappoints){
         auto mp = mappoint.second;
-        if(mp->mbIsOutlier) 
+        if(mp->mbIsOutlier) {
             continue;
+        }
+            
         unsigned long mappointId = mp->mnId;
         VertexXYZ *v = new VertexXYZ;
         v->setEstimate(mp->Pos());
@@ -223,14 +221,18 @@ void Backend::OptimizeActiveMap(){
     for(auto &ef: edgesAndFeatures){
         if(ef.first->chi2() > chi2_th){
             ef.second->mbIsOutlier = true;
-            ef.second->mpMapPoint.lock()->RemoveActiveObservation(ef.second);
-            ef.second->mpMapPoint.lock()->RemoveObservation(ef.second);
+            auto mappoint = ef.second->mpMapPoint.lock();
+            mappoint->RemoveActiveObservation(ef.second);
+            mappoint->RemoveObservation(ef.second);
+            if(mappoint->GetObservations().empty()){
+                mappoint->mbIsOutlier = true;
+            }
             ef.second->mpMapPoint.reset();
         }else{
             ef.second->mbIsOutlier = false;
         }
     }
-    // LOG(INFO) << "Outlier/Inlier in backend optimization: " << cntOutlier << "/" << cntInlier;
+    // LOG(INFO) << "Backend: Outlier/Inlier in optimization: " << cntOutlier << "/" << cntInlier;
 
     // Set pose and landmark position
     for (auto &v: vertices_kfs) {
@@ -239,6 +241,14 @@ void Backend::OptimizeActiveMap(){
     for (auto &v: vertices_mps){
         mappoints.at(v.first)->SetPos(v.second->estimate());
     }
+
+    // delete outlier mappoints
+     for(auto &mappoint: mappoints){
+        auto mp = mappoint.second;
+        if(mp->mbIsOutlier) {
+            _mpMap->RemoveMapPoint(mp);
+        }
+     }
 }
 
 // ------------------------------------------------------------------------------

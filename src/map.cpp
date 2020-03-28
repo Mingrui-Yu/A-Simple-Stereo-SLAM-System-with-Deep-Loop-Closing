@@ -10,13 +10,17 @@ namespace myslam{
 void Map::InsertKeyFrame(std::shared_ptr<KeyFrame> kf){
     _mpCurrentKF = kf;
 
-    // insert keyframe
-    if (_mumpAllKeyFrames.find(kf->mnKFId) == _mumpAllKeyFrames.end()){
-        _mumpAllKeyFrames.insert(make_pair(kf->mnKFId, kf));
-        _mumpActiveKeyFrames.insert(make_pair(kf->mnKFId, kf));
-    }else{
-        _mumpAllKeyFrames[kf->mnKFId] = kf;
-        _mumpActiveKeyFrames[kf->mnKFId] = kf;
+    {
+        std::unique_lock<std::mutex> lck(_mmutexData);
+
+        // insert keyframe
+        if (_mumpAllKeyFrames.find(kf->mnKFId) == _mumpAllKeyFrames.end()){
+            _mumpAllKeyFrames.insert(make_pair(kf->mnKFId, kf));
+            _mumpActiveKeyFrames.insert(make_pair(kf->mnKFId, kf));
+        }else{
+            _mumpAllKeyFrames[kf->mnKFId] = kf;
+            _mumpActiveKeyFrames[kf->mnKFId] = kf;
+        }
     }
 
     // add the new KF to its observed mappoints' active observations
@@ -39,6 +43,8 @@ void Map::InsertKeyFrame(std::shared_ptr<KeyFrame> kf){
 // -------------------------------------------------------------------
 
 void Map::InsertMapPoint (MapPoint::Ptr map_point) {
+    std::unique_lock<std::mutex> lck(_mmutexData);
+
     if (_mumpAllMapPoints.find(map_point->mnId) == _mumpAllMapPoints.end()){
         _mumpAllMapPoints.insert(make_pair(map_point->mnId, map_point));
         _mumpActiveMapPoints.insert(make_pair(map_point->mnId, map_point));
@@ -52,6 +58,8 @@ void Map::InsertMapPoint (MapPoint::Ptr map_point) {
 // -------------------------------------------------------------------
 
 void Map::RemoveOldActiveKeyframe(){
+    std::unique_lock<std::mutex> lck(_mmutexData);
+
     if(_mpCurrentKF == nullptr)  return;
 
     double maxDis = 0, minDis = 9999;
@@ -75,9 +83,9 @@ void Map::RemoveOldActiveKeyframe(){
     const double minDisTh = 0.2;
     KeyFrame::Ptr frameToRemove = nullptr;
     if(minDis < minDisTh){
-        frameToRemove = _mumpAllKeyFrames.at(minKFId);
+        frameToRemove = _mumpActiveKeyFrames.at(minKFId);
     } else {
-        frameToRemove = _mumpAllKeyFrames.at(maxKFId);
+        frameToRemove = _mumpActiveKeyFrames.at(maxKFId);
     }
 
     // LOG(INFO) << "remove keyframe " << frameToRemove->mnKFId << " from the active keyframes.";
@@ -97,6 +105,8 @@ void Map::RemoveOldActiveKeyframe(){
 // -------------------------------------------------------------------
 
 void Map::RemoveOldActiveMapPoints(){
+    std::unique_lock<std::mutex> lck(_mmutexData);
+
     int cntActiveLandmarkRemoved = 0;
     for(auto iter = _mumpActiveMapPoints.begin(); iter != _mumpActiveMapPoints.end();){
         if(iter->second->mnActiveObservedTimes == 0){
@@ -112,6 +122,9 @@ void Map::RemoveOldActiveMapPoints(){
 // -------------------------------------------------------------------
 
 void Map::RemoveMapPoint(std::shared_ptr<MapPoint> mappoint){
+
+    std::unique_lock<std::mutex> lck(_mmutexData);
+
     unsigned long mpId = mappoint->mnId;
 
     // delete from all mappoints

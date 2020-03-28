@@ -35,6 +35,8 @@ public:
 
     void GetCamera();
 
+    void SaveTrajectory(std::string &save_file);
+
 public:
     
 

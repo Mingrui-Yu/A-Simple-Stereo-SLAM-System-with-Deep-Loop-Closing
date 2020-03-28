@@ -1,18 +1,18 @@
 # Details
 
-Date : 2020-03-22 21:18:20
+Date : 2020-03-28 18:54:50
 
 Directory /home/mingrui/Mingrui/SLAMProject/stereo_slam_system
 
-Total : 72 files,  8292 codes, 956 comments, 2422 blanks, all 11670 lines
+Total : 72 files,  8236 codes, 968 comments, 2395 blanks, all 11599 lines
 
 [summary](results.md)
 
 ## Files
 | filename | language | code | comment | blank | total |
 | :--- | :--- | ---: | ---: | ---: | ---: |
-| [README.md](/README.md) | Markdown | 21 | 0 | 17 | 38 |
-| [app/run_kitti_stereo.cpp](/app/run_kitti_stereo.cpp) | C++ | 88 | 7 | 32 | 127 |
+| [README.md](/README.md) | Markdown | 22 | 0 | 18 | 40 |
+| [app/run_kitti_stereo.cpp](/app/run_kitti_stereo.cpp) | C++ | 93 | 9 | 36 | 138 |
 | [build/CMakeCache.txt](/build/CMakeCache.txt) | CMake Cache | 562 | 0 | 144 | 706 |
 | [build/CMakeFiles/3.10.2/CMakeCCompiler.cmake](/build/CMakeFiles/3.10.2/CMakeCCompiler.cmake) | CMake | 57 | 0 | 17 | 74 |
 | [build/CMakeFiles/3.10.2/CMakeCXXCompiler.cmake](/build/CMakeFiles/3.10.2/CMakeCXXCompiler.cmake) | CMake | 59 | 0 | 17 | 76 |
@@ -48,40 +48,40 @@ Total : 72 files,  8292 codes, 956 comments, 2422 blanks, all 11670 lines
 | [config/stereo/color/KITTI00-02.yaml](/config/stereo/color/KITTI00-02.yaml) | YAML | 33 | 24 | 23 | 80 |
 | [get_model.sh](/get_model.sh) | Shell Script | 16 | 4 | 9 | 29 |
 | [include/myslam/ORBextractor.h](/include/myslam/ORBextractor.h) | C++ | 74 | 27 | 37 | 138 |
-| [include/myslam/ORBmatcher.h](/include/myslam/ORBmatcher.h) | C++ | 40 | 38 | 30 | 108 |
+| [include/myslam/PnPsolver.h](/include/myslam/PnPsolver.h) | C++ | 86 | 64 | 49 | 199 |
 | [include/myslam/algorithm.h](/include/myslam/algorithm.h) | C++ | 105 | 9 | 25 | 139 |
-| [include/myslam/backend.h](/include/myslam/backend.h) | C++ | 54 | 3 | 37 | 94 |
+| [include/myslam/backend.h](/include/myslam/backend.h) | C++ | 61 | 3 | 40 | 104 |
 | [include/myslam/camera.h](/include/myslam/camera.h) | C++ | 31 | 0 | 16 | 47 |
-| [include/myslam/common_include.h](/include/myslam/common_include.h) | C++ | 94 | 10 | 17 | 121 |
+| [include/myslam/common_include.h](/include/myslam/common_include.h) | C++ | 96 | 10 | 17 | 123 |
 | [include/myslam/config.h](/include/myslam/config.h) | C++ | 19 | 2 | 12 | 33 |
 | [include/myslam/deeplcd.h](/include/myslam/deeplcd.h) | C++ | 30 | 5 | 21 | 56 |
 | [include/myslam/feature.h](/include/myslam/feature.h) | C++ | 23 | 8 | 17 | 48 |
-| [include/myslam/frame.h](/include/myslam/frame.h) | C++ | 25 | 2 | 24 | 51 |
-| [include/myslam/frontend.h](/include/myslam/frontend.h) | C++ | 64 | 20 | 44 | 128 |
-| [include/myslam/g2o_types.h](/include/myslam/g2o_types.h) | C++ | 117 | 7 | 29 | 153 |
-| [include/myslam/keyframe.h](/include/myslam/keyframe.h) | C++ | 31 | 3 | 24 | 58 |
-| [include/myslam/loopclosing.h](/include/myslam/loopclosing.h) | C++ | 57 | 3 | 56 | 116 |
-| [include/myslam/map.h](/include/myslam/map.h) | C++ | 33 | 5 | 26 | 64 |
-| [include/myslam/mappoint.h](/include/myslam/mappoint.h) | C++ | 34 | 4 | 34 | 72 |
-| [include/myslam/system.h](/include/myslam/system.h) | C++ | 35 | 4 | 21 | 60 |
+| [include/myslam/frame.h](/include/myslam/frame.h) | C++ | 29 | 3 | 29 | 61 |
+| [include/myslam/frontend.h](/include/myslam/frontend.h) | C++ | 67 | 20 | 45 | 132 |
+| [include/myslam/g2o_types.h](/include/myslam/g2o_types.h) | C++ | 132 | 21 | 42 | 195 |
+| [include/myslam/keyframe.h](/include/myslam/keyframe.h) | C++ | 35 | 4 | 26 | 65 |
+| [include/myslam/loopclosing.h](/include/myslam/loopclosing.h) | C++ | 66 | 3 | 62 | 131 |
+| [include/myslam/map.h](/include/myslam/map.h) | C++ | 36 | 7 | 31 | 74 |
+| [include/myslam/mappoint.h](/include/myslam/mappoint.h) | C++ | 39 | 4 | 38 | 81 |
+| [include/myslam/system.h](/include/myslam/system.h) | C++ | 36 | 4 | 22 | 62 |
 | [include/myslam/tools.h](/include/myslam/tools.h) | C++ | 77 | 73 | 24 | 174 |
 | [include/myslam/viewer.h](/include/myslam/viewer.h) | C++ | 50 | 3 | 40 | 93 |
 | [run.sh](/run.sh) | Shell Script | 1 | 0 | 1 | 2 |
 | [src/ORBextractor.cpp](/src/ORBextractor.cpp) | C++ | 853 | 92 | 142 | 1,087 |
-| [src/ORBmatcher.cpp](/src/ORBmatcher.cpp) | C++ | 1,197 | 104 | 371 | 1,672 |
-| [src/backend.cpp](/src/backend.cpp) | C++ | 162 | 23 | 44 | 229 |
+| [src/PnPsolver.cc](/src/PnPsolver.cc) | C++ | 771 | 67 | 184 | 1,022 |
+| [src/backend.cpp](/src/backend.cpp) | C++ | 173 | 24 | 57 | 254 |
 | [src/camera.cpp](/src/camera.cpp) | C++ | 25 | 0 | 10 | 35 |
 | [src/config.cpp](/src/config.cpp) | C++ | 21 | 0 | 5 | 26 |
 | [src/deeplcd.cpp](/src/deeplcd.cpp) | C++ | 64 | 6 | 33 | 103 |
 | [src/feature.cpp](/src/feature.cpp) | C++ | 7 | 4 | 13 | 24 |
-| [src/frame.cpp](/src/frame.cpp) | C++ | 18 | 4 | 9 | 31 |
-| [src/frontend.cpp](/src/frontend.cpp) | C++ | 305 | 93 | 89 | 487 |
-| [src/keyframe.cpp](/src/keyframe.cpp) | C++ | 44 | 9 | 33 | 86 |
-| [src/loopclosing.cpp](/src/loopclosing.cpp) | C++ | 140 | 39 | 61 | 240 |
-| [src/map.cpp](/src/map.cpp) | C++ | 89 | 10 | 32 | 131 |
-| [src/mappoint.cpp](/src/mappoint.cpp) | C++ | 32 | 5 | 12 | 49 |
+| [src/frame.cpp](/src/frame.cpp) | C++ | 26 | 6 | 12 | 44 |
+| [src/frontend.cpp](/src/frontend.cpp) | C++ | 318 | 58 | 93 | 469 |
+| [src/keyframe.cpp](/src/keyframe.cpp) | C++ | 43 | 8 | 33 | 84 |
+| [src/loopclosing.cpp](/src/loopclosing.cpp) | C++ | 321 | 65 | 124 | 510 |
+| [src/map.cpp](/src/map.cpp) | C++ | 99 | 16 | 37 | 152 |
+| [src/mappoint.cpp](/src/mappoint.cpp) | C++ | 51 | 8 | 17 | 76 |
 | [src/someBackup.cpp](/src/someBackup.cpp) | C++ | 46 | 6 | 8 | 60 |
-| [src/system.cpp](/src/system.cpp) | C++ | 73 | 9 | 32 | 114 |
+| [src/system.cpp](/src/system.cpp) | C++ | 97 | 10 | 35 | 142 |
 | [src/viewer.cpp](/src/viewer.cpp) | C++ | 187 | 14 | 64 | 265 |
 
 [summary](results.md)

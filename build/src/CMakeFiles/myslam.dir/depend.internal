@@ -4992,6 +4992,7 @@ src/CMakeFiles/myslam.dir/system.cpp.o
  ../include/myslam/deeplcd.h
  ../include/myslam/frame.h
  ../include/myslam/frontend.h
+ ../include/myslam/keyframe.h
  ../include/myslam/loopclosing.h
  ../include/myslam/map.h
  ../include/myslam/system.h

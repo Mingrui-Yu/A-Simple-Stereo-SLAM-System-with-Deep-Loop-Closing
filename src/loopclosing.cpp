@@ -255,6 +255,8 @@ bool LoopClosing::ComputeSE3(){
 
     // now has passed all verification, regard it as the true loop keyframe
     _mpCurrentKF->mpLoopKF = _mpLoopKF;
+    _mpCurrentKF->mRelativePoseToLoopKF = 
+            _mseCorrectedCurrentPose * _mpLoopKF->Pose().inverse();
     _mpLastClosedKF = _mpCurrentKF;
 
     return true;
@@ -391,7 +393,7 @@ void LoopClosing::PoseGraphOptimization(){
             edge->setId(index);
             edge->setVertex(0, vertices_kf.at(kfId));
             edge->setVertex(1, vertices_kf.at(lastKF->mnKFId));
-            edge->setMeasurement(kf->Pose() * lastKF->Pose().inverse());
+            edge->setMeasurement(kf->mRelativePoseToLastKF);
             edge->setInformation(Mat66::Identity());
 
             optimizer.addEdge(edge);
@@ -407,7 +409,7 @@ void LoopClosing::PoseGraphOptimization(){
             edge->setId(index);
             edge->setVertex(0, vertices_kf.at(kfId));
             edge->setVertex(1, vertices_kf.at(loopKF->mnKFId));
-            edge->setMeasurement(kf->Pose() * loopKF->Pose().inverse());
+            edge->setMeasurement(kf->mRelativePoseToLoopKF);
             edge->setInformation(Mat66::Identity());
 
             optimizer.addEdge(edge);
@@ -420,10 +422,10 @@ void LoopClosing::PoseGraphOptimization(){
     optimizer.initializeOptimization();
     optimizer.optimize(20);
 
-    for(auto &edge: vEdges){
-        LOG(INFO) << "edge id: " << edge.first->chi2();
-        LOG(INFO) << "edge error: " << edge.second->chi2();
-    }
+    // for(auto &edge: vEdges){
+    //     LOG(INFO) << "edge id: " << edge.first;
+    //     LOG(INFO) << "edge error: " << edge.second->chi2();
+    // }
 
     { // mutex
         // avoid the conflict between frontend tracking and loopclosing correction
@@ -433,7 +435,9 @@ void LoopClosing::PoseGraphOptimization(){
         for(auto &mappoint: _mpMap->GetAllMapPoints()){
             MapPoint::Ptr mp = mappoint.second;
 
-            assert(! mp->GetObservations().empty());
+            if(mp->GetObservations().empty()){
+                continue;
+            }
 
             auto feat = mp->GetObservations().front().lock();
             auto observingKF = feat->mpKF.lock();
@@ -454,6 +458,8 @@ void LoopClosing::PoseGraphOptimization(){
 
         // pose =_mpMap->GetAllKeyFrames().at(_mpCurrentKF->mnKFId - 10)->Pose();
         // LOG(INFO) << "pose after optimization: " << pose.matrix();
+
+        LOG(INFO) << "pose graph optimization done.";
 
     } // mutex
 

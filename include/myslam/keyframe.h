@@ -35,7 +35,9 @@ public:
     double mdTimeStamp;
 
     std::weak_ptr<KeyFrame> mpLastKF;
+    SE3 mRelativePoseToLastKF;
     std::weak_ptr<KeyFrame> mpLoopKF;
+    SE3 mRelativePoseToLoopKF;
 
     std::vector<std::shared_ptr<Feature>> mvpFeaturesLeft;
     cv::Mat mImageLeft;

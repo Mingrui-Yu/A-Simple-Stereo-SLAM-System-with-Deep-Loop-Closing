@@ -363,6 +363,10 @@ myslam/system.h
 /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/myslam/system.h
 myslam/config.h
 /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/myslam/config.h
+myslam/keyframe.h
+/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/myslam/keyframe.h
+myslam/map.h
+/home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/myslam/map.h
 
 /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/viewer.cpp
 myslam/viewer.h

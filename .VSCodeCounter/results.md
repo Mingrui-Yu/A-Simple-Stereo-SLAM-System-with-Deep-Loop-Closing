@@ -1,17 +1,17 @@
 # Summary
 
-Date : 2020-03-22 21:18:20
+Date : 2020-03-28 18:54:50
 
 Directory /home/mingrui/Mingrui/SLAMProject/stereo_slam_system
 
-Total : 72 files,  8292 codes, 956 comments, 2422 blanks, all 11670 lines
+Total : 72 files,  8236 codes, 968 comments, 2395 blanks, all 11599 lines
 
 [details](details.md)
 
 ## Languages
 | language | files | code | comment | blank | total |
 | :--- | ---: | ---: | ---: | ---: | ---: |
-| C++ | 38 | 5,173 | 704 | 1,625 | 7,502 |
+| C++ | 38 | 5,116 | 716 | 1,597 | 7,429 |
 | CMake | 20 | 790 | 0 | 139 | 929 |
 | Log | 3 | 645 | 0 | 77 | 722 |
 | CMake Cache | 1 | 562 | 0 | 144 | 706 |
@@ -19,14 +19,14 @@ Total : 72 files,  8292 codes, 956 comments, 2422 blanks, all 11670 lines
 | C | 2 | 480 | 51 | 103 | 634 |
 | JSON | 1 | 77 | 0 | 0 | 77 |
 | YAML | 1 | 33 | 24 | 23 | 80 |
-| Markdown | 1 | 21 | 0 | 17 | 38 |
+| Markdown | 1 | 22 | 0 | 18 | 40 |
 | Shell Script | 2 | 17 | 4 | 10 | 31 |
 
 ## Directories
 | path | files | code | comment | blank | total |
 | :--- | ---: | ---: | ---: | ---: | ---: |
-| . | 72 | 8,292 | 956 | 2,422 | 11,670 |
-| app | 1 | 88 | 7 | 32 | 127 |
+| . | 72 | 8,236 | 968 | 2,395 | 11,599 |
+| app | 1 | 93 | 9 | 36 | 138 |
 | build | 29 | 3,562 | 277 | 811 | 4,650 |
 | build/CMakeFiles | 11 | 2,164 | 104 | 331 | 2,599 |
 | build/CMakeFiles/3.10.2 | 5 | 1,002 | 104 | 236 | 1,342 |
@@ -44,8 +44,8 @@ Total : 72 files,  8292 codes, 956 comments, 2422 blanks, all 11670 lines
 | config | 1 | 33 | 24 | 23 | 80 |
 | config/stereo | 1 | 33 | 24 | 23 | 80 |
 | config/stereo/color | 1 | 33 | 24 | 23 | 80 |
-| include | 19 | 993 | 226 | 534 | 1,753 |
-| include/myslam | 19 | 993 | 226 | 534 | 1,753 |
-| src | 16 | 3,263 | 418 | 958 | 4,639 |
+| include | 19 | 1,092 | 270 | 593 | 1,955 |
+| include/myslam | 19 | 1,092 | 270 | 593 | 1,955 |
+| src | 16 | 3,102 | 384 | 867 | 4,353 |
 
 [details](details.md)

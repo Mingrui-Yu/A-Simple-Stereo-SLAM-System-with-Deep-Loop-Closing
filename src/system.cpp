@@ -1,5 +1,8 @@
 #include "myslam/system.h"
+
 #include "myslam/config.h"
+#include "myslam/keyframe.h"
+#include "myslam/map.h"
 
 namespace myslam{
 
@@ -106,8 +109,32 @@ void System::GetCamera(){
                                         baseline, SE3(SO3(), tRight)));
 }
 
+// ------------------------------------------------------------------------------------------
 
+void System::SaveTrajectory(std::string &save_file){
+    std::ofstream outfile;
+    outfile.open(save_file, std::ios_base::out|std::ios_base::trunc);
+    outfile << std::fixed;
+    std::map<unsigned long, KeyFrame::Ptr> poses_map;
 
+    for (auto &kf: _mpMap->GetAllKeyFrames()){
+        unsigned long keyframe_id = kf.first;
+        KeyFrame::Ptr keyframe = kf.second;
+        poses_map.insert(make_pair(keyframe_id, keyframe));
+    }
+    
+    for (auto &kf: poses_map){
+        unsigned long keyframe_id = kf.first;
+        KeyFrame::Ptr keyframe = kf.second;
+        SE3 frame_pose = keyframe->Pose().inverse();
+        Vec3 pose_t = frame_pose.translation();
+        Mat33 pose_R = frame_pose.rotationMatrix();
+        Eigen::Quaterniond pose_q = Eigen::Quaterniond(pose_R);
+
+        outfile << std::setprecision(6) << keyframe_id << " " << pose_t.transpose() << " " << pose_q.coeffs().transpose() << std::endl;
+    }
+    outfile.close();
+}
 
 
 } // namespace myslam

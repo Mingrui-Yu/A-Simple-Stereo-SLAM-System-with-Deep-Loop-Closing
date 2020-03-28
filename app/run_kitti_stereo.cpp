@@ -80,15 +80,18 @@ int main(int argc, char **argv){
             break;
         }
         
-        // LOG(INFO) << "time cost for frame " << ni <<": " << time_used.count()  << "s";
+        LOG(INFO) << "time cost for frame " << ni <<": " << time_used.count()  << "s";
     }
     t_end = std::chrono::steady_clock::now();
     time_used_total = std::chrono::duration_cast <std::chrono::duration<double>> (t_end - t_start);
     
-    cv::waitKey(0);
+    std::string saveFile = "result/trajectory.txt";
+    slam->SaveTrajectory(saveFile);
+
+    // cv::waitKey(0);
 
     slam->Stop();
-    
+
     std::cout << std::endl << "-------" << std::endl;
     std::cout << "system stop." << std::endl;
     std::cout << "total time cost: " << time_used_total.count() 

@@ -97,6 +97,9 @@ bool Frontend::Track(){
     _mseRelativeMotion = _mpCurrentFrame->RelativePose() * _mpLastFrame->RelativePose().inverse();
 
     if (_mStatus  == FrontendStatus::TRACKING_BAD){
+        DetectFeatures();
+        FindFeaturesInRight();
+        TriangulateNewPoints();
         InsertKeyFrame();
     }
 
@@ -116,7 +119,7 @@ int Frontend::TrackLastFrame(){
     pointKpsCurrent.reserve(_mpLastFrame->mvpFeaturesLeft.size());
     for(auto &feat: _mpLastFrame->mvpFeaturesLeft){
         auto mp = feat->mpMapPoint.lock();
-        if(mp){
+        if(mp && mp->mbIsOutlier == false){
             auto px = _mpCameraLeft->world2pixel(mp->Pos(), _mpCurrentFrame->RelativePose() * _mpReferenceKF->Pose());
             pointKpsLast.push_back(feat->mkpPosition.pt);
             pointKpsCurrent.push_back(cv::Point2f(px[0], px[1]));
@@ -180,7 +183,7 @@ int Frontend::EstimateCurrentPose(){
     edges.reserve(_mpCurrentFrame->mvpFeaturesLeft.size());
     for(size_t i = 0, N = _mpCurrentFrame->mvpFeaturesLeft.size(); i < N; i++){
         auto mp = _mpCurrentFrame->mvpFeaturesLeft[i]->mpMapPoint.lock();
-        if(mp){
+        if(mp && mp->mbIsOutlier == false){
             features.push_back(_mpCurrentFrame->mvpFeaturesLeft[i]);
             EdgeProjectionPoseOnly *edge = new EdgeProjectionPoseOnly(mp->Pos(), K);
             edge->setId(index);
@@ -225,8 +228,7 @@ int Frontend::EstimateCurrentPose(){
             }
         }
     }
-    // LOG(INFO) << "Outliers/Inliers in frontend current pose estimating: "  << cntOutliers << "/" << features.size() - cntOutliers;
-
+   
     // set pose and outlier
     _mpCurrentFrame->SetPose(vertex_pose->estimate());
     _mpCurrentFrame->SetRelativePose(
@@ -235,11 +237,21 @@ int Frontend::EstimateCurrentPose(){
     // remove the link beween outlier features and their corresponding mappoints
     for(auto &feat: features){
         if(feat->mbIsOutlier){
+            
+            // test
+            auto mp = feat->mpMapPoint.lock();
+            if( mp && 
+                    _mpCurrentFrame->mnFrameId - _mpReferenceKF->mnFrameId <= 2){
+                mp->mbIsOutlier = true;
+            }
+            //test
+
             feat->mpMapPoint.reset();
             feat->mbIsOutlier = false;
-            // 是否可以考虑 删除 outlier 的mappoints?
         }
     }
+    //  LOG(INFO) << "Outliers/Inliers in frontend current pose estimating: "  << cntOutliers << "/" << features.size() - cntOutliers;
+
     return features.size() - cntOutliers;
 }
 
@@ -257,9 +269,7 @@ bool Frontend::StereoInit(){
 
     if(bBuildMapSuccess){
         _mStatus = FrontendStatus::TRACKING_GOOD;
-        // if(_mpViewer){
-        //     _mpViewer->AddCurrentFrame(_mpCurrentFrame);
-        // }
+
         return true;
     }
     return false;
@@ -296,49 +306,6 @@ int Frontend::DetectFeatures(){
     }
     // LOG(INFO) << "Detect " << cntDetected << " new features";
 
-
-    // std::vector<cv::KeyPoint> preKeyPoints;
-    // preKeyPoints.reserve(_mpCurrentFrame->mvpFeaturesLeft.size());
-    // std::vector<std::weak_ptr<MapPoint>> preMapPoints;
-    // preMapPoints.reserve(_mpCurrentFrame->mvpFeaturesLeft.size());
-    // std::vector<bool> bMatched;
-    // bMatched.reserve(_mpCurrentFrame->mvpFeaturesLeft.size());
-    // for(auto &preFeature: _mpCurrentFrame->mvpFeaturesLeft){
-    //     if(!preFeature->mpMapPoint.expired()){
-    //         preKeyPoints.push_back(preFeature->mkpPosition);
-    //         preMapPoints.push_back(preFeature->mpMapPoint);
-    //         bMatched.push_back(false);
-    //     }
-    // }
-// 
-//     int cntDetected = 0;
-//     int cntMatched = 0;
-//     _mpCurrentFrame->mvpFeaturesLeft.clear();
-//     _mpCurrentFrame->mvpFeaturesLeft.reserve(keypoints.size());
-//    for(auto &kp: keypoints){
-//        Feature::Ptr newFeature(new Feature(kp));
-//     //    bool bFoundNewFeaturesInSamePosition = false;
-//        for(size_t i = 0, N = preKeyPoints.size(); i < N; i++){
-//             if(bMatched[i]) // this previous keypoint has been already matched to a new feature
-//                 continue;  
-//             double dis = std::sqrt((kp.pt.x - preKeyPoints[i].pt.x) * (kp.pt.x - preKeyPoints[i].pt.x) 
-//                                     + (kp.pt.y - preKeyPoints[i].pt.y) * (kp.pt.y - preKeyPoints[i].pt.y)); 
-//             if (dis < 2){
-//                 // // LOG(INFO) << "new feature matched to previous keypoint.";;
-//                 newFeature->mpMapPoint = preMapPoints[i];
-//                 bMatched[i] = true;
-//                 cntMatched++;
-//                 // bFoundNewFeaturesInSamePosition = true;
-//                 break;
-//             }
-//         }
-//         _mpCurrentFrame->mvpFeaturesLeft.push_back(newFeature);
-//         cntDetected++;
-//     }
-// 
-    // // LOG(INFO) << "Totally detect " << cntDetected << " features in current frame, find "
-    //      << cntMatched << " matched features.";
-
     return cntDetected;
 }
 
@@ -357,7 +324,7 @@ int Frontend::FindFeaturesInRight(){
     for(auto &kp:  _mpCurrentFrame->mvpFeaturesLeft){
         vpointLeftKPs.push_back(kp->mkpPosition.pt);
         auto mp = kp->mpMapPoint.lock();
-        if(mp){
+        if(mp && mp->mbIsOutlier == false){
             // use projected points as initial guess
             Vec2 px = _mpCameraRight->world2pixel(mp->Pos(), _mpCurrentFrame->RelativePose() * _mpReferenceKF->Pose());
             vpointRightKPs.push_back(cv::Point2f(px[0], px[1]));
@@ -380,9 +347,8 @@ int Frontend::FindFeaturesInRight(){
     _mpCurrentFrame->mvpFeaturesRight.reserve(status.size());
     for(size_t i = 0, N = status.size(); i < N; ++i){
         if(status[i]){
-            cv::KeyPoint kp(vpointRightKPs[i], 7);
+            cv::KeyPoint kp(vpointRightKPs[i], 7); // only the position of keypoint is needed, so size 7 is just for creation with no meaning
             Feature::Ptr feat(new Feature(kp));
-            // Feature::Ptr feat(new Feature(_mpCurrentFrame, kp));
             feat->mbIsOnLeftFrame = false;
             _mpCurrentFrame->mvpFeaturesRight.push_back(feat);
             numGoodPoints++;
@@ -427,16 +393,7 @@ bool Frontend::BuildInitMap(){
         }
     }
 
-    if(_mpBackend){
-
-        KeyFrame::Ptr newKF = KeyFrame::CreateKF(_mpCurrentFrame);
-        _mpBackend->InsertKeyFrame(newKF);
-        _mpReferenceKF = newKF;
-
-        Vec6 se3_zero;
-        se3_zero.setZero();
-        _mpCurrentFrame->SetRelativePose(Sophus::SE3d::exp(se3_zero));
-    }
+    InsertKeyFrame();
     
     // LOG(INFO) << "Initial map created with " << cntInitLandmarks << " map points.";
     return true;
@@ -446,20 +403,24 @@ bool Frontend::BuildInitMap(){
 // --------------------------------------------------------------------------------------
 
 bool Frontend::InsertKeyFrame(){
-    DetectFeatures();
-    FindFeaturesInRight();
-    TriangulateNewPoints();
- 
+    Vec6 se3_zero;
+    se3_zero.setZero();
+    
     if(_mpBackend){
         KeyFrame::Ptr newKF = KeyFrame::CreateKF(_mpCurrentFrame);
-        newKF->SetPose(_mpCurrentFrame->RelativePose() * _mpReferenceKF->Pose());
+        if(_mStatus == FrontendStatus::INITING){
+            newKF->SetPose(Sophus::SE3d::exp(se3_zero));
+        } else{
+            newKF->SetPose(_mpCurrentFrame->RelativePose() * _mpReferenceKF->Pose());
+            newKF->mpLastKF = _mpReferenceKF;
+            newKF->mRelativePoseToLastKF = _mpCurrentFrame->RelativePose();
+        }
         // LOG(INFO) << "Set frame " << newKF->mnFrameId << " as keyframe " << newKF->mnKFId;
         
         _mpBackend->InsertKeyFrame(newKF);
+
         _mpReferenceKF = newKF;
 
-        Vec6 se3_zero;
-        se3_zero.setZero();
         _mpCurrentFrame->SetRelativePose(Sophus::SE3d::exp(se3_zero));
     }
     return true;
