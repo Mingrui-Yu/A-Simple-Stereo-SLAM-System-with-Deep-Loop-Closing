@@ -42,6 +42,8 @@ public:
     std::vector<std::shared_ptr<Feature>> mvpFeaturesLeft;
     cv::Mat mImageLeft;
     DeepLCD::DescrVector mpDescrVector;
+
+    std::vector<cv::KeyPoint> mvPyramidKeyPoints;
     // float mfSimilarityScoreNormFactor;
     // std::vector<std::shared_ptr<Feature>> mvpFeaturesRight;
     

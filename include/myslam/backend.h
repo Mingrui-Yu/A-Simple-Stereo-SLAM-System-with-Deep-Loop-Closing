@@ -2,7 +2,6 @@
 #define MYSLAM_BACKEND_H
 
 #include "myslam/common_include.h"
-#include "myslam/map.h"
 
 
 namespace myslam{
@@ -21,8 +20,10 @@ public:
 
     Backend();
 
-    void UpdateMap();
+    // void UpdateMap();
 
+    /* ask the backend thread to stop
+    */
     void Stop();
 
     void SetViewer(std::shared_ptr<Viewer> viewer){
@@ -33,21 +34,26 @@ public:
         _mpLoopClosing = lp;
     }
 
-    // set left and right camera
     void SetCameras(std::shared_ptr<Camera> left, std::shared_ptr<Camera> right){
         _mpCameraLeft = left;
         _mpCameraRight = right;
     }
 
-    // set the map
     void SetMap(std::shared_ptr<Map> map){
         _mpMap = map;
     }
 
+    /* insert KeyFrame from frontend
+     * add inserted KeyFrame to a list, and it will be processed later
+    */
     void InsertKeyFrame(std::shared_ptr<KeyFrame> pKF);
 
+    /* ask the backend thread to pause
+     */
     void RequestPause();
 
+    /* return true if the backend thread has paused
+     */
     bool IfHasPaused();
 
     void Resume();
@@ -67,7 +73,7 @@ private:
     std::thread _mthreadBackend;
     std::atomic<bool>  _mbBackendIsRunning;
     std::atomic<bool>  _mbRequestPause;
-    std::atomic<bool>  _mbFinishedOneLoop;
+    std::atomic<bool>  _mbHasPaused;
     std::condition_variable _mapUpdate;
     std::mutex _mmutexData;
     std::mutex _mmutexNewKF;

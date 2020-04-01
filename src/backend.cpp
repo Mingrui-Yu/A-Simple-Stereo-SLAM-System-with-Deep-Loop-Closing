@@ -27,15 +27,14 @@ void Backend::InsertKeyFrame(KeyFrame::Ptr pKF){
     std::unique_lock<std::mutex> lck(_mmutexNewKF);
     _mlNewKeyFrames.push_back(pKF);
     _mbNeedOptimization = true;
-    // UpdateMap();
 }
 
 // -----------------------------------------------------------------------------------
 
-void Backend::UpdateMap(){
-    std::unique_lock<std::mutex> lck(_mmutexData);
-    _mapUpdate.notify_one();
-}
+// void Backend::UpdateMap(){
+//     std::unique_lock<std::mutex> lck(_mmutexData);
+//     _mapUpdate.notify_one();
+// }
 
 // -----------------------------------------------------------------------------------
 
@@ -46,7 +45,7 @@ void Backend::RequestPause(){
 // -----------------------------------------------------------------------------------
 
 bool Backend::IfHasPaused(){
-    return (_mbRequestPause.load()) && (_mbFinishedOneLoop.load());
+    return (_mbRequestPause.load()) && (_mbHasPaused.load());
 }
 
 // -----------------------------------------------------------------------------------
@@ -69,21 +68,24 @@ void Backend::BackendLoop(){
 
     while(_mbBackendIsRunning.load()){
 
-        if (_mbRequestPause.load()) continue;
-        _mbFinishedOneLoop.store(false);
-
         while(CheckNewKeyFrames()){
             ProcessNewKeyFrame();
         }
+
+        usleep(1000);
+
+        while(_mbRequestPause.load()){
+            _mbHasPaused.store(true);
+            usleep(1000);
+        }
+        _mbHasPaused.store(false);
 
         // optimize the active KFs and mappoints
         if(!CheckNewKeyFrames() && _mbNeedOptimization){
             OptimizeActiveMap();
             _mbNeedOptimization = false;  // until the next inserted KF, this will become true
         }
-        _mbFinishedOneLoop.store(true);
-
-        usleep(1000);
+        
     }
 
 }
@@ -106,9 +108,9 @@ void Backend::ProcessNewKeyFrame(){
     _mpMap->InsertKeyFrame(_mpCurrentKF);
     _mpLoopClosing->InsertNewKeyFrame(_mpCurrentKF);
 
-    if(_mpViewer){
-        _mpViewer->UpdateMap();
-    }
+    // if(_mpViewer){
+    //     _mpViewer->UpdateMap();
+    // }
 
     // _mpLastKF = _mpCurrentKF;
 }
@@ -127,8 +129,12 @@ void Backend::OptimizeActiveMap(){
     Map::KeyFramesType keyframes = _mpMap->GetActiveKeyFrames();
     Map::MapPointsType mappoints = _mpMap->GetActiveMapPoints();
 
+    // for(auto &keyframe: keyframes){
+    //     LOG(INFO) << "active keyframe id: " << keyframe.second->mnKFId;
+    // }
+
     // add keyframe vertex
-    std::map<unsigned long, VertexPose *> vertices_kfs;
+    std::unordered_map<unsigned long, VertexPose *> vertices_kfs;
     unsigned long maxKFId = 0;
     for(auto &keyframe: keyframes){
         auto kf = keyframe.second;
@@ -147,10 +153,13 @@ void Backend::OptimizeActiveMap(){
     int index = 1;
     double chi2_th = 5.991;
 
+
+    int cntFixedMP = 0;
+
     // add mappoints vertex
     // add edges
-    std::map<unsigned long, VertexXYZ *> vertices_mps;
-    std::map<EdgeProjection *, Feature::Ptr> edgesAndFeatures;
+    std::unordered_map<unsigned long, VertexXYZ *> vertices_mps;
+    std::unordered_map<EdgeProjection *, Feature::Ptr> edgesAndFeatures;
     for(auto &mappoint: mappoints){
         auto mp = mappoint.second;
         if(mp->mbIsOutlier) {
@@ -162,8 +171,23 @@ void Backend::OptimizeActiveMap(){
         v->setEstimate(mp->Pos());
         v->setId((maxKFId +1) + mappointId);
         v->setMarginalized(true);
+
+        if(keyframes.find(mp->GetObservations().front().lock()->mpKF.lock()->mnKFId) == keyframes.end()){
+            v->setFixed(true);
+            // LOG(INFO) << "fixed mappoint id: " << mp->mnId;
+            cntFixedMP++;
+        }
+
         vertices_mps.insert({mappointId, v});
         optimizer.addVertex(v);
+
+        // LOG(INFO) << "mappoint's id: " << mp->mnId;
+        // assert(_mpMap->GetAllMapPoints().find(mp->mnId) != _mpMap->GetAllMapPoints().end());
+        // for(auto &obs: mp->GetActiveObservations()){
+        //     auto feat = obs.lock();
+        //     auto kf = feat->mpKF.lock();
+        //     LOG(INFO) << "observing kf id: " << kf->mnKFId;
+        // }
 
 
         for(auto &obs: mp->GetActiveObservations()){
@@ -190,6 +214,8 @@ void Backend::OptimizeActiveMap(){
             index++;
         }
     }
+    // LOG(INFO) << "all mappoiints number: " << mappoints.size();
+    // LOG(INFO) << "fixed mappoints number: " << cntFixedMP;
 
     // do optimization
     int cntOutlier = 0, cntInlier = 0;
@@ -213,7 +239,7 @@ void Backend::OptimizeActiveMap(){
         if(inlierRatio > 0.5){
             break;
         }else{
-            chi2_th *= 2;
+            // chi2_th *= 2;
             iteration++;
         }
     }
@@ -232,7 +258,7 @@ void Backend::OptimizeActiveMap(){
             ef.second->mbIsOutlier = false;
         }
     }
-    // LOG(INFO) << "Backend: Outlier/Inlier in optimization: " << cntOutlier << "/" << cntInlier;
+    LOG(INFO) << "Backend: Outlier/Inlier in optimization: " << cntOutlier << "/" << cntInlier;
 
     // Set pose and landmark position
     for (auto &v: vertices_kfs) {
@@ -249,6 +275,7 @@ void Backend::OptimizeActiveMap(){
             _mpMap->RemoveMapPoint(mp);
         }
      }
+     _mpMap->RemoveOldActiveMapPoints();
 }
 
 // ------------------------------------------------------------------------------

@@ -39,7 +39,7 @@ const float DeepLCD::score(const DescrVector& d1, const DescrVector& d2)
 DeepLCD::DescrVector DeepLCD::calcDescrOriginalImg(const cv::Mat& originalImg){
 	assert(!originalImg.empty());
 
-	cv::GaussianBlur(originalImg, originalImg, cv::Size(5, 5), 0);
+	cv::GaussianBlur(originalImg, originalImg, cv::Size(7, 7), 0);
 
 	cv::Size _sz(160, 120);
 	cv::Mat imResize;

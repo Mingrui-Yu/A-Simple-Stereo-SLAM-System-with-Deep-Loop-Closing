@@ -14,10 +14,6 @@
 
 namespace myslam{
 
-/* 
- * system 对外接口
- */
-
 
 class System{
 public:
@@ -28,32 +24,40 @@ public:
 
     void Stop();
 
-    // do initialization things before run
+    /* do initialization things before running
+     * return true if init successfully
+     */
     bool Init();
 
+    /* process each frame
+     * return true if system runs normally
+     */
     bool RunStep(const cv::Mat &leftImg, const cv::Mat &rightImg, const double &dTimestamp);
 
+    /* load the params of cameras from configuration file
+     * and create Camera objects
+     */ 
     void GetCamera();
 
+    /* save the keyframe trajectory to a txt file
+     */
     void SaveTrajectory(std::string &save_file);
+
 
 public:
     
 
 
-
 private:
-    std::string _strConfigPath;
-
     Frontend::Ptr _mpFrontend = nullptr;
     Backend::Ptr _mpBackend = nullptr;
     LoopClosing::Ptr _mpLoopClosing = nullptr;
     Viewer::Ptr _mpViewer = nullptr;
     std::shared_ptr<Map> _mpMap = nullptr;
     std::shared_ptr<Camera> _mpCameraLeft, _mpCameraRight;
-
     std::shared_ptr<ORBextractor> _mpORBextractor;
 
+    std::string _strConfigPath;
 };
 
 }  // namespace myslam

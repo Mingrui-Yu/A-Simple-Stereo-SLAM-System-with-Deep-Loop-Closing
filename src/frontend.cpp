@@ -30,19 +30,19 @@ Frontend::Frontend(){
     int fMinThFAST = Config::Get<int>("ORBextractor.minThFAST");
 
     _mpORBextractorInit = ORBextractor::Ptr(new ORBextractor(nFeaturesInit,fScaleFactor,nLevels,fIniThFAST,fMinThFAST));
+    // _mpORBextractor is created in system.cpp and introduced into frontend.cpp
 }
 
 
 
-// --------------------------------------------------------------
+// -------------------------------------------------------------------------------
 
 bool Frontend::GrabStereoImage (const cv::Mat &leftImg, const cv::Mat &rightImg, 
     const double &dTimeStamp){
 
     _mpCurrentFrame = Frame::Ptr(new Frame(leftImg, rightImg, dTimeStamp));
 
-    // // LOG(INFO) << "frame id: " << _mpCurrentFrame->mnFrameId;
-    {
+    { // mutex: avoid conflict between frontend and loop correction
         std::unique_lock<std::mutex> lck(_mpMap->mmutexMapUpdate);
 
         switch(_mStatus){
@@ -54,19 +54,21 @@ bool Frontend::GrabStereoImage (const cv::Mat &leftImg, const cv::Mat &rightImg,
                 Track();
                 break;
             case FrontendStatus::LOST:
-                // Reset();
-                return false;
+                // Relocalization();
+                // hasn't been implemented. (TO DO)
+                return false; // now, if LOST, then just quit the system
                 break;
         }
-    }
+    } // mutex
 
     if(_mpViewer){
         _mpViewer->AddCurrentFrame(_mpCurrentFrame);
     }
 
-    // cv::waitKey(10);
+    // usleep(1000 * 10);
 
     _mpLastFrame = _mpCurrentFrame;
+
     return true;
 }
 
@@ -75,6 +77,7 @@ bool Frontend::GrabStereoImage (const cv::Mat &leftImg, const cv::Mat &rightImg,
 
 bool Frontend::Track(){
 
+    // use constant velocity model to preliminarily estimiate the current frame's pose
     if(_mpLastFrame){
         _mpCurrentFrame->SetRelativePose(_mseRelativeMotion * _mpLastFrame->RelativePose());
     }
@@ -82,6 +85,7 @@ bool Frontend::Track(){
     TrackLastFrame();
 
     int numTrackingInliers = EstimateCurrentPose();
+
     if(numTrackingInliers > _numFeaturesTrackingGood){
         // tracking good
         _mStatus = FrontendStatus::TRACKING_GOOD;
@@ -91,11 +95,14 @@ bool Frontend::Track(){
     } else{
         // lost
         _mStatus = FrontendStatus::LOST;
-        // LOG(INFO) << "current frame: tracking LOST!";
+        std::cout << "---------------------" << std::endl;
+        std::cout << "Tracking LOST!" << std::endl;
+        std::cout << "---------------------" << std::endl;
     }
 
     _mseRelativeMotion = _mpCurrentFrame->RelativePose() * _mpLastFrame->RelativePose().inverse();
 
+    // detect new features / create new mappoints / create new KF
     if (_mStatus  == FrontendStatus::TRACKING_BAD){
         DetectFeatures();
         FindFeaturesInRight();
@@ -103,14 +110,11 @@ bool Frontend::Track(){
         InsertKeyFrame();
     }
 
-    // if(_mpViewer){
-    //     _mpViewer->AddCurrentFrame(_mpCurrentFrame);
-    // }
     return true;
 }
 
 
-// -----------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------
 
 int Frontend::TrackLastFrame(){
      // use LK flow to estimate points betweem last frame and current frame
@@ -120,16 +124,19 @@ int Frontend::TrackLastFrame(){
     for(auto &feat: _mpLastFrame->mvpFeaturesLeft){
         auto mp = feat->mpMapPoint.lock();
         if(mp && mp->mbIsOutlier == false){
+            // if the feature links to a mappoint, use the reprojection result as the initial value
             auto px = _mpCameraLeft->world2pixel(mp->Pos(), _mpCurrentFrame->RelativePose() * _mpReferenceKF->Pose());
             pointKpsLast.push_back(feat->mkpPosition.pt);
             pointKpsCurrent.push_back(cv::Point2f(px[0], px[1]));
-        } else{
+        } 
+        else{
+            // otherwise, use its position in last image as the initial value
             pointKpsLast.push_back(feat->mkpPosition.pt);
             pointKpsCurrent.push_back(feat->mkpPosition.pt);
         }
     }
-    // // LOG(INFO) << "number of keypoints in last frame: " << pointKpsLast.size();
 
+    // LK flow estimation in opencv library
     std::vector<uchar> status;
     cv::Mat error;
     cv::calcOpticalFlowPyrLK(_mpLastFrame->mLeftImg, _mpCurrentFrame->mLeftImg,
@@ -142,8 +149,8 @@ int Frontend::TrackLastFrame(){
     for(size_t i = 0, N = status.size(); i < N; i++){
         // if LK flow track successfully and the feature in last frame is linked to a mappoint
         // then, create a new feature in current frame
-        if(status[i] && !_mpLastFrame->mvpFeaturesLeft[i]->mpMapPoint.expired()){ // 
-            cv::KeyPoint kp(pointKpsCurrent[i], 7);
+        if(status[i] && !_mpLastFrame->mvpFeaturesLeft[i]->mpMapPoint.expired()){
+            cv::KeyPoint kp(pointKpsCurrent[i], 7); // only the position of keypoint is needed, so size 7 is just for creation with no meaning
             Feature::Ptr feature(new Feature(kp));
             feature->mpMapPoint = _mpLastFrame->mvpFeaturesLeft[i]->mpMapPoint;
             _mpCurrentFrame->mvpFeaturesLeft.push_back(feature);
@@ -151,7 +158,7 @@ int Frontend::TrackLastFrame(){
         }
     }
 
-    // LOG(INFO) << "Find " << numGoodPts << " keypoints in the last frame.";
+    // LOG(INFO) << "Frontend: Find " << numGoodPts << " keypoints in the last frame.";
     return numGoodPts;
 }
 
@@ -167,7 +174,7 @@ int Frontend::EstimateCurrentPose(){
     g2o::SparseOptimizer optimizer;
     optimizer.setAlgorithm(solver);
 
-    //vertex
+    // vertex
     VertexPose *vertex_pose = new VertexPose();
     vertex_pose->setId(0);
     vertex_pose->setEstimate(_mpCurrentFrame->RelativePose() * _mpReferenceKF->Pose());
@@ -208,7 +215,8 @@ int Frontend::EstimateCurrentPose(){
         optimizer.optimize(10);
         cntOutliers = 0;
 
-        // count the outliers
+        // count the outliers, outlier is not included in estimation until it is regarded as a inlier
+        // somewhat like RANSAC
         for(size_t i = 0, N = edges.size(); i < N; i++){
             auto e = edges[i];
             if(features[i]->mbIsOutlier){
@@ -223,34 +231,37 @@ int Frontend::EstimateCurrentPose(){
                 e->setLevel(0);
             }
 
-            if(iteration == 2){
+            // remove the robust kernel to see if it's outlier
+            if(iteration == numIterations - 2){
                 e->setRobustKernel(nullptr);
             }
         }
     }
    
-    // set pose and outlier
-    _mpCurrentFrame->SetPose(vertex_pose->estimate());
+    // set pose
+    _mpCurrentFrame->SetPose(vertex_pose->estimate()); // this is only for viewer
     _mpCurrentFrame->SetRelativePose(
         vertex_pose->estimate() * _mpReferenceKF->Pose().inverse());
 
     // remove the link beween outlier features and their corresponding mappoints
     for(auto &feat: features){
         if(feat->mbIsOutlier){
-            
-            // test
             auto mp = feat->mpMapPoint.lock();
+
+            // if the feature is regarded as a outlier after its mappoint just being created
+            //      then set it as a outlier, which will be removed from the map later.
             if( mp && 
                     _mpCurrentFrame->mnFrameId - _mpReferenceKF->mnFrameId <= 2){
                 mp->mbIsOutlier = true;
             }
-            //test
 
             feat->mpMapPoint.reset();
             feat->mbIsOutlier = false;
         }
     }
-    //  LOG(INFO) << "Outliers/Inliers in frontend current pose estimating: "  << cntOutliers << "/" << features.size() - cntOutliers;
+
+    //  LOG(INFO) << "Frontend: Outliers/Inliers in frontend current pose estimating: "  
+        // << cntOutliers << "/" << features.size() - cntOutliers;
 
     return features.size() - cntOutliers;
 }
@@ -269,7 +280,6 @@ bool Frontend::StereoInit(){
 
     if(bBuildMapSuccess){
         _mStatus = FrontendStatus::TRACKING_GOOD;
-
         return true;
     }
     return false;
@@ -281,30 +291,29 @@ bool Frontend::StereoInit(){
 // --------------------------------------------------------------
 
 int Frontend::DetectFeatures(){
-    // int numExistFeatures = _mpCurrentFrame->mvpFeaturesLeft.size();
 
+    // mask for ORB feature extraction
     cv::Mat mask(_mpCurrentFrame->mLeftImg.size(), CV_8UC1, 255);
     for (auto &feat: _mpCurrentFrame->mvpFeaturesLeft){
-        cv::rectangle(mask, feat->mkpPosition.pt - cv::Point2f(10, 10),
-            feat->mkpPosition.pt + cv::Point2f(10, 10), 0, CV_FILLED);
+        cv::rectangle(mask, feat->mkpPosition.pt - cv::Point2f(20, 20),
+            feat->mkpPosition.pt + cv::Point2f(20, 20), 0, CV_FILLED);
     }
     
     std::vector<cv::KeyPoint> keypoints;
     if(_mStatus == FrontendStatus::INITING){
         _mpORBextractorInit->Detect(_mpCurrentFrame->mLeftImg, mask, keypoints);
     } else{
-        // _mpORBextractor->SetNumORBfeatures(_numFeaturesTracking - numExistFeatures);
         _mpORBextractor->Detect(_mpCurrentFrame->mLeftImg, mask, keypoints);
     }
 
     int cntDetected = 0;
     for(auto &kp: keypoints){
         Feature::Ptr newFeature(new Feature(kp));
-        newFeature->mbWithOctave = true;
         _mpCurrentFrame->mvpFeaturesLeft.push_back(newFeature);
         cntDetected++;
     }
-    // LOG(INFO) << "Detect " << cntDetected << " new features";
+
+    // LOG(INFO) << "Frontend: Detect " << cntDetected << " new features";
 
     return cntDetected;
 }
@@ -329,7 +338,7 @@ int Frontend::FindFeaturesInRight(){
             Vec2 px = _mpCameraRight->world2pixel(mp->Pos(), _mpCurrentFrame->RelativePose() * _mpReferenceKF->Pose());
             vpointRightKPs.push_back(cv::Point2f(px[0], px[1]));
         }else{
-            // use same pixel in left image
+            // use same pixel position in left image
             vpointRightKPs.push_back(kp->mkpPosition.pt);
         }
     }
@@ -349,7 +358,6 @@ int Frontend::FindFeaturesInRight(){
         if(status[i]){
             cv::KeyPoint kp(vpointRightKPs[i], 7); // only the position of keypoint is needed, so size 7 is just for creation with no meaning
             Feature::Ptr feat(new Feature(kp));
-            feat->mbIsOnLeftFrame = false;
             _mpCurrentFrame->mvpFeaturesRight.push_back(feat);
             numGoodPoints++;
         } else{
@@ -357,7 +365,7 @@ int Frontend::FindFeaturesInRight(){
         }
     }
 
-    // LOG(INFO) << "Find " << numGoodPoints << " corresponding features in the right image.";
+    // LOG(INFO) << "Frontend: Find " << numGoodPoints << " corresponding features in the right image.";
     return numGoodPoints;
 }
 
@@ -395,7 +403,7 @@ bool Frontend::BuildInitMap(){
 
     InsertKeyFrame();
     
-    // LOG(INFO) << "Initial map created with " << cntInitLandmarks << " map points.";
+    // LOG(INFO) << "Frontend: Initial map created with " << cntInitLandmarks << " map points.";
     return true;
 }
 
@@ -405,24 +413,26 @@ bool Frontend::BuildInitMap(){
 bool Frontend::InsertKeyFrame(){
     Vec6 se3_zero;
     se3_zero.setZero();
-    
-    if(_mpBackend){
-        KeyFrame::Ptr newKF = KeyFrame::CreateKF(_mpCurrentFrame);
-        if(_mStatus == FrontendStatus::INITING){
-            newKF->SetPose(Sophus::SE3d::exp(se3_zero));
-        } else{
-            newKF->SetPose(_mpCurrentFrame->RelativePose() * _mpReferenceKF->Pose());
-            newKF->mpLastKF = _mpReferenceKF;
-            newKF->mRelativePoseToLastKF = _mpCurrentFrame->RelativePose();
-        }
-        // LOG(INFO) << "Set frame " << newKF->mnFrameId << " as keyframe " << newKF->mnKFId;
-        
-        _mpBackend->InsertKeyFrame(newKF);
 
-        _mpReferenceKF = newKF;
-
-        _mpCurrentFrame->SetRelativePose(Sophus::SE3d::exp(se3_zero));
+    KeyFrame::Ptr newKF = KeyFrame::CreateKF(_mpCurrentFrame);
+    if(_mStatus == FrontendStatus::INITING){
+        newKF->SetPose(Sophus::SE3d::exp(se3_zero));
+    } else{
+        newKF->SetPose(_mpCurrentFrame->RelativePose() * _mpReferenceKF->Pose());
+        newKF->mpLastKF = _mpReferenceKF;
+        newKF->mRelativePoseToLastKF = _mpCurrentFrame->RelativePose();
     }
+
+    if(_mpBackend){
+         _mpBackend->InsertKeyFrame(newKF);
+    }
+
+    // LOG(INFO) << "Frontend: Set frame " << newKF->mnFrameId << " as keyframe " << newKF->mnKFId;
+    
+    _mpReferenceKF = newKF;
+
+    _mpCurrentFrame->SetRelativePose(Sophus::SE3d::exp(se3_zero));
+    
     return true;
 }
 
@@ -464,7 +474,7 @@ int Frontend::TriangulateNewPoints(){
             cntTriangulatedPts++;
         }
     }
-    // LOG(INFO) << " trangluate " << cntTriangulatedPts << " new mappoints, and now totally tracking " << cntTriangulatedPts + cntPreviousMapPoints << " mappoints."  ;
+    // LOG(INFO) << "Frontend: Trangluate " << cntTriangulatedPts << " new mappoints, and now totally tracking " << cntTriangulatedPts + cntPreviousMapPoints << " mappoints."  ;
     return cntTriangulatedPts;
 }
 

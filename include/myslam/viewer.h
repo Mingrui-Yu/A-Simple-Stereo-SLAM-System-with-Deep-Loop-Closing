@@ -22,8 +22,8 @@ class Viewer{
 public:
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
     typedef std::shared_ptr<Viewer> Ptr;
-    typedef std::unordered_map<unsigned long, std::shared_ptr<KeyFrame>> KeyFramesType;
-    typedef std::unordered_map<unsigned long, std::shared_ptr<MapPoint>> MapPointsType;
+    // typedef std::unordered_map<unsigned long, std::shared_ptr<KeyFrame>> KeyFramesType;
+    // typedef std::unordered_map<unsigned long, std::shared_ptr<MapPoint>> MapPointsType;
 
     Viewer();
 
@@ -37,7 +37,7 @@ public:
     void AddCurrentFrame(std::shared_ptr<Frame> currentFrame);
 
     // get the information about kf/mp from the map
-    void UpdateMap();
+    // void UpdateMap();
 
     
 
@@ -72,11 +72,11 @@ private:
     const float green[3] = {0, 1, 0};
     const float blue[3] = {0, 0, 1};
     
-    MapPointsType _mumpAllMapPoints;
-    MapPointsType _mumpActiveMapPoints;
+    // MapPointsType _mumpAllMapPoints;
+    // MapPointsType _mumpActiveMapPoints;
 
-    KeyFramesType _mumpAllKeyFrames;
-    KeyFramesType _mumpActiveKeyFrames;
+    // KeyFramesType _mumpAllKeyFrames;
+    // KeyFramesType _mumpActiveKeyFrames;
 
 
 

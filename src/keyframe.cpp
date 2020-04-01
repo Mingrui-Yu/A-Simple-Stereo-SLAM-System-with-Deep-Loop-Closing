@@ -9,23 +9,25 @@
 namespace myslam{
 
 KeyFrame::KeyFrame(Frame::Ptr frame){
-    static unsigned long nFactoryId = 0;
 
+    // set id
+    static unsigned long nFactoryId = 0;
     mnKFId = nFactoryId++;
+
+    // copy some members form Frame
     mnFrameId = frame->mnFrameId;
     mdTimeStamp = frame->mdTimeStamp;
-    mImageLeft = frame->mLeftImg.clone();
-
+    mImageLeft = frame->mLeftImg;
     mvpFeaturesLeft = frame->mvpFeaturesLeft;
-    // mvpFeaturesRight = frame->mvpFeaturesRight;
+    // mvpFeaturesRight = frame->mvpFeaturesRight; // undesired
+    
     for(size_t i =0, N = frame->mvpFeaturesLeft.size(); i < N; i++){
         auto mp = frame->mvpFeaturesLeft[i]->mpMapPoint.lock();
         if(mp != nullptr){
             mvpFeaturesLeft[i]->mpMapPoint = mp;
         }
     }
-    
-    // lack the process of setting KeyFrame->Feature->mnKF, which is done is CreateKF()
+
 }
 
 // ---------------------------------------------------------------------------------------------------------
@@ -37,8 +39,12 @@ KeyFrame::Ptr KeyFrame::CreateKF(Frame::Ptr frame){
     for(size_t i = 0, N =  newKF->mvpFeaturesLeft.size(); i < N; i++){
         auto feat = newKF->mvpFeaturesLeft[i];
         feat->mpKF = newKF;
-    }
 
+        auto mp = feat->mpMapPoint.lock();
+        if(mp){
+            mp->AddObservation(feat);
+        }
+    }
 
     return newKF;
 }

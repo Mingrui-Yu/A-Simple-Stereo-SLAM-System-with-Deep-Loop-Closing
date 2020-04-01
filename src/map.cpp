@@ -27,8 +27,9 @@ void Map::InsertKeyFrame(std::shared_ptr<KeyFrame> kf){
     for(auto &feat: kf->mvpFeaturesLeft){
         auto mp = feat->mpMapPoint.lock();
         if(mp){
-             mp->AddActiveObservation(feat);
-             mp->AddObservation(feat);
+            // mp->AddObservation(feat);
+            mp->AddActiveObservation(feat);
+            InsertActiveMapPoint(mp);
         }
     }
 
@@ -47,9 +48,19 @@ void Map::InsertMapPoint (MapPoint::Ptr map_point) {
 
     if (_mumpAllMapPoints.find(map_point->mnId) == _mumpAllMapPoints.end()){
         _mumpAllMapPoints.insert(make_pair(map_point->mnId, map_point));
-        _mumpActiveMapPoints.insert(make_pair(map_point->mnId, map_point));
     }else {
         _mumpAllMapPoints[map_point->mnId] = map_point;
+    }
+}
+
+// -------------------------------------------------------------------
+
+void Map::InsertActiveMapPoint (MapPoint::Ptr map_point) {
+    std::unique_lock<std::mutex> lck(_mmutexData);
+
+    if (_mumpActiveMapPoints.find(map_point->mnId) == _mumpActiveMapPoints.end()){
+        _mumpActiveMapPoints.insert(make_pair(map_point->mnId, map_point));
+    }else {
         _mumpActiveMapPoints[map_point->mnId] = map_point;
     }
 }

@@ -86,8 +86,9 @@ void Viewer::ThreadLoop(){
         }
         
         pangolin::FinishFrame();
-        usleep(1000);
+        usleep(5000);
     }
+    
     LOG(INFO)  << "Stop Viewer";
 }
 
@@ -113,15 +114,15 @@ cv::Mat Viewer::PlotFrameImage(){
 
 // --------------------------------------------------------------
 
-void Viewer::UpdateMap(){
-    std::unique_lock<std::mutex> lck(_mmutexViewerData);
-    assert(_mpMap != nullptr);
-    _mumpActiveKeyFrames = _mpMap->GetActiveKeyFrames();
-    _mumpActiveMapPoints = _mpMap->GetActiveMapPoints();
-    _mumpAllKeyFrames = _mpMap->GetAllKeyFrames();
-    _mumpAllMapPoints = _mpMap->GetAllMapPoints();
-    _mbMapUpdated = true;
-}
+// void Viewer::UpdateMap(){
+//     std::unique_lock<std::mutex> lck(_mmutexViewerData);
+//     assert(_mpMap != nullptr);
+//     _mumpActiveKeyFrames = _mpMap->GetActiveKeyFrames();
+//     _mumpActiveMapPoints = _mpMap->GetActiveMapPoints();
+//     _mumpAllKeyFrames = _mpMap->GetAllKeyFrames();
+//     _mumpAllMapPoints = _mpMap->GetAllMapPoints();
+//     _mbMapUpdated = true;
+// }
 
 
 
@@ -239,7 +240,7 @@ void Viewer::DrawFrame(Frame::Ptr frame, const float* color){
 
 void Viewer::DrawKFsAndMPs(const bool menuShowKeyFrames, const bool menuShowPoints){
     if (menuShowKeyFrames){
-        for (auto& kf: _mumpAllKeyFrames){
+        for (auto& kf: _mpMap->GetAllKeyFrames()){
             DrawFrame(kf.second, blue);
         }
     }
@@ -248,7 +249,7 @@ void Viewer::DrawKFsAndMPs(const bool menuShowKeyFrames, const bool menuShowPoin
     glBegin(GL_POINTS);
 
     if(menuShowPoints){
-         for (auto& mp : _mumpAllMapPoints) {
+         for (auto& mp : _mpMap->GetAllMapPoints()) {
             auto pos = mp.second->Pos();
             glColor3f(red[0], red[1], red[2]);
             glVertex3d(pos[0], pos[1], pos[2]);

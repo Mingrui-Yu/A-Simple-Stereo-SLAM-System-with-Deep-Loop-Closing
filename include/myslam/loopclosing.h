@@ -62,6 +62,8 @@ private:
 
     void PoseGraphOptimization();
 
+    int OptimizeCurrentPose();
+
 
 
 
@@ -84,9 +86,13 @@ private:
     std::shared_ptr<KeyFrame> _mpLastKF = nullptr;
     std::shared_ptr<KeyFrame> _mpCurrentKF = nullptr;
     std::shared_ptr<KeyFrame> _mpLoopKF = nullptr;
-    std::vector<cv::DMatch> _mvGoodFeatureMatches;
+    // std::vector<cv::DMatch> _mvGoodFeatureMatches;
+    // std::set<cv::DMatch> _msetValidFeatureMatches;
+    std::set<std::pair<int, int> > _msetValidFeatureMatches;
+
     Sophus::SE3d _mseCorrectedCurrentPose;
     cv::Mat _mmatMatchInliers;
+    bool _mbNeedCorrect = false;
 
     // DeepLCD::DescrVector _mCurrentDescrVector;
     std::list<std::shared_ptr<KeyFrame>> _mlNewKeyFrames;
@@ -95,6 +101,7 @@ private:
 
     unsigned int _mnDatabaseMinSize = 50;
     float _similarityThres1, _similarityThres2;
+    int nLevels;
 
 };
 

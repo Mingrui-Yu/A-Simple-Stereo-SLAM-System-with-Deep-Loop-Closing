@@ -29,6 +29,8 @@ public:
     // insert new mappoint to the map and the active landmarks
     void InsertMapPoint(std::shared_ptr<MapPoint> map_point);
 
+     void InsertActiveMapPoint(std::shared_ptr<MapPoint> map_point);
+
     // remove landmarks which are not observed by any active kf from active landmarks
     void RemoveOldActiveMapPoints();
 

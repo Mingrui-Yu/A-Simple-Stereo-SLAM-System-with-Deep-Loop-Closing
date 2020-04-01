@@ -1,17 +1,11 @@
 %YAML:1.0
-#--------------------------------------------------------------------------------------------
-# File Path
-#--------------------------------------------------------------------------------------------
-
-dataset_dir: /media/mingrui/MyPassport/SLAMdatabase/KITTI/gray/00
-save_path: map/keyframe_trajectory.txt
-
-
 
 
 #--------------------------------------------------------------------------------------------
 # Camera Parameters
 #--------------------------------------------------------------------------------------------
+# the parameter style is like ORB-SLAM2
+
 #camera intrinsics
 Camera.left.fx: 718.856
 Camera.left.fy: 718.856
@@ -34,13 +28,15 @@ Camera.bf: 386.1448
 # Feature Parameters
 #--------------------------------------------------------------------------------------------
 
-numFeatures.initGood: 200
-numFeatures.trackingGood: 100
+# valid feature numbers to decide the tracking / init status
+numFeatures.initGood: 100
+numFeatures.trackingGood: 50
 numFeatures.trackingBad: 10
 
-# ORB Extractor: Number of features per image
-ORBextractor.nInitFeatures: 400
-ORBextractor.nNewFeatures: 200
+# ORB Extractor: Number of features when initalizing
+ORBextractor.nInitFeatures: 300
+# ORB Extractor: Number of new features to detect when needs to create a new KF
+ORBextractor.nNewFeatures: 100
 # ORB Extractor: Scale factor between levels in the scale pyramid 	
 ORBextractor.scaleFactor: 1.2
 # ORB Extractor: Number of levels in the scale pyramid	
@@ -58,8 +54,8 @@ ORBextractor.minThFAST: 7
 # Loop Closing Parameters
 #--------------------------------------------------------------------------------------------
 
-LCD.similarityScoreThreshold.high: 0.92
-LCD.similarityScoreThreshold.low: 0.90
+LCD.similarityScoreThreshold.high: 0.94
+LCD.similarityScoreThreshold.low: 0.92
 
 
 

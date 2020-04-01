@@ -1,29 +1,29 @@
-Date : 2020-03-28 18:54:50
+Date : 2020-04-01 22:19:11
 Directory : /home/mingrui/Mingrui/SLAMProject/stereo_slam_system
-Total : 72 files,  8236 codes, 968 comments, 2395 blanks, all 11599 lines
+Total : 73 files,  8646 codes, 1087 comments, 2556 blanks, all 12289 lines
 
 Languages
 +--------------+------------+------------+------------+------------+------------+
 | language     | files      | code       | comment    | blank      | total      |
 +--------------+------------+------------+------------+------------+------------+
-| C++          |         38 |      5,116 |        716 |      1,597 |      7,429 |
+| C++          |         39 |      5,545 |        835 |      1,761 |      8,141 |
 | CMake        |         20 |        790 |          0 |        139 |        929 |
 | Log          |          3 |        645 |          0 |         77 |        722 |
 | CMake Cache  |          1 |        562 |          0 |        144 |        706 |
 | Makefile     |          3 |        494 |        173 |        284 |        951 |
 | C            |          2 |        480 |         51 |        103 |        634 |
 | JSON         |          1 |         77 |          0 |          0 |         77 |
-| YAML         |          1 |         33 |         24 |         23 |         80 |
-| Markdown     |          1 |         22 |          0 |         18 |         40 |
+| YAML         |          1 |         31 |         24 |         21 |         76 |
 | Shell Script |          2 |         17 |          4 |         10 |         31 |
+| Markdown     |          1 |          5 |          0 |         17 |         22 |
 +--------------+------------+------------+------------+------------+------------+
 
 Directories
 +-------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
 | path                                                                                                              | files      | code       | comment    | blank      | total      |
 +-------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
-| .                                                                                                                 |         72 |      8,236 |        968 |      2,395 |     11,599 |
-| app                                                                                                               |          1 |         93 |          9 |         36 |        138 |
+| .                                                                                                                 |         73 |      8,646 |      1,087 |      2,556 |     12,289 |
+| app                                                                                                               |          1 |         92 |         14 |         36 |        142 |
 | build                                                                                                             |         29 |      3,562 |        277 |        811 |      4,650 |
 | build/CMakeFiles                                                                                                  |         11 |      2,164 |        104 |        331 |      2,599 |
 | build/CMakeFiles/3.10.2                                                                                           |          5 |      1,002 |        104 |        236 |      1,342 |
@@ -38,20 +38,20 @@ Directories
 | build/src/CMakeFiles                                                                                              |          3 |         77 |          0 |         12 |         89 |
 | build/src/CMakeFiles/myslam.dir                                                                                   |          2 |         65 |          0 |          7 |         72 |
 | cmake_modules                                                                                                     |          3 |        315 |          0 |         37 |        352 |
-| config                                                                                                            |          1 |         33 |         24 |         23 |         80 |
-| config/stereo                                                                                                     |          1 |         33 |         24 |         23 |         80 |
-| config/stereo/color                                                                                               |          1 |         33 |         24 |         23 |         80 |
-| include                                                                                                           |         19 |      1,092 |        270 |        593 |      1,955 |
-| include/myslam                                                                                                    |         19 |      1,092 |        270 |        593 |      1,955 |
-| src                                                                                                               |         16 |      3,102 |        384 |        867 |      4,353 |
+| config                                                                                                            |          1 |         31 |         24 |         21 |         76 |
+| config/stereo                                                                                                     |          1 |         31 |         24 |         21 |         76 |
+| config/stereo/color                                                                                               |          1 |         31 |         24 |         21 |         76 |
+| include                                                                                                           |         20 |      1,187 |        306 |        612 |      2,105 |
+| include/myslam                                                                                                    |         20 |      1,187 |        306 |        612 |      2,105 |
+| src                                                                                                               |         16 |      3,437 |        462 |      1,012 |      4,911 |
 +-------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
 
 Files
 +-------------------------------------------------------------------------------------------------------------------+--------------+------------+------------+------------+------------+
 | filename                                                                                                          | language     | code       | comment    | blank      | total      |
 +-------------------------------------------------------------------------------------------------------------------+--------------+------------+------------+------------+------------+
-| /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/README.md                                                    | Markdown     |         22 |          0 |         18 |         40 |
-| /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/app/run_kitti_stereo.cpp                                     | C++          |         93 |          9 |         36 |        138 |
+| /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/README.md                                                    | Markdown     |          5 |          0 |         17 |         22 |
+| /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/app/run_kitti_stereo.cpp                                     | C++          |         92 |         14 |         36 |        142 |
 | /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build/CMakeCache.txt                                         | CMake Cache  |        562 |          0 |        144 |        706 |
 | /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build/CMakeFiles/3.10.2/CMakeCCompiler.cmake                 | CMake        |         57 |          0 |         17 |         74 |
 | /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/build/CMakeFiles/3.10.2/CMakeCXXCompiler.cmake               | CMake        |         59 |          0 |         17 |         76 |
@@ -84,43 +84,44 @@ Files
 | /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/cmake_modules/FindCSparse.cmake                              | CMake        |         25 |          0 |          3 |         28 |
 | /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/cmake_modules/FindG2O.cmake                                  | CMake        |         98 |          0 |         16 |        114 |
 | /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/cmake_modules/FindGlog.cmake                                 | CMake        |        192 |          0 |         18 |        210 |
-| /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/config/stereo/color/KITTI00-02.yaml                          | YAML         |         33 |         24 |         23 |         80 |
+| /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/config/stereo/color/KITTI00-02.yaml                          | YAML         |         31 |         24 |         21 |         76 |
 | /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/get_model.sh                                                 | Shell Script |         16 |          4 |          9 |         29 |
-| /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/include/myslam/ORBextractor.h                                | C++          |         74 |         27 |         37 |        138 |
+| /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/include/myslam/FASTcorner.h                                  | C++          |         90 |          2 |         18 |        110 |
+| /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/include/myslam/ORBextractor.h                                | C++          |         78 |         28 |         42 |        148 |
 | /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/include/myslam/PnPsolver.h                                   | C++          |         86 |         64 |         49 |        199 |
-| /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/include/myslam/algorithm.h                                   | C++          |        105 |          9 |         25 |        139 |
+| /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/include/myslam/algorithm.h                                   | C++          |        108 |          9 |         26 |        143 |
 | /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/include/myslam/backend.h                                     | C++          |         61 |          3 |         40 |        104 |
 | /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/include/myslam/camera.h                                      | C++          |         31 |          0 |         16 |         47 |
 | /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/include/myslam/common_include.h                              | C++          |         96 |         10 |         17 |        123 |
 | /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/include/myslam/config.h                                      | C++          |         19 |          2 |         12 |         33 |
 | /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/include/myslam/deeplcd.h                                     | C++          |         30 |          5 |         21 |         56 |
-| /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/include/myslam/feature.h                                     | C++          |         23 |          8 |         17 |         48 |
+| /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/include/myslam/feature.h                                     | C++          |         24 |          8 |         18 |         50 |
 | /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/include/myslam/frame.h                                       | C++          |         29 |          3 |         29 |         61 |
-| /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/include/myslam/frontend.h                                    | C++          |         67 |         20 |         45 |        132 |
+| /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/include/myslam/frontend.h                                    | C++          |         66 |         37 |         38 |        141 |
 | /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/include/myslam/g2o_types.h                                   | C++          |        132 |         21 |         42 |        195 |
-| /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/include/myslam/keyframe.h                                    | C++          |         35 |          4 |         26 |         65 |
-| /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/include/myslam/loopclosing.h                                 | C++          |         66 |          3 |         62 |        131 |
-| /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/include/myslam/map.h                                         | C++          |         36 |          7 |         31 |         74 |
+| /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/include/myslam/keyframe.h                                    | C++          |         36 |          4 |         27 |         67 |
+| /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/include/myslam/loopclosing.h                                 | C++          |         69 |          5 |         64 |        138 |
+| /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/include/myslam/map.h                                         | C++          |         37 |          7 |         32 |         76 |
 | /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/include/myslam/mappoint.h                                    | C++          |         39 |          4 |         38 |         81 |
-| /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/include/myslam/system.h                                      | C++          |         36 |          4 |         22 |         62 |
+| /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/include/myslam/system.h                                      | C++          |         36 |         11 |         19 |         66 |
 | /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/include/myslam/tools.h                                       | C++          |         77 |         73 |         24 |        174 |
-| /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/include/myslam/viewer.h                                      | C++          |         50 |          3 |         40 |         93 |
+| /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/include/myslam/viewer.h                                      | C++          |         43 |         10 |         40 |         93 |
 | /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/run.sh                                                       | Shell Script |          1 |          0 |          1 |          2 |
-| /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/ORBextractor.cpp                                         | C++          |        853 |         92 |        142 |      1,087 |
+| /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/ORBextractor.cpp                                         | C++          |      1,014 |        116 |        205 |      1,335 |
 | /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/PnPsolver.cc                                             | C++          |        771 |         67 |        184 |      1,022 |
-| /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/backend.cpp                                              | C++          |        173 |         24 |         57 |        254 |
+| /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/backend.cpp                                              | C++          |        185 |         40 |         65 |        290 |
 | /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/camera.cpp                                               | C++          |         25 |          0 |         10 |         35 |
 | /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/config.cpp                                               | C++          |         21 |          0 |          5 |         26 |
 | /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/deeplcd.cpp                                              | C++          |         64 |          6 |         33 |        103 |
 | /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/feature.cpp                                              | C++          |          7 |          4 |         13 |         24 |
 | /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/frame.cpp                                                | C++          |         26 |          6 |         12 |         44 |
-| /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/frontend.cpp                                             | C++          |        318 |         58 |         93 |        469 |
-| /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/keyframe.cpp                                             | C++          |         43 |          8 |         33 |         84 |
-| /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/loopclosing.cpp                                          | C++          |        321 |         65 |        124 |        510 |
-| /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/map.cpp                                                  | C++          |         99 |         16 |         37 |        152 |
+| /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/frontend.cpp                                             | C++          |        327 |         60 |         99 |        486 |
+| /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/keyframe.cpp                                             | C++          |         47 |          8 |         34 |         89 |
+| /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/loopclosing.cpp                                          | C++          |        465 |         85 |        174 |        724 |
+| /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/map.cpp                                                  | C++          |        112 |         18 |         46 |        176 |
 | /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/mappoint.cpp                                             | C++          |         51 |          8 |         17 |         76 |
 | /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/someBackup.cpp                                           | C++          |         46 |          6 |          8 |         60 |
-| /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/system.cpp                                               | C++          |         97 |         10 |         35 |        142 |
-| /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/viewer.cpp                                               | C++          |        187 |         14 |         64 |        265 |
-| Total                                                                                                             |              |      8,236 |        968 |      2,395 |     11,599 |
+| /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/system.cpp                                               | C++          |         98 |         15 |         42 |        155 |
+| /home/mingrui/Mingrui/SLAMProject/stereo_slam_system/src/viewer.cpp                                               | C++          |        178 |         23 |         65 |        266 |
+| Total                                                                                                             |              |      8,646 |      1,087 |      2,556 |     12,289 |
 +-------------------------------------------------------------------------------------------------------------------+--------------+------------+------------+------------+------------+

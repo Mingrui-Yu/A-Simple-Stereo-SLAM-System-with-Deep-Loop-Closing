@@ -37,6 +37,10 @@ inline Vec2 toVec2(const cv::Point2f p){
     return Vec2(p.x, p.y);
 }
 
+inline Vec3 toVec3(const cv::Point3f p){
+    return Vec3(p.x, p.y, p.z);
+}
+
 // ----------------------------------------------------------------------------------------------
 
 inline bool Kmeans(std::vector<float> &data){

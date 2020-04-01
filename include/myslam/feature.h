@@ -21,22 +21,17 @@ public:
     Feature(const cv::KeyPoint &kp);
     // Feature(std::shared_ptr<Frame> frame, const cv::KeyPoint &kp);
 
-    // void SetKF(std::shared_ptr<KeyFrame> KF){
-    //     auto kf = mpKF.lock();
-    //     kf = KF;
-    // }
 
 public:
     // std::weak_ptr<Frame> mpFrame;
     std::weak_ptr<KeyFrame> mpKF;
     cv::KeyPoint mkpPosition; 
+    std::vector<cv::KeyPoint> mvPyramidKeyPoints;
+
     std::weak_ptr<MapPoint> mpMapPoint; 
 
     bool mbIsOnLeftFrame = true; // true: on left frame; false: on right frame;
     bool mbIsOutlier = false;  
-
-    // true: the features detected by ORB; false: the features tracked by LK flow
-    bool mbWithOctave = false; 
 
 
 };

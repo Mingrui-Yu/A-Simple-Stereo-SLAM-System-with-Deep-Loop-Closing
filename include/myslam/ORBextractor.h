@@ -77,6 +77,16 @@ public:
     void Detect( cv::InputArray image, cv::InputArray mask,
       std::vector<cv::KeyPoint>& keypoints);
 
+    void DetectWithPyramid( cv::InputArray _image, cv::InputArray _mask, 
+        std::vector<cv::KeyPoint>& _keypoints);
+
+    void ScreenAndComputeKPsParams( cv::InputArray _image,  
+        std::vector<cv::KeyPoint>& _keypoints, std::vector<cv::KeyPoint>& out_keypoints);
+
+    // bool isFastCorner(cv::Mat img, cv::KeyPoint keypoint);
+
+
+
     int inline GetLevels(){
         return nlevels;}
 

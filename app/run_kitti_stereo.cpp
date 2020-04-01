@@ -1,3 +1,8 @@
+/* This file is the main file to run this stereo slam system.
+ *  This file is for KITTI gray database.
+ */ 
+
+
 #include <myslam/system.h>
 #include <myslam/common_include.h>
 
@@ -10,9 +15,6 @@
 #include <opencv2/opencv.hpp>
 
 
-
-// DEFINE_string(config_file, "./config/default.yaml", "config file path");
-
 using namespace std;
 
 void LoadImages(const string &strPathToSequence, vector<string> &vstrImageLeft,
@@ -22,11 +24,11 @@ void LoadImages(const string &strPathToSequence, vector<string> &vstrImageLeft,
 // ----------------------------------------------------------------------------------------------------------------------------------------------------
 
 int main(int argc, char **argv){
-    // 解析命令行参数
-    gflags::ParseCommandLineFlags(&argc, &argv, true);
+
+    // gflags::ParseCommandLineFlags(&argc, &argv, true);
 
     if(argc != 3){
-        std::cerr << endl << "Usage: ./bin/run_kitti_stereo  path_to_config  path_to_sequence" << std::endl;
+        std::cerr << endl << "Usage:  ./bin/run_kitti_stereo   path_to_config   path_to_sequence" << std::endl;
         return 1;
     }
 
@@ -42,13 +44,13 @@ int main(int argc, char **argv){
     // create the slam system
     myslam::System::Ptr slam(new myslam::System(strConfigPath));
     if(!slam->Init()){
-        std::cerr << "cannot initialize the system!" << std::endl;
+        std::cerr << "Cannot initialize the system!" << std::endl;
     };
     
     // start processing sequence
     std::cout << std::endl << "-------" << std::endl;
     std::cout << "Start processing sequence ..." << std::endl;
-    std::cout << "Total number of images in the sequence: " << nImages << std::endl;
+    std::cout << "Total number of frames in the sequence: " << nImages << std::endl;
     cv::Mat imgLeft, imgRight;
     double dTimeStamp;
 
@@ -58,8 +60,9 @@ int main(int argc, char **argv){
     t_start = std::chrono::steady_clock::now();
     for(int ni=0; ni < nImages; ni++){
         t1 = std::chrono::steady_clock::now();
-        if(ni % 100 == 99) std::cout << "ni = " << ni + 1 << std::endl;
+        if(ni % 100 == 99) std::cout << "Has processed " << ni + 1 << " frames." << std::endl;
         
+        // load the frames from database, convert to gray images if rgb images are loaded
         imgLeft = cv::imread(vstrImageLeft[ni], cv::IMREAD_GRAYSCALE);
         imgRight = cv::imread(vstrImageRight[ni], cv::IMREAD_GRAYSCALE);
         dTimeStamp = vTimestamps[ni];
@@ -70,25 +73,25 @@ int main(int argc, char **argv){
             return 1;
         }
 
-        bool trackSuccess = slam->RunStep(imgLeft, imgRight, dTimeStamp);
+        // process each frame
+        bool systemGood = slam->RunStep(imgLeft, imgRight, dTimeStamp);
         
         t2 = std::chrono::steady_clock::now();
         time_used = std::chrono::duration_cast <std::chrono::duration<double>> (t2 - t1);
 
-        if(!trackSuccess) {
+        if( !systemGood) {
             std::cout << "System failed, now quited." << std::endl;
             break;
         }
         
-        LOG(INFO) << "time cost for frame " << ni <<": " << time_used.count()  << "s";
+        // std::cout << "time cost for frame " << ni <<": " << time_used.count()  << "s" << std::endl;
     }
     t_end = std::chrono::steady_clock::now();
     time_used_total = std::chrono::duration_cast <std::chrono::duration<double>> (t_end - t_start);
     
+    // save the keyframe trajectory
     std::string saveFile = "result/trajectory.txt";
     slam->SaveTrajectory(saveFile);
-
-    // cv::waitKey(0);
 
     slam->Stop();
 
@@ -104,6 +107,7 @@ int main(int argc, char **argv){
 
 // ----------------------------------------------------------------------------------------------------------------------------------------------------
 
+// for KITTI gray database
 void LoadImages(const string &strPathToSequence, vector<string> &vstrImageLeft,
                 vector<string> &vstrImageRight, vector<double> &vTimestamps){
     ifstream fTimes;

@@ -2,12 +2,12 @@
 #define MYSLAM_FRONTEND_H
 
 #include "myslam/common_include.h"
-#include "myslam/frame.h"
 
 #include <opencv2/features2d.hpp>
 
 namespace myslam{
 
+class Frame;
 class Viewer;
 class ORBextractor;
 class Camera;
@@ -15,7 +15,9 @@ class Map;
 class Backend;
 class KeyFrame;
 
+// four tracking status
 enum class FrontendStatus {INITING, TRACKING_GOOD, TRACKING_BAD, LOST};
+
 
 class Frontend{
 
@@ -25,20 +27,20 @@ public:
 
     Frontend();
 
-    // process new pair of images
+    /* process new pair of images
+     * return true if run normally
+     */
     bool GrabStereoImage(const cv::Mat &leftImg, const cv::Mat &rightImg, const double &dTimeStamp);
 
     void SetViewer(std::shared_ptr<Viewer> viewer){
         _mpViewer = viewer;
     }
 
-    // set left and right camera
     void SetCameras(std::shared_ptr<Camera> left, std::shared_ptr<Camera> right){
         _mpCameraLeft = left;
         _mpCameraRight = right;
     }
 
-    // set the map
     void SetMap(std::shared_ptr<Map> map){
         _mpMap = map;
     }
@@ -56,72 +58,79 @@ public:
     }
 
 
-    
-
 private:
-     // tracking initialization 
+    /* tracking initialization 
+     * return true if success
+     */
     bool StereoInit();
 
-    // tracking, return true if success
-    bool Track();
-
-    // return if has built the map successfully
+    /* build the initial map
+     * return true if success
+     */
     bool BuildInitMap();
 
-    // detect features in an image, return the num of features
-    int DetectFeatures();
+    /* standard tracking
+     * return true if success
+     */
+    bool Track();
 
-    // find the corresponding features in right image of current frame
-    // return num of corresponding features found
-    int FindFeaturesInRight();
-
-    // get the initial value of current frame's pose using motion model
-    // correspond features between last frame and current frame  using LK flow
-    // return the number of good tracked points
+    /*  get the initial value of current frame's pose using motion model
+     * correspond features between last frame and current frame using LK flow
+     * return the number of good tracked points
+     */
     int TrackLastFrame();
 
-    // optimize the current frame's pose using g2o
+    /* optimize the current frame's pose using g2o
+     * the mappoints are only constrains and won't be optimized
+     * return the inlier numbers 
+     */
     int EstimateCurrentPose();
 
-    // create new keyframe (from current frame) when the number of tracked points is less than a threshold
-    // return if success
+    /* detect new features in current image (left)
+     *      when needs to create new KF (number of valid tracked features is less than a threshold)
+     * return the num of features
+     */
+    int DetectFeatures();
+
+    /* find the corresponding features in right image of current frame
+     * return num of corresponding features found
+     */
+    int FindFeaturesInRight();
+
+    /* create new keyframe (according to current frame) 
+     *      and do some update work
+     * return true if success
+     */
     bool InsertKeyFrame();
 
-    // create new mappoints and add them to the map
+    /* create new mappoints and insert them to the map
+     * return the number of new created mappoints
+     */
     int TriangulateNewPoints();
 
     
 
 private:
+    std::shared_ptr<ORBextractor> _mpORBextractor, _mpORBextractorInit;
+    std::shared_ptr<Camera> _mpCameraLeft, _mpCameraRight;
+    std::shared_ptr<Map> _mpMap;
+    std::shared_ptr<Backend> _mpBackend;
+    std::shared_ptr<Viewer> _mpViewer;
+
     FrontendStatus _mStatus = FrontendStatus::INITING;
 
-    Frame::Ptr _mpCurrentFrame;
-    Frame::Ptr _mpLastFrame;
+    std::shared_ptr<Frame> _mpCurrentFrame;
+    std::shared_ptr<Frame> _mpLastFrame;
     std::shared_ptr<KeyFrame> _mpReferenceKF;
 
-
+    // the pose or motion variables of the current frame
     SE3 _mseRelativeMotion;
     SE3 _mseRelativeMotionToReferenceKF;
 
-    // params for tracking features
+    // params for deciding the tracking status
     int _numFeaturesTrackingGood;
     int _numFeaturesTrackingBad;
     int _numFeaturesInitGood;
-    int _numFeaturesTracking;
-    // cv::Ptr<cv::ORB> _orb;
-    // cv::Ptr<cv::GFTTDetector> _gftt;
-    std::shared_ptr<ORBextractor> _mpORBextractor, _mpORBextractorInit;
-
-    std::shared_ptr<Camera> _mpCameraLeft, _mpCameraRight;
-
-    std::shared_ptr<Map> _mpMap;
-
-    std::shared_ptr<Backend> _mpBackend;
-
-    // Other thread Pointers
-    std::shared_ptr<Viewer> _mpViewer;
-
-   
 };
 
 
