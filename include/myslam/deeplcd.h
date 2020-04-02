@@ -19,12 +19,10 @@ namespace myslam
 // Deep Loop Closure Detector
 class DeepLCD{
 public:
-	// EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
+	EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
 	typedef std::shared_ptr<DeepLCD> Ptr;
-	// typedef Eigen::Map<Eigen::VectorXf> Vector; // This is just a bit more sleek
-	typedef Eigen::Matrix<float, 1064, 1> DescrVector;
-
 	
+	typedef Eigen::Matrix<float, 1064, 1> DescrVector;
 
 	caffe::Net<float>* autoencoder; // the deploy autoencoder
 	caffe::Blob<float>* autoencoder_input; // The encoder's input blob

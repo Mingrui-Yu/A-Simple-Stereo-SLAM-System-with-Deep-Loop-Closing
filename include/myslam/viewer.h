@@ -2,7 +2,6 @@
 #define MYSLAM_VIEWER_H
 
 #include "myslam/common_include.h"
-#include "myslam/config.h"
 
 
 #include <thread>
@@ -39,7 +38,6 @@ public:
     // get the information about kf/mp from the map
     // void UpdateMap();
 
-    
 
 private:
 
@@ -71,12 +69,9 @@ private:
     const float red[3] = {1, 0, 0};
     const float green[3] = {0, 1, 0};
     const float blue[3] = {0, 0, 1};
-    
-    // MapPointsType _mumpAllMapPoints;
-    // MapPointsType _mumpActiveMapPoints;
 
-    // KeyFramesType _mumpAllKeyFrames;
-    // KeyFramesType _mumpActiveKeyFrames;
+    double _mnFPS;
+    int _mT;
 
 
 

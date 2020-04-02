@@ -19,7 +19,6 @@ public:
 
     MapPoint(unsigned long id, Vec3 position);
 
-    // return the position
     Vec3 Pos() {
         std::unique_lock<std::mutex> lck(_mmutexData);
         return _mPos;
@@ -30,17 +29,14 @@ public:
         _mPos = position;
     }
 
-    // add feature in active KF which has observed this mappoint
     void AddActiveObservation(std::shared_ptr<Feature> feature);
 
     void AddObservation(std::shared_ptr<Feature> feature);
 
-    // return the list of the observations by active KF
     std::list<std::weak_ptr<Feature>> GetActiveObservations();
 
     std::list<std::weak_ptr<Feature>> GetObservations();
 
-    // remove the feature from current mappoint's active observation
     void RemoveActiveObservation(std::shared_ptr<Feature> feat);
 
     void RemoveObservation(std::shared_ptr<Feature> feat);
@@ -50,11 +46,9 @@ public:
     unsigned long mnId = 0;
     
     int mnActiveObservedTimes = 0;
-
     int mnObservedTimes = 0;
 
     bool mbIsOutlier = false;
-
 
 
 private:

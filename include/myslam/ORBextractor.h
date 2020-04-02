@@ -55,16 +55,9 @@ public:
     ORBextractor(int nfeatures, float scaleFactor, int nlevels,
                  int iniThFAST, int minThFAST);
 
-    void SetNumORBfeatures(int numFeatures);
-
     // ~ORBextractor(){}
 
-    // Compute the ORB features and descriptors on an image.
-    // ORB are dispersed on the image using an octree.
-    // Mask is ignored in the current implementation.
-    // void operator()( cv::InputArray image, cv::InputArray mask,
-    //   std::vector<cv::KeyPoint>& keypoints,
-    //   cv::OutputArray descriptors);
+    // unused
     void DetectAndCompute( cv::InputArray image, cv::InputArray mask,
       std::vector<cv::KeyPoint>& keypoints,
       cv::OutputArray descriptors);
@@ -73,18 +66,22 @@ public:
       const std::vector<cv::KeyPoint>& keypoints,
       cv::OutputArray descriptors);
 
-    // only detect the keypoints, but not compute the descriptors
+    // only detect the keypoints in one octave, not compute the descriptors
     void Detect( cv::InputArray image, cv::InputArray mask,
       std::vector<cv::KeyPoint>& keypoints);
 
+    /** only detect the keypoints in pyramid, not compute the descriptors
+     * unused
+     */
     void DetectWithPyramid( cv::InputArray _image, cv::InputArray _mask, 
         std::vector<cv::KeyPoint>& _keypoints);
 
+    /** select good keypoints from the input keypoints 
+     * (remove the keypoints which are not FAST corner or beyond borders)
+     * compute good keypoints' orientation and size
+     */
     void ScreenAndComputeKPsParams( cv::InputArray _image,  
         std::vector<cv::KeyPoint>& _keypoints, std::vector<cv::KeyPoint>& out_keypoints);
-
-    // bool isFastCorner(cv::Mat img, cv::KeyPoint keypoint);
-
 
 
     int inline GetLevels(){
@@ -112,9 +109,8 @@ public:
     std::vector<cv::Mat> mvImagePyramid;
     std::vector<cv::Mat> mvMaskPyramid;
 
-protected:
 
-    
+protected:
 
     void ComputePyramid(cv::Mat image, cv::Mat mask);
     void ComputePyramid(cv::Mat image);

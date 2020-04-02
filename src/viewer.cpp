@@ -12,6 +12,14 @@ namespace myslam{
 
 // --------------------------------------------------------------
 Viewer::Viewer(){
+    _mnFPS = Config::Get<double>("Camera.fps");
+    if(_mnFPS < 0){
+        _mT = 1;
+    }else{
+        _mT = static_cast<int>(0.8 * 1e3 / _mnFPS);
+    }
+    
+
     _mthreadViewer = std::thread(std::bind(&Viewer::ThreadLoop, this));
 }
 
@@ -72,9 +80,9 @@ void Viewer::ThreadLoop(){
                     pangolin::ModelViewLookAt(mViewpointX,mViewpointY,mViewpointZ, 0,0,0,0.0,-1.0, 0.0));
                 bFollow = true;
             }
-            // cv::Mat img = PlotFrameImage();
-            // cv::imshow("frame", img); 
-            // cv::waitKey(1);         
+            cv::Mat img = PlotFrameImage();
+            cv::imshow("frame", img); 
+            cv::waitKey(_mT);         
         }
 
         vis_display.Activate(vis_camera);
@@ -86,7 +94,7 @@ void Viewer::ThreadLoop(){
         }
         
         pangolin::FinishFrame();
-        usleep(5000);
+        usleep(1000);
     }
     
     LOG(INFO)  << "Stop Viewer";

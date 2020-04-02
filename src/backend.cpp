@@ -14,10 +14,14 @@
 namespace myslam{
 
 // -----------------------------------------------------------------------------------
+
 Backend::Backend(){
     _mbBackendIsRunning.store(true);
     _mbRequestPause.store(false);
-    _mthreadBackend = std::thread(std::bind(&Backend::BackendLoop, this));
+    _mbHasPaused.store(false);
+
+    // launch the backend thread
+    _mthreadBackend = std::thread(std::bind(&Backend::BackendRun, this));
 }
 
 
@@ -26,7 +30,10 @@ Backend::Backend(){
 void Backend::InsertKeyFrame(KeyFrame::Ptr pKF){
     std::unique_lock<std::mutex> lck(_mmutexNewKF);
     _mlNewKeyFrames.push_back(pKF);
+
+    // need active map optimization when there is a new KF inserted
     _mbNeedOptimization = true;
+    // UpdateMap();
 }
 
 // -----------------------------------------------------------------------------------
@@ -58,22 +65,26 @@ void Backend::Resume(){
 
 void Backend::Stop(){
     _mbBackendIsRunning.store(false);
-    _mapUpdate.notify_one();
+    // _mapUpdate.notify_one();
     _mthreadBackend.join();
 }
 
 // -----------------------------------------------------------------------------------
 
-void Backend::BackendLoop(){
+void Backend::BackendRun(){
 
     while(_mbBackendIsRunning.load()){
 
+        // std::unique_lock<std::mutex> lck(_mmutexData);
+        // _mapUpdate.wait(lck);
+
+        // process all new KFs until the new KF list is empty
         while(CheckNewKeyFrames()){
             ProcessNewKeyFrame();
         }
 
-        usleep(1000);
-
+        // if the loopclosing thread asks backend to pause
+        // this will make sure that the backend will pause in this position, having processed all new KFs in the list
         while(_mbRequestPause.load()){
             _mbHasPaused.store(true);
             usleep(1000);
@@ -83,9 +94,10 @@ void Backend::BackendLoop(){
         // optimize the active KFs and mappoints
         if(!CheckNewKeyFrames() && _mbNeedOptimization){
             OptimizeActiveMap();
-            _mbNeedOptimization = false;  // until the next inserted KF, this will become true
+            _mbNeedOptimization = false;  // this will become true when next new KF is inserted
         }
         
+        usleep(1000);
     }
 
 }
@@ -107,12 +119,6 @@ void Backend::ProcessNewKeyFrame(){
     
     _mpMap->InsertKeyFrame(_mpCurrentKF);
     _mpLoopClosing->InsertNewKeyFrame(_mpCurrentKF);
-
-    // if(_mpViewer){
-    //     _mpViewer->UpdateMap();
-    // }
-
-    // _mpLastKF = _mpCurrentKF;
 }
 
 // -----------------------------------------------------------------------------------
@@ -126,17 +132,13 @@ void Backend::OptimizeActiveMap(){
     g2o::SparseOptimizer optimizer;
     optimizer.setAlgorithm(solver);
 
-    Map::KeyFramesType keyframes = _mpMap->GetActiveKeyFrames();
-    Map::MapPointsType mappoints = _mpMap->GetActiveMapPoints();
+    Map::KeyFramesType activeKFs = _mpMap->GetActiveKeyFrames();
+    Map::MapPointsType activeMPs = _mpMap->GetActiveMapPoints();
 
-    // for(auto &keyframe: keyframes){
-    //     LOG(INFO) << "active keyframe id: " << keyframe.second->mnKFId;
-    // }
-
-    // add keyframe vertex
+    // add keyframe vertices
     std::unordered_map<unsigned long, VertexPose *> vertices_kfs;
     unsigned long maxKFId = 0;
-    for(auto &keyframe: keyframes){
+    for(auto &keyframe: activeKFs){
         auto kf = keyframe.second;
         VertexPose *vertex_pose = new VertexPose();
         vertex_pose->setId(kf->mnKFId);
@@ -145,22 +147,18 @@ void Backend::OptimizeActiveMap(){
 
         maxKFId = std::max(maxKFId, kf->mnKFId);
         vertices_kfs.insert({kf->mnKFId, vertex_pose});
-
     }
 
     Mat33 camK = _mpCameraLeft->K();
     SE3 camExt = _mpCameraLeft->Pose();
-    int index = 1;
+    int index = 1; // edge index
     double chi2_th = 5.991;
 
-
-    int cntFixedMP = 0;
-
-    // add mappoints vertex
+    // add mappoint vertices
     // add edges
     std::unordered_map<unsigned long, VertexXYZ *> vertices_mps;
     std::unordered_map<EdgeProjection *, Feature::Ptr> edgesAndFeatures;
-    for(auto &mappoint: mappoints){
+    for(auto &mappoint: activeMPs){
         auto mp = mappoint.second;
         if(mp->mbIsOutlier) {
             continue;
@@ -172,33 +170,25 @@ void Backend::OptimizeActiveMap(){
         v->setId((maxKFId +1) + mappointId);
         v->setMarginalized(true);
 
-        if(keyframes.find(mp->GetObservations().front().lock()->mpKF.lock()->mnKFId) == keyframes.end()){
+        // if the KF which first observes this mappoint is not in the active map,
+        // then fixed this mappoint (be included just as constraint)
+        if(activeKFs.find(mp->GetObservations().front().lock()->mpKF.lock()->mnKFId) == activeKFs.end()){
             v->setFixed(true);
-            // LOG(INFO) << "fixed mappoint id: " << mp->mnId;
-            cntFixedMP++;
         }
 
         vertices_mps.insert({mappointId, v});
         optimizer.addVertex(v);
 
-        // LOG(INFO) << "mappoint's id: " << mp->mnId;
-        // assert(_mpMap->GetAllMapPoints().find(mp->mnId) != _mpMap->GetAllMapPoints().end());
-        // for(auto &obs: mp->GetActiveObservations()){
-        //     auto feat = obs.lock();
-        //     auto kf = feat->mpKF.lock();
-        //     LOG(INFO) << "observing kf id: " << kf->mnKFId;
-        // }
-
-
+        // edges
         for(auto &obs: mp->GetActiveObservations()){
             auto feat = obs.lock();
             auto kf = feat->mpKF.lock();
 
-            assert(feat->mbIsOnLeftFrame == true);
-            assert(keyframes.find(kf->mnKFId) != keyframes.end());
+            assert(activeKFs.find(kf->mnKFId) != activeKFs.end());
 
             if(feat->mbIsOutlier)
                 continue;
+
             EdgeProjection *edge = new EdgeProjection(camK, camExt);
             edge->setId(index);
             edge->setVertex(0, vertices_kfs.at(kf->mnKFId));
@@ -214,8 +204,6 @@ void Backend::OptimizeActiveMap(){
             index++;
         }
     }
-    // LOG(INFO) << "all mappoiints number: " << mappoints.size();
-    // LOG(INFO) << "fixed mappoints number: " << cntFixedMP;
 
     // do optimization
     int cntOutlier = 0, cntInlier = 0;
@@ -228,14 +216,13 @@ void Backend::OptimizeActiveMap(){
         cntInlier = 0;
         // determine if we want to adjust the outlier threshold
         for(auto &ef: edgesAndFeatures){
-            if(ef.first->chi2() > chi2_th){ // chi2_th
+            if(ef.first->chi2() > chi2_th){
                 cntOutlier++;
             }else{
                 cntInlier++;
             }
         }
         double inlierRatio = cntInlier / double(cntInlier + cntOutlier);
-        // LOG(INFO) << "inlierRatio: " << inlierRatio;
         if(inlierRatio > 0.5){
             break;
         }else{
@@ -244,38 +231,41 @@ void Backend::OptimizeActiveMap(){
         }
     }
 
+    // process the outlier edges
+    // remove the link between the feature and the mappoint
     for(auto &ef: edgesAndFeatures){
         if(ef.first->chi2() > chi2_th){
             ef.second->mbIsOutlier = true;
             auto mappoint = ef.second->mpMapPoint.lock();
             mappoint->RemoveActiveObservation(ef.second);
             mappoint->RemoveObservation(ef.second);
+            // if the mappoint has no good observation, then regard it as a outlier. It will be deleted later.
             if(mappoint->GetObservations().empty()){
                 mappoint->mbIsOutlier = true;
+                _mpMap->AddOutlierMapPoint(mappoint->mnId);
             }
             ef.second->mpMapPoint.reset();
         }else{
             ef.second->mbIsOutlier = false;
         }
     }
-    LOG(INFO) << "Backend: Outlier/Inlier in optimization: " << cntOutlier << "/" << cntInlier;
 
-    // Set pose and landmark position
-    for (auto &v: vertices_kfs) {
-        keyframes.at(v.first)->SetPose(v.second->estimate());
-    }
-    for (auto &v: vertices_mps){
-        mappoints.at(v.first)->SetPos(v.second->estimate());
-    }
-
-    // delete outlier mappoints
-     for(auto &mappoint: mappoints){
-        auto mp = mappoint.second;
-        if(mp->mbIsOutlier) {
-            _mpMap->RemoveMapPoint(mp);
+    { // mutex
+        std::unique_lock<std::mutex> lck(_mpMap->mmutexMapUpdate);
+        // update the pose and landmark position
+        for (auto &v: vertices_kfs) {
+            activeKFs.at(v.first)->SetPose(v.second->estimate());
         }
-     }
-     _mpMap->RemoveOldActiveMapPoints();
+        for (auto &v: vertices_mps){
+            activeMPs.at(v.first)->SetPos(v.second->estimate());
+        }
+
+        // delete outlier mappoints
+        _mpMap->RemoveAllOutlierMapPoints();
+        _mpMap->RemoveOldActiveMapPoints();
+    } // mutex
+
+     // LOG(INFO) << "Backend: Outlier/Inlier in optimization: " << cntOutlier << "/" << cntInlier;
 }
 
 // ------------------------------------------------------------------------------

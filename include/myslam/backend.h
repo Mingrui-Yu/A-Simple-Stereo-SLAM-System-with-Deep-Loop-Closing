@@ -56,53 +56,55 @@ public:
      */
     bool IfHasPaused();
 
+    /* ask the backend thread to resume running
+    */
     void Resume();
 
+
 private:
+    /* check if there are KFs in the list which has not been processed
+     */
     bool CheckNewKeyFrames();
 
+    /* extract one new KF from the list and process it
+     * insert it into the map
+     * insert it into the loopclosing thread
+     */
     void ProcessNewKeyFrame();
 
-    void BackendLoop();
+    /* the main loop of backend thread
+     */
+    void BackendRun();
 
+    /* g2o optimization
+     *  optmize the KFs and mappoints in active map
+     */
     void OptimizeActiveMap();
 
+
 private:
-    bool _mbNeedOptimization = false;
+
+    std::shared_ptr<Camera> _mpCameraLeft, _mpCameraRight;
+    std::shared_ptr<Map> _mpMap;
+    std::shared_ptr<Viewer> _mpViewer = nullptr;
+    std::shared_ptr<LoopClosing> _mpLoopClosing = nullptr;
 
     std::thread _mthreadBackend;
     std::atomic<bool>  _mbBackendIsRunning;
     std::atomic<bool>  _mbRequestPause;
     std::atomic<bool>  _mbHasPaused;
-    std::condition_variable _mapUpdate;
-    std::mutex _mmutexData;
+    // std::condition_variable _mapUpdate;
+    // std::mutex _mmutexData;
     std::mutex _mmutexNewKF;
     std::mutex _mmutexStop;
-
-    std::shared_ptr<Camera> _mpCameraLeft, _mpCameraRight;
-
-    std::shared_ptr<Map> _mpMap;
-
-     
-
-    // Other thread Pointers
-    std::shared_ptr<Viewer> _mpViewer = nullptr;
-    std::shared_ptr<LoopClosing> _mpLoopClosing = nullptr;
+    bool _mbNeedOptimization = false;
 
     std::list<std::shared_ptr<KeyFrame>> _mlNewKeyFrames;
 
-    std::shared_ptr<KeyFrame> _mpLastKF = nullptr;
-    std::shared_ptr<KeyFrame> _mpCurrentKF;
-    std::shared_ptr<Frame> _mpCurrentFrame;
+    std::shared_ptr<KeyFrame> _mpCurrentKF = nullptr;
     
 
-
 };
-
-
-
-
-
 
 
 } // namespace myslam

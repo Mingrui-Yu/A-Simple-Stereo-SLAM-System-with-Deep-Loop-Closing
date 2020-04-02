@@ -41,7 +41,7 @@ class VertexPose : public g2o::BaseVertex<6, SE3> {
     virtual bool write(std::ostream &out) const override { return true; }
 };
 
-/// 路标顶点
+// mappoint vertex
 class VertexXYZ : public g2o::BaseVertex<3, Vec3> {
    public:
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW;

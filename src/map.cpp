@@ -3,9 +3,16 @@
 #include "myslam/keyframe.h"
 #include "myslam/mappoint.h"
 #include "myslam/feature.h"
+#include "myslam/config.h"
 
 
 namespace myslam{
+
+Map::Map(){
+    _numActiveKeyFrames = Config::Get<int>("Map.activeMap.size");
+}
+
+// -------------------------------------------------------------------------------
 
 void Map::InsertKeyFrame(std::shared_ptr<KeyFrame> kf){
     _mpCurrentKF = kf;
@@ -24,16 +31,16 @@ void Map::InsertKeyFrame(std::shared_ptr<KeyFrame> kf){
     }
 
     // add the new KF to its observed mappoints' active observations
+    // insert new KF's mappoints to active mappoints
     for(auto &feat: kf->mvpFeaturesLeft){
         auto mp = feat->mpMapPoint.lock();
         if(mp){
-            // mp->AddObservation(feat);
             mp->AddActiveObservation(feat);
             InsertActiveMapPoint(mp);
         }
     }
 
-    // remove old keyframe from the optimization window
+    // remove old keyframe and mappoints from the active map
     if(_mumpActiveKeyFrames.size() > _numActiveKeyFrames){
         RemoveOldActiveKeyframe();
         RemoveOldActiveMapPoints();
@@ -99,9 +106,9 @@ void Map::RemoveOldActiveKeyframe(){
         frameToRemove = _mumpActiveKeyFrames.at(maxKFId);
     }
 
-    // LOG(INFO) << "remove keyframe " << frameToRemove->mnKFId << " from the active keyframes.";
+    // LOG(INFO) << "Map: remove keyframe " << frameToRemove->mnKFId << " from the active keyframes.";
 
-    // remove the kf and its mappoints' observation
+    // remove the kf and its mappoints' active observation
     _mumpActiveKeyFrames.erase(frameToRemove->mnKFId);
     for(auto &feat: frameToRemove->mvpFeaturesLeft){
         auto mp = feat->mpMapPoint.lock();
@@ -109,6 +116,7 @@ void Map::RemoveOldActiveKeyframe(){
             mp->RemoveActiveObservation(feat);
         }
     }
+
 }
 
 
@@ -116,6 +124,7 @@ void Map::RemoveOldActiveKeyframe(){
 // -------------------------------------------------------------------
 
 void Map::RemoveOldActiveMapPoints(){
+    // if the mappoint has no active observation, then remove it from the active mappoints
     std::unique_lock<std::mutex> lck(_mmutexData);
 
     int cntActiveLandmarkRemoved = 0;
@@ -127,7 +136,7 @@ void Map::RemoveOldActiveMapPoints(){
             ++iter;
         }
     }
-    // LOG(INFO) << "remove " << cntActiveLandmarkRemoved << " active landmarks";
+    // LOG(INFO) << "Map: remove " << cntActiveLandmarkRemoved << " active landmarks";
 }
 
 // -------------------------------------------------------------------
@@ -143,6 +152,26 @@ void Map::RemoveMapPoint(std::shared_ptr<MapPoint> mappoint){
 
     // delete from active mappoints
     _mumpActiveMapPoints.erase(mpId);
+}
+
+// -------------------------------------------------------------------
+
+void Map::AddOutlierMapPoint(unsigned long mpId){
+    std::unique_lock<std::mutex> lck(_mmutexOutlierMapPoint);
+    _mlistOutlierMapPoints.push_back(mpId);
+}
+
+// -------------------------------------------------------------------
+
+void Map::RemoveAllOutlierMapPoints(){
+    std::unique_lock<std::mutex> lck(_mmutexData);
+    std::unique_lock<std::mutex> lck_1(_mmutexOutlierMapPoint);
+    
+    for(auto iter = _mlistOutlierMapPoints.begin(); iter != _mlistOutlierMapPoints.end(); iter++){
+        _mumpAllMapPoints.erase(*iter);
+        _mumpActiveMapPoints.erase(*iter);
+    }
+    _mlistOutlierMapPoints.clear();
 }
 
 

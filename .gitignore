@@ -1,0 +1,13 @@
+build
+bin
+lib
+calc_model
+calc.tar.gz
+debug.txt
+run.sh
+
+# vscode
+.VSCodeCounter
+.vscode
+
+

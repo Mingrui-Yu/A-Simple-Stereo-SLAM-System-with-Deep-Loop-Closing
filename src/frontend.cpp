@@ -253,6 +253,7 @@ int Frontend::EstimateCurrentPose(){
             if( mp && 
                     _mpCurrentFrame->mnFrameId - _mpReferenceKF->mnFrameId <= 2){
                 mp->mbIsOutlier = true;
+                _mpMap->AddOutlierMapPoint(mp->mnId);
             }
 
             feat->mpMapPoint.reset();

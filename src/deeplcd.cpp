@@ -1,3 +1,7 @@
+/**
+ *  This file is modified from "deeplcd.cpp" in calc/DeepLCD: https://github.com/rpng/calc
+ */
+
 #include "myslam/deeplcd.h"
 #include <opencv2/core.hpp>
 
@@ -49,6 +53,8 @@ DeepLCD::DescrVector DeepLCD::calcDescrOriginalImg(const cv::Mat& originalImg){
 // ----------------------------------------------------------------------------------------
 
 const DeepLCD::DescrVector DeepLCD::calcDescr(const cv::Mat& im_){
+	// the input image needs to be resized before
+	
 	std::vector<cv::Mat> input_channels(1); //We need this wrapper to place data into the net. Allocate space for at most 3 channels	
 	int w = autoencoder_input->width();
 	int h = autoencoder_input->height();
@@ -78,6 +84,7 @@ const DeepLCD::DescrVector DeepLCD::calcDescr(const cv::Mat& im_){
 		descriptor(i, 0) = *(descr_ + i);
 	}
 
+	// normalization
 	descriptor /= descriptor.norm();
 
 	return descriptor;

@@ -20,6 +20,10 @@ Camera.right.cy: 185.2157
 # stereo baseline times fx
 Camera.bf: 386.1448
 
+# Camera frames per second 
+# the system will ignore this and run as fast as possible if you set this as -1
+Camera.fps: -1
+
 
 
 
@@ -49,6 +53,10 @@ ORBextractor.iniThFAST: 20
 ORBextractor.minThFAST: 7
 
 
+#--------------------------------------------------------------------------------------------
+# Map Parameters
+#--------------------------------------------------------------------------------------------
+Map.activeMap.size: 7
 
 #--------------------------------------------------------------------------------------------
 # Loop Closing Parameters
@@ -57,12 +65,24 @@ ORBextractor.minThFAST: 7
 LCD.similarityScoreThreshold.high: 0.94
 LCD.similarityScoreThreshold.low: 0.92
 
-
+# if you want to see the match and reprojection result, please set this as 1
+# note that normally the system doesn't need to store KF's image but only the descriptors
+# but if you set this as 1, then it needs to store KF's image just for the show
+LoopClosing.bShowResult: 0
+# the system won't do loop detection 
+#   until the number of KFs in database is more than this threshold
+LCD.nDatabaseMinSize: 50
 
 
 #--------------------------------------------------------------------------------------------
 # Viewer Parameters
 #--------------------------------------------------------------------------------------------
+
+# if you want to see the frame and trajectory in real time, please set this as 1
+# note that this will slow down the speed of the system
+Viewer.bShow: 0
+
+# some parameters for pangolin
 Viewer.KeyFrameSize: 0.1
 Viewer.KeyFrameLineWidth: 1
 Viewer.GraphLineWidth: 1
@@ -73,3 +93,5 @@ Viewer.ViewpointX: 0
 Viewer.ViewpointY: -500
 Viewer.ViewpointZ: -0.1
 Viewer.ViewpointF: 2000
+
+

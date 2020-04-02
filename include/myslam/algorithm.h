@@ -27,9 +27,8 @@ inline bool triangulation(const std::vector<SE3> &poses,
     pt_world = (svd.matrixV().col(3) / svd.matrixV()(3, 3)).head<3>();
 
     if (svd.singularValues()[3] / svd.singularValues()[2] < 1e-2) {
-        // 解质量不好，放弃
         return true;
-    }
+    } // give up the bad solution
     return false;
 }
 
@@ -43,6 +42,7 @@ inline Vec3 toVec3(const cv::Point3f p){
 
 // ----------------------------------------------------------------------------------------------
 
+// unused 
 inline bool Kmeans(std::vector<float> &data){
     if(data.size() < 2) return false;
 
@@ -100,7 +100,9 @@ inline bool Kmeans(std::vector<float> &data){
     return true;
 }
 
+// ---------------------------------------------------------------------------------------------
 
+// compute the mean and standard variance of a vector
 inline std::pair<double, double> VectorMeanAndVariance(const std::vector<double> v){
     double sum = std::accumulate(std::begin(v), std::end(v), 0.0);
     double m =  sum / v.size();

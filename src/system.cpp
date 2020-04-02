@@ -37,9 +37,13 @@ bool System::Init(){
     _mpFrontend = Frontend::Ptr(new Frontend);
     _mpBackend = Backend::Ptr(new Backend);
     _mpLoopClosing = LoopClosing::Ptr(new LoopClosing);
-    _mpViewer = Viewer::Ptr(new Viewer);
     _mpMap = Map::Ptr(new Map);
 
+    bool bUseViewer = Config::Get<int>("Viewer.bShow");
+    if(bUseViewer){
+        _mpViewer = Viewer::Ptr(new Viewer);
+    }
+   
 
     // create links between each components
     _mpFrontend->SetViewer(_mpViewer);

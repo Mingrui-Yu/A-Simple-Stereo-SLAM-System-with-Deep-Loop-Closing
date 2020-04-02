@@ -19,20 +19,18 @@ public:
     Feature() {}
 
     Feature(const cv::KeyPoint &kp);
-    // Feature(std::shared_ptr<Frame> frame, const cv::KeyPoint &kp);
+    
+    Feature(std::shared_ptr<KeyFrame> kf, const cv::KeyPoint &kp);
 
 
 public:
-    // std::weak_ptr<Frame> mpFrame;
     std::weak_ptr<KeyFrame> mpKF;
     cv::KeyPoint mkpPosition; 
     std::vector<cv::KeyPoint> mvPyramidKeyPoints;
-
     std::weak_ptr<MapPoint> mpMapPoint; 
 
     bool mbIsOnLeftFrame = true; // true: on left frame; false: on right frame;
     bool mbIsOutlier = false;  
-
 
 };
 

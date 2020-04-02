@@ -27,9 +27,9 @@ public:
 
     SE3 RelativePose();
 
+
 public:
     unsigned long mnFrameId;
-    // unsigned long mnKFid;
     double mdTimeStamp;
 
     cv::Mat mLeftImg, mRightImg;
@@ -38,17 +38,12 @@ public:
     std::vector<std::shared_ptr<Feature>> mvpFeaturesRight;
 
     
-
-
 private:
-    SE3 _msePose;
+    SE3 _msePose; // just for viewer
+    SE3 _mseRelativePose; // for tracking
 
-    SE3 _mseRelativePose;
-
-    
-
-    std::mutex _mmutexPose;  // pose 数据锁
-    std::mutex _mmutexRelativePose;  // pose 数据锁
+    std::mutex _mmutexPose;
+    std::mutex _mmutexRelativePose;
 
 
 };
