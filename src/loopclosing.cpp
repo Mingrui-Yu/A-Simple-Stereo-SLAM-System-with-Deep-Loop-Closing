@@ -169,7 +169,7 @@ bool LoopClosing::MatchFeatures(){
     std::vector<cv::DMatch> matches;
 
     // match the current KF's orb descriptors with the loop KF's
-    _mpMatcher->match(_mpCurrentKF->mORBDescriptors, _mpLoopKF->mORBDescriptors, matches);
+    _mpMatcher->match(_mpLoopKF->mORBDescriptors, _mpCurrentKF->mORBDescriptors, matches);
     
     // select good matches
     auto min_max = std::minmax_element(matches.begin(), matches.end(),
@@ -181,8 +181,8 @@ bool LoopClosing::MatchFeatures(){
 
     for (auto &match: matches){
         if(match.distance <= std::max(2*min_dist, 30.0)){
-            int loopFeatureId = _mpLoopKF->mvPyramidKeyPoints[match.trainIdx].class_id;
-            int currentFeatureId = _mpCurrentKF->mvPyramidKeyPoints[match.queryIdx].class_id;
+            int loopFeatureId = _mpLoopKF->mvPyramidKeyPoints[match.queryIdx].class_id;
+            int currentFeatureId = _mpCurrentKF->mvPyramidKeyPoints[match.trainIdx].class_id;
 
             // the matches of keypoints belonging to the same feature pair shouldn't be inserted into the valid matches twice
             if(_msetValidFeatureMatches.find({currentFeatureId, loopFeatureId}) 
@@ -246,7 +246,7 @@ bool LoopClosing::ComputeCorrectPose(){
                 vMatchesWithMapPoint, img_goodmatch);
         cv::resize(img_goodmatch, img_goodmatch, cv::Size(), 0.5, 0.5);
         cv::imshow("valid matches with mappoints", img_goodmatch);
-        cv::waitKey(10);
+        cv::waitKey(1);
     }
     
     if(vLoopPoints3d.size() < 10) 
@@ -320,7 +320,7 @@ bool LoopClosing::ComputeCorrectPose(){
         }
 
         cv::imshow("reprojection result of match inliers", imgOut);
-        cv::waitKey(10);
+        cv::waitKey(1);
     }
 
 
@@ -437,6 +437,7 @@ int LoopClosing::OptimizeCurrentPose(){
 void LoopClosing::LoopCorrect(){
 
     if( ! _mbNeedCorrect){
+        LOG(INFO) << "LoopClosing: no need for correction.";
         return;
     }
 

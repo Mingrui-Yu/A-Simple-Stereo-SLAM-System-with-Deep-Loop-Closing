@@ -68,7 +68,7 @@ LCD.similarityScoreThreshold.low: 0.92
 # if you want to see the match and reprojection result, please set this as 1
 # note that normally the system doesn't need to store KF's image but only the descriptors
 # but if you set this as 1, then it needs to store KF's image just for the show
-LoopClosing.bShowResult: 0
+LoopClosing.bShowResult: 1
 # the system won't do loop detection 
 #   until the number of KFs in database is more than this threshold
 LCD.nDatabaseMinSize: 50
@@ -80,7 +80,7 @@ LCD.nDatabaseMinSize: 50
 
 # if you want to see the frame and trajectory in real time, please set this as 1
 # note that this will slow down the speed of the system
-Viewer.bShow: 0
+Viewer.bShow: 1
 
 # some parameters for pangolin
 Viewer.KeyFrameSize: 0.1
