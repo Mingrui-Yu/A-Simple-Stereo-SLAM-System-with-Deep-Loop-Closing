@@ -2,6 +2,7 @@ build
 bin
 lib
 oldCodeBackup
+notes
 
 calc_model
 calc.tar.gz
