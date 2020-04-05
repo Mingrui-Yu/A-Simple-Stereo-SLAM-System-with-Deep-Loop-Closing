@@ -7,15 +7,15 @@
 # the parameter style is like ORB-SLAM2
 
 #camera intrinsics
-Camera.left.fx: 718.856
-Camera.left.fy: 718.856
-Camera.left.cx: 607.1928
-Camera.left.cy: 185.2157
+Camera.left.fx: 721.5377
+Camera.left.fy: 721.5377
+Camera.left.cx: 609.5593
+Camera.left.cy: 172.854
 
-Camera.right.fx: 718.856
-Camera.right.fy: 718.856
-Camera.right.cx: 607.1928
-Camera.right.cy: 185.2157
+Camera.right.fx: 721.5377
+Camera.right.fy: 721.5377
+Camera.right.cx: 609.5593
+Camera.right.cy: 172.854
 
 Camera.left.k1: 0.0
 Camera.left.k2: 0.0
@@ -27,12 +27,8 @@ Camera.right.k2: 0.0
 Camera.right.p1: 0.0
 Camera.right.p2: 0.0
 
-# if you doesn't need to undistort input images, please set this as 0
-# eg. in KITTI database
-Camera.bNeedUndistortion: 0
-
 # stereo baseline times fx
-Camera.bf: 386.1448
+Camera.bf: 387.5744
 
 # Camera frames per second 
 # the system will ignore this and run as fast as possible if you set this as -1

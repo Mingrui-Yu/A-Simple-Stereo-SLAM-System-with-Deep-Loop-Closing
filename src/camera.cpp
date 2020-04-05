@@ -1,5 +1,7 @@
 #include "myslam/camera.h"
 
+#include <opencv2/imgproc.hpp>
+
 namespace myslam{
 
 Camera::Camera() {}
@@ -29,6 +31,20 @@ Vec3 Camera::pixel2world(const Vec2 &p_p, const SE3 &T_c_w, double depth){
 
 Vec2 Camera::world2pixel(const Vec3 &p_w, const SE3 &T_c_w){
     return camera2pixel(world2camera(p_w, T_c_w));
+}
+
+void Camera::UndistortImage(cv::Mat &src, cv::Mat &dst){
+
+    cv::Mat distortImg = src.clone();
+
+    cv::Mat K_cv = cv::Mat::zeros(3, 3, CV_32F);
+    K_cv.at<float>(0, 0) = fx_;
+    K_cv.at<float>(0, 2) = cx_;
+    K_cv.at<float>(1, 1) = fy_;
+    K_cv.at<float>(1, 2) = cy_;
+    K_cv.at<float>(2, 2) = 1.0;
+
+    cv::undistort(distortImg, dst, K_cv, mDistCoef);
 }
 
 

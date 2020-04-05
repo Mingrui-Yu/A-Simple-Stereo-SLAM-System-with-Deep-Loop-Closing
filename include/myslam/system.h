@@ -58,6 +58,8 @@ private:
     std::shared_ptr<ORBextractor> _mpORBextractor;
 
     std::string _strConfigPath;
+
+    bool _mbNeedUndistortion;
 };
 
 }  // namespace myslam

@@ -8,8 +8,6 @@ It is truly a pleasure for me if this project can help you.
 
 ## Related References
 
-The platform I use is Ubuntu 18.04.
-
 ### Chapter 13, Visual SLAM: From Theory to Practice
 (https://github.com/gaoxiang12/slambook-en), I use the basic framework of the Stereo VO in the chapter, and the main methods in the frontend and the backend threads.
 
@@ -20,6 +18,8 @@ The platform I use is Ubuntu 18.04.
 (https://github.com/rpng/calc), I use modified versions of the DeepLCD library to perform loop detection.
 
 ## Dependencies
+
+The platform I use is Ubuntu 18.04.
 
 ### OpenCV
 
@@ -76,7 +76,7 @@ To run the system on KITTI Stereo sequence 00:
 ```
 ./bin/run_kitti_stereo  config/stereo/gray/KITTI00-02.yaml  PATH_TO_DATASET_FOLDER/dataset/sequences/00
 ```
-where KITTI00-02.yaml is the corresponding configuration file (including camera parameters and other parameters). It utilizes the style of ORB-SLAM2. Up to now I have just written one for KITTI00-02, but it's easy to change it for other sequences using the parameters in corresponding configuration files in ORB-SLAM2.
+where KITTI00-02.yaml is the corresponding configuration file (including camera parameters and other parameters). It utilizes the style of ORB-SLAM2. 
 
 Besides, some parameters in configuration file are for viewing:
 * Camera.fps: control the frame rate of the system
@@ -87,9 +87,25 @@ Here is a result of keyframe trajectory in KITTI 00.
 
 <div align=center><img src="https://img2020.cnblogs.com/blog/1921421/202004/1921421-20200404204617560-1899206987.png" width = "60%" /></div>
 
-There must be some mistakes in the project as I am just a newcomer to visual SLAM. Please open an issue if you find any problem, and I will be deeply grateful for your correction and advice.
+The system can run at a frame rate of around 50 frames per second (if the viewer is closed). If you don't need to undistort the images (such as in KITTI database), it can even accelerate to around 100 frames per second. (Run on a laptop with  i5-8265U(1.60GHz × 8) and no GPU)
 
-As for the detail of this system, I will add some instruction later.
+# Brief Introduction
+
+The system contains three thread:
+* Frontend thread
+* Backend thread
+* LoopClosing thread
+
+In Frontend, it will track the motion based on feature points and LK flow. If the number of tracked keypoints is lower than a thresold, it will detect new features and create a keyframe. Mappoints are created by triangulating the matched feature points in left/right images.
+
+In Backend, it will maintain a global map and an local active map. The active map is like a sliding window, containing a fixed number of keyframes and observed mappoints. Optimization of the active map is done in Backend.
+
+In LoopClosing, it will first try to detect a Candidate Loop KF of the Current KF using DeepLCD. If succeed, it will then match the keypoints in Candidate KF and Current KF, which is used to compute the correct pose of Current KF using PnP and g2o optimization. If the number of inliers is higher than a threshold, the loop detection will be considered as a success, and loop correction is applyed: first, it will correct the keyframe poses and mappoint positions in active map; second, a pose graph optimization of the global map will be applied.
+
+
+***
+
+There must be some mistakes in the project as I am just a newcomer to visual SLAM. Please open an issue if you find any problem, and I will be deeply grateful for your correction and advice.
 
 
 

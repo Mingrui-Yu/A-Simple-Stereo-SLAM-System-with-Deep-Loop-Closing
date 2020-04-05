@@ -29,6 +29,8 @@ Frontend::Frontend(){
     int fIniThFAST = Config::Get<int>("ORBextractor.iniThFAST");
     int fMinThFAST = Config::Get<int>("ORBextractor.minThFAST");
 
+    _mbNeedUndistortion = Config::Get<int>("Camera.bNeedUndistortion");
+
     _mpORBextractorInit = ORBextractor::Ptr(new ORBextractor(nFeaturesInit,fScaleFactor,nLevels,fIniThFAST,fMinThFAST));
     // _mpORBextractor is created in system.cpp and introduced into frontend.cpp
 }
@@ -42,6 +44,12 @@ bool Frontend::GrabStereoImage (const cv::Mat &leftImg, const cv::Mat &rightImg,
 
     _mpCurrentFrame = Frame::Ptr(new Frame(leftImg, rightImg, dTimeStamp));
 
+    // undistort the images, which is not required in KITTI
+    if(_mbNeedUndistortion){
+        _mpCameraLeft->UndistortImage(_mpCurrentFrame->mLeftImg, _mpCurrentFrame->mLeftImg);
+        _mpCameraRight->UndistortImage(_mpCurrentFrame->mRightImg, _mpCurrentFrame->mRightImg);
+    }
+    
     { // mutex: avoid conflict between frontend and loop correction
         std::unique_lock<std::mutex> lck(_mpMap->mmutexMapUpdate);
 

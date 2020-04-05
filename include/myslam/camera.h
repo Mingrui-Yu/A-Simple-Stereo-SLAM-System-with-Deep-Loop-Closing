@@ -13,10 +13,12 @@ public:
     double fx_ = 0, fy_ = 0, cx_ = 0, cy_ = 0, baseline_ = 0;
     SE3 pose_;
     SE3 pose_inv_;
+    cv::Mat mDistCoef;
 
     Camera();
-    Camera(double fx, double fy, double cx, double cy, double baseline, const SE3 &pose):
-        fx_(fx), fy_(fy), cx_(cx), cy_(cy), baseline_(baseline), pose_(pose) {}
+    Camera(double fx, double fy, double cx, double cy, double baseline,
+         const SE3 &pose, const cv::Mat dist_coef) :
+        fx_(fx), fy_(fy), cx_(cx), cy_(cy), baseline_(baseline), pose_(pose), mDistCoef(dist_coef) {}
 
     SE3 Pose() const {return pose_;}
 
@@ -27,6 +29,8 @@ public:
              0, 0, 1;
         return K;
     }
+
+    
 
     Vec3 world2camera(const Vec3 &p_w, const SE3 &T_c_w);
 
@@ -39,6 +43,8 @@ public:
     Vec3 pixel2world(const Vec2 &p_p, const SE3 &T_c_w, double depth = 1);
 
     Vec2 world2pixel(const Vec3 &p_w, const SE3 &T_c_w);
+
+    void UndistortImage(cv::Mat &src, cv::Mat &dst);
 };
 
 

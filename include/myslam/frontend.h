@@ -131,6 +131,8 @@ private:
     int _numFeaturesTrackingGood;
     int _numFeaturesTrackingBad;
     int _numFeaturesInitGood;
+
+    bool _mbNeedUndistortion;
 };
 
 

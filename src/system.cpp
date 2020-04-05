@@ -31,6 +31,7 @@ bool System::Init(){
     _mpORBextractor = ORBextractor::Ptr(new ORBextractor(numORBNewFeatures,fScaleFactor,nLevels,fIniThFAST,fMinThFAST));
 
     // get left and right cameras
+     _mbNeedUndistortion = Config::Get<int>("Camera.bNeedUndistortion");
     GetCamera();
 
     // create components and start each one's thread
@@ -114,12 +115,34 @@ void System::GetCamera(){
     float baseline = bf / fxRight;
     Vec3 tRight = Vec3(- baseline, 0, 0);
 
+    cv::Mat distCoefLeft = cv::Mat::zeros(4, 1, CV_32F);
+    cv::Mat distCoefRight = cv::Mat::zeros(4, 1, CV_32F);
+    if(_mbNeedUndistortion){
+        float k1Left = Config::Get<float>("Camera.left.k1");
+        float k2Left = Config::Get<float>("Camera.left.k2");
+        float p1Left = Config::Get<float>("Camera.left.p1");
+        float p2Left = Config::Get<float>("Camera.left.p2");
+        distCoefLeft.at<float>(0) = k1Left;
+        distCoefLeft.at<float>(1) = k2Left;
+        distCoefLeft.at<float>(2) = p1Left;
+        distCoefLeft.at<float>(3) = p2Left;
+
+        float k1Right = Config::Get<float>("Camera.right.k1");
+        float k2Right = Config::Get<float>("Camera.right.k2");
+        float p1Right = Config::Get<float>("Camera.right.p1");
+        float p2Right = Config::Get<float>("Camera.right.p2");
+        distCoefRight.at<float>(0) = k1Right;
+        distCoefRight.at<float>(1) = k2Right;
+        distCoefRight.at<float>(2) = p1Right;
+        distCoefRight.at<float>(3) = p2Right;
+    }
+
     // set the pose of left camera as identity isometry matrix by default
     _mpCameraLeft = Camera::Ptr(new Camera(fxLeft, fyLeft, cxLeft, cyLeft,
-                                        0, SE3(SO3(), tLeft)));
+                                        0, SE3(SO3(), tLeft), distCoefLeft));
 
     _mpCameraRight = Camera::Ptr(new Camera(fxRight, fyRight, cxRight, cyRight,
-                                        baseline, SE3(SO3(), tRight)));
+                                        baseline, SE3(SO3(), tRight), distCoefRight));
 }
 
 
