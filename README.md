@@ -25,27 +25,30 @@ The platform I use is Ubuntu 18.04.
 
 ### OpenCV
 
-Dowload and install instructions can be found at [here](https://opencv.org/releases/). I am using OpenCV 3.4.8.
+Dowload and install instructions can be found [here](https://opencv.org/releases/). I am using OpenCV 3.4.8.
 
 ### Eigen
 
-Dowload and install instructions can be found at [here](https://opencv.org/releases/). You can just use 
+Dowload and install instructions can be found [here](https://opencv.org/releases/). You can just use 
 ``` sudo apt-get install libeigen3-dev ```
 to install it in Ubuntu.
 
 ### Sophus
-Dowload and install instructions can be found at [here](https://github.com/strasdat/Sophus).
+Dowload and install instructions can be found [here](https://github.com/strasdat/Sophus).
 
 ### g2o
-Dowload and install instructions can be found at [here](https://github.com/RainerKuemmerle/g2o).
+Dowload and install instructions can be found [here](https://github.com/RainerKuemmerle/g2o).
 
 ### Caffe
-The CPU verion is enough. Dowload and install instructions can be found at [here](http://caffe.berkeleyvision.org/install_apt.html). This is the dependency of DeepLCD library.
+The CPU verion is enough. Dowload and install instructions can be found [here](http://caffe.berkeleyvision.org/install_apt.html). This is the dependency of DeepLCD library.
 
 NOTICE: Please make sure your caffe is installed in ~/caffe, or you need to change its path in CMakeLists.txt.
 
 ### DeepLCD
 This is the library for deep loop detection. The modified library are included in the project, so you don't need to install it by yourself.
+
+### Pangolin
+Dowload and install instructions can be found [here](https://github.com/stevenlovegrove/Pangolin)
 
 ### Others
 * C++11
