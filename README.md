@@ -33,6 +33,9 @@ Dowload and install instructions can be found at [here](https://opencv.org/relea
 ``` sudo apt-get install libeigen3-dev ```
 to install it in Ubuntu.
 
+### Sophus
+Dowload and install instructions can be found at [here](https://github.com/strasdat/Sophus).
+
 ### g2o
 Dowload and install instructions can be found at [here](https://github.com/RainerKuemmerle/g2o).
 
