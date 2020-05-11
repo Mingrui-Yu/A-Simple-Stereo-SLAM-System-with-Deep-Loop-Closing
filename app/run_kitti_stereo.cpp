@@ -93,6 +93,9 @@ int main(int argc, char **argv){
     std::string saveFile = "result/trajectory.txt";
     slam->SaveTrajectory(saveFile);
 
+    std::string saveLoopEdgesFile = "result/loopEdges.txt";
+    slam->SaveLoopEdges(saveLoopEdgesFile);
+
     slam->Stop();
 
     std::cout << std::endl << "-------" << std::endl;

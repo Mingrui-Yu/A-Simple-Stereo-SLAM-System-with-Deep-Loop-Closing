@@ -149,7 +149,7 @@ void System::GetCamera(){
 // ------------------------------------------------------------------------------------------
 
 // the output format is like: 
-//      "keyframe id, tx, ty, tz, qx, qy, qz, qw" per line
+//      "keyframe id, timestamp, tx, ty, tz, qx, qy, qz, qw" per line
 void System::SaveTrajectory(std::string &save_file){
     std::ofstream outfile;
     outfile.open(save_file, std::ios_base::out|std::ios_base::trunc);
@@ -165,17 +165,63 @@ void System::SaveTrajectory(std::string &save_file){
     for (auto &kf: poses_map){
         unsigned long keyframe_id = kf.first;
         KeyFrame::Ptr keyframe = kf.second;
+        double timestamp = keyframe->mdTimeStamp;
         SE3 frame_pose = keyframe->Pose().inverse();
         Vec3 pose_t = frame_pose.translation();
         Mat33 pose_R = frame_pose.rotationMatrix();
         Eigen::Quaterniond pose_q = Eigen::Quaterniond(pose_R);
 
-        outfile << std::setprecision(6) << keyframe_id << " " 
+        outfile << std::setprecision(6) << keyframe_id << " " << timestamp << " "
                 << pose_t.transpose() << " " << pose_q.coeffs().transpose() << std::endl;
     }
     outfile.close();
 }
 
+
+// ------------------------------------------------------------------------------------------
+
+// the output format is like: 
+//      "Current id, timestamp, tx, ty, tz, qx, qy, qz, qw" 
+//      "Loop id, timestamp, tx, ty, tz, qx, qy, qz, qw"
+//       two lines as a group
+void System::SaveLoopEdges(std::string &save_file){
+    std::ofstream outfile;
+    outfile.open(save_file, std::ios_base::out|std::ios_base::trunc);
+    outfile << std::fixed;
+    std::map<unsigned long, KeyFrame::Ptr> poses_map;
+
+    for (auto &kf: _mpMap->GetAllKeyFrames()){
+        unsigned long keyframe_id = kf.first;
+        KeyFrame::Ptr keyframe = kf.second;
+        poses_map.insert(make_pair(keyframe_id, keyframe));
+    }
+    
+    for (auto &kf: poses_map){
+        unsigned long keyframe_id = kf.first;
+        KeyFrame::Ptr keyframe = kf.second;
+        auto loopKF = keyframe->mpLoopKF.lock();
+        if(loopKF){
+            double timestamp_current = keyframe->mdTimeStamp;
+            SE3 frame_pose_current = keyframe->Pose().inverse();
+            Vec3 pose_t_current = frame_pose_current.translation();
+            Mat33 pose_R_current = frame_pose_current.rotationMatrix();
+            Eigen::Quaterniond pose_q_current = Eigen::Quaterniond(pose_R_current);
+
+            outfile << std::setprecision(6) << keyframe_id << " " << timestamp_current << " "
+                << pose_t_current.transpose() << " " << pose_q_current.coeffs().transpose() << std::endl;
+
+            double timestamp_loop = loopKF->mdTimeStamp;
+            SE3 frame_pose_loop = loopKF->Pose().inverse();
+            Vec3 pose_t_loop = frame_pose_loop.translation();
+            Mat33 pose_R_loop = frame_pose_loop.rotationMatrix();
+            Eigen::Quaterniond pose_q_loop = Eigen::Quaterniond(pose_R_loop);
+
+            outfile << std::setprecision(6) << loopKF->mnKFId << " " << timestamp_loop << " "
+                << pose_t_loop.transpose() << " " << pose_q_loop.coeffs().transpose() << std::endl;
+        }
+    }
+    outfile.close();
+}
 
 } // namespace myslam
 

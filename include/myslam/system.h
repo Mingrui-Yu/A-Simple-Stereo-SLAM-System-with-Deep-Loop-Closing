@@ -43,6 +43,11 @@ public:
      */
     void SaveTrajectory(std::string &save_file);
 
+    /** save the edges detected by loop closure
+     * the result of loop detection
+     */
+    void SaveLoopEdges(std::string &save_file);
+
 
 public:
     
